@@ -112,29 +112,10 @@
     <p>Nosso site está passando por algumas melhorias. Em breve, estaremos de volta com novidades!</p>
   
 
-  
-<script type='text/javaScript'>
-var tow_numposts=1;
-var tow_snippet_length=150;
-var tow_info='no';
-var tow_comment='Comments';
-var tow_disable='Comments Disabled';
-var tow_current=[];var tow_total_posts=0;var tow_current=new Array(tow_numposts);function totalposts(json){tow_total_posts=json.feed.openSearch$totalResults.$t}document.write('<script type=\"text/javascript\" src=\"https://geradordefrasesaleatorias.com/feeds/posts/default?alt=json-in-script&max-results=0&callback=totalposts\"><\/script>');function getvalue(){for(var i=0;i<tow_numposts;i++){var found=false;var rndValue=get_random();for(var j=0;j<tow_current.length;j++){if(tow_current[j]==rndValue){found=true;break}};if(found){i--}else{tow_current[i]=rndValue}}};function get_random(){var ranNum=1+Math.round(Math.random()*(tow_total_posts-1));return ranNum};
-</script>
+
 
   
 
-
-    
-    <script>
-        const images = document.querySelectorAll('.random-image');
-        images.forEach(image => {
-            const randomWidth = Math.floor(Math.random() * (400 - 100 + 1)) + 100; // Random width between 100px and 400px
-            const randomHeight = Math.floor(Math.random() * (400 - 100 + 1)) + 100; // Random height between 100px and 400px
-            const imageUrl = `https://picsum.photos/${randomWidth}/${randomHeight}`;
-            image.src = imageUrl;
-        });
-    </script>
 </body>
 </html>
 
