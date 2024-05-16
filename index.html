@@ -26,8 +26,8 @@
     .construction-img {
         max-width: 100%;
         height: auto;
-        animation: rotate 4s linear infinite;
         border-radius: 50%;
+        animation: pulse 2s ease-in-out infinite alternate;
     }
     @keyframes fadeIn {
         from { opacity: 0; }
@@ -37,15 +37,15 @@
         from { transform: translateY(-50px); opacity: 0; }
         to { transform: translateY(0); opacity: 1; }
     }
-    @keyframes rotate {
-        from { transform: rotate(0); }
-        to { transform: rotate(360deg); }
+    @keyframes pulse {
+        from { transform: scale(1); }
+        to { transform: scale(1.1); }
     }
 </style>
 </head>
 <body>
     <h1>Site em Construção</h1>
-    <img src="https://www.qualittas.com.br/blog/wp-content/uploads/2017/08/Mês-do-cachorro-louco.png" alt="Site em Construção" class="construction-img">
+    <img src="https://files.tecnoblog.net/wp-content/uploads/2022/09/stable-diffusion-imagem.jpg" alt="Site em Construção" class="construction-img">
     <p>Nosso site está passando por algumas melhorias. Em breve estaremos de volta com novidades!</p>
 </body>
 </html>
