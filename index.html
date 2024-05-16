@@ -12,7 +12,7 @@
         padding-top: 50px;
     }
     canvas {
-        border: 1px solid #333;
+        border: 2px solid #333;
     }
     h1 {
         color: #333;
@@ -56,7 +56,7 @@
 <body>
        
     <h1>Site em Construção</h1>
-         <canvas id="snakeCanvas" width="400" height="400"></canvas>
+         <canvas id="snakeCanvas" width="500" height="400"></canvas>
     
     <script>
         const canvas = document.getElementById('snakeCanvas');
@@ -106,7 +106,7 @@
             drawSnake();
         }
         
-        setInterval(changeDirection, 2000); // Mudar direção a cada 2 segundos
+        setInterval(changeDirection, 1000); // Mudar direção a cada 1 segundo
         setInterval(mainLoop, 100);
     </script>
     <p>Nosso site está passando por algumas melhorias. Em breve estaremos de volta com novidades!</p>
