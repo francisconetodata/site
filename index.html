@@ -56,9 +56,9 @@
 <body>
        
     <h1>Site em Construção</h1>
-        <canvas id="snakeCanvas" width="400" height="400"></canvas>
+         <canvas id="snakeCanvas" width="400" height="400"></canvas>
     
-       <script>
+    <script>
         const canvas = document.getElementById('snakeCanvas');
         const ctx = canvas.getContext('2d');
         
@@ -79,6 +79,19 @@
             const head = { x: snake[0].x + dx, y: snake[0].y + dy };
             snake.unshift(head);
             snake.pop();
+            checkBoundaries();
+        }
+        
+        function checkBoundaries() {
+            if (snake[0].x < 0) {
+                snake[0].x = canvas.width - snakeSize;
+            } else if (snake[0].x >= canvas.width) {
+                snake[0].x = 0;
+            } else if (snake[0].y < 0) {
+                snake[0].y = canvas.height - snakeSize;
+            } else if (snake[0].y >= canvas.height) {
+                snake[0].y = 0;
+            }
         }
         
         function changeDirection() {
@@ -95,7 +108,7 @@
         
         setInterval(changeDirection, 2000); // Mudar direção a cada 2 segundos
         setInterval(mainLoop, 100);
-           </script>
+    </script>
     <p>Nosso site está passando por algumas melhorias. Em breve estaremos de volta com novidades!</p>
      <br />
 
