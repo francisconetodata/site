@@ -29,6 +29,13 @@
         border-radius: 50%;
         animation: pulse 2s ease-in-out infinite alternate;
     }
+    .random-image {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
     @keyframes fadeIn {
         from { opacity: 0; }
         to { opacity: 1; }
@@ -45,8 +52,25 @@
 </head>
 <body>
     <h1>Site em Construção</h1>
-    <img src="https://s2-techtudo.glbimg.com/SSAPhiaAy_zLTOu3Tr3ZKu2H5vg=/0x0:1024x609/888x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2022/c/u/15eppqSmeTdHkoAKM0Uw/dall-e-2.jpg" alt="Site em Construção" class="construction-img">
+    <img src="https://files.tecnoblog.net/wp-content/uploads/2022/09/stable-diffusion-imagem.jpg" alt="Site em Construção" class="construction-img">
     <p>Nosso site está passando por algumas melhorias. Em breve estaremos de volta com novidades!</p>
+    
+    <div class="image-container">
+        <img src="https://picsum.photos/200" alt="Imagem Aleatória" class="random-image">
+        <img src="https://picsum.photos/200" alt="Imagem Aleatória" class="random-image">
+        <img src="https://picsum.photos/200" alt="Imagem Aleatória" class="random-image">
+        <img src="https://picsum.photos/200" alt="Imagem Aleatória" class="random-image">
+    </div>
+    
+    <script>
+        const images = document.querySelectorAll('.random-image');
+        images.forEach(image => {
+            const randomWidth = Math.floor(Math.random() * (400 - 100 + 1)) + 100; // Random width between 100px and 400px
+            const randomHeight = Math.floor(Math.random() * (400 - 100 + 1)) + 100; // Random height between 100px and 400px
+            const imageUrl = `https://picsum.photos/${randomWidth}/${randomHeight}`;
+            image.src = imageUrl;
+        });
+    </script>
 </body>
 </html>
 
