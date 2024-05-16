@@ -58,7 +58,7 @@
     <h1>Site em Construção</h1>
         <canvas id="snakeCanvas" width="400" height="400"></canvas>
     
-    <script>
+       <script>
         const canvas = document.getElementById('snakeCanvas');
         const ctx = canvas.getContext('2d');
         
@@ -81,30 +81,21 @@
             snake.pop();
         }
         
+        function changeDirection() {
+            const directions = [-snakeSize, snakeSize, -snakeSize, snakeSize];
+            const randomIndex = Math.floor(Math.random() * directions.length);
+            dx = directions[randomIndex];
+            dy = directions[(randomIndex + 1) % directions.length];
+        }
+        
         function mainLoop() {
             moveSnake();
             drawSnake();
         }
         
+        setInterval(changeDirection, 2000); // Mudar direção a cada 2 segundos
         setInterval(mainLoop, 100);
-        
-        document.addEventListener('keydown', event => {
-            const key = event.key;
-            if (key === 'ArrowLeft' && dx === 0) {
-                dx = -snakeSize;
-                dy = 0;
-            } else if (key === 'ArrowRight' && dx === 0) {
-                dx = snakeSize;
-                dy = 0;
-            } else if (key === 'ArrowUp' && dy === 0) {
-                dx = 0;
-                dy = -snakeSize;
-            } else if (key === 'ArrowDown' && dy === 0) {
-                dx = 0;
-                dy = snakeSize;
-            }
-        });
-    </script>
+           </script>
     <p>Nosso site está passando por algumas melhorias. Em breve estaremos de volta com novidades!</p>
      <br />
 
