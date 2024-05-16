@@ -11,6 +11,9 @@
         text-align: center;
         padding-top: 50px;
     }
+    canvas {
+        border: 1px solid #333;
+    }
     h1 {
         color: #333;
         font-size: 36px;
@@ -51,6 +54,56 @@
 </style>
 </head>
 <body>
+        <canvas id="snakeCanvas" width="400" height="400"></canvas>
+    
+    <script>
+        const canvas = document.getElementById('snakeCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        const snakeSize = 10;
+        let snake = [{ x: 100, y: 100 }];
+        let dx = snakeSize;
+        let dy = 0;
+        
+        function drawSnake() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'green';
+            snake.forEach(segment => {
+                ctx.fillRect(segment.x, segment.y, snakeSize, snakeSize);
+            });
+        }
+        
+        function moveSnake() {
+            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+            snake.unshift(head);
+            snake.pop();
+        }
+        
+        function mainLoop() {
+            moveSnake();
+            drawSnake();
+            requestAnimationFrame(mainLoop);
+        }
+        
+        mainLoop();
+        
+        document.addEventListener('keydown', event => {
+            const key = event.key;
+            if (key === 'ArrowLeft' && dx === 0) {
+                dx = -snakeSize;
+                dy = 0;
+            } else if (key === 'ArrowRight' && dx === 0) {
+                dx = snakeSize;
+                dy = 0;
+            } else if (key === 'ArrowUp' && dy === 0) {
+                dx = 0;
+                dy = -snakeSize;
+            } else if (key === 'ArrowDown' && dy === 0) {
+                dx = 0;
+                dy = snakeSize;
+            }
+        });
+    </script>
     <h1>Site em Construção</h1>
     <img src="" alt="Site em Construção" class="random-image">
     <p>Nosso site está passando por algumas melhorias. Em breve estaremos de volta com novidades!</p>
