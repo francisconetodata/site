@@ -5,7 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Em Construção - Francisco Blog</title>
     <link rel="icon" type="image/png" href="share.png">
+    <script>
+        document.addEventListener('mousemove', function(e) {
+  const shadow = document.createElement('div');
+  shadow.classList.add('shadow');
+  shadow.style.left = e.pageX + 'px';
+  shadow.style.top = e.pageY + 'px';
+  document.body.appendChild(shadow);
 
+  setTimeout(() => {
+    shadow.remove();
+  }, 1000); // Ajuste a duração do rastro (em milissegundos)
+});
+    </script>
     <style>
              body {
             font-family: sans-serif;
@@ -80,6 +92,19 @@
         .social-links a:hover {
             text-decoration: underline;
         }
+        .shadow {
+  position: absolute;
+  width: 50px; /* Ajuste o tamanho da sombra */
+  height: 50px;
+  background-color: rgba(0, 0, 0, 0.2); /* Ajuste a cor e opacidade */
+  border-radius: 50%;
+  pointer-events: none; /* Permite que o mouse clique através da sombra */
+  transition: opacity 1s ease; /* Adiciona uma transição suave para o desaparecimento */
+}
+
+.shadow.fade-out {
+  opacity: 0;
+}
     </style>
 </head>
 <body>
