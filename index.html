@@ -43,12 +43,35 @@
                 padding: 20px;
             }
         }
+             .logo-container { /* Novo estilo para a foto */
+            width: 200px; /* Ajuste o tamanho conforme necessário */
+            height: 200px;
+            border-radius: 50%; /* Deixa a foto redonda */
+            overflow: hidden;
+            margin: 0 auto 20px; /* Centraliza a foto */
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Garante que a foto preencha o espaço */
+        }
+
+        /* Responsividade para a foto */
+        @media (max-width: 768px) {
+            .logo-container {
+                width: 150px;
+                height: 150px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="https://www.instagram.com/asualogo/?hl=en" alt="Logo do Blog" class="logo"> 
         <h1>Em Construção: Prepare-se para uma Jornada de Conhecimento!</h1>
+        <div class="logo-container">
+            <img src="foto.png" alt="[Seu Nome]"> 
+        </div>
         <p>Estamos trabalhando duro para trazer até você um espaço repleto de curiosidades, insights e informações relevantes sobre dados, Python, tecnologia e direito.</p>
         <p>Em breve, você poderá explorar artigos, tutoriais e análises que irão expandir seus horizontes e te conectar com o mundo em constante transformação.</p>
         </div>
