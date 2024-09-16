@@ -12,9 +12,16 @@
     <script>
         // Função para carregar o arquivo Markdown
         async function loadMarkdown() {
-            const response = await fetch('apostilacrisma.md');
-            const text = await response.text();
-            return text;
+            try {
+                const response = await fetch('apostilacrisma.md');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return await response.text();
+            } catch (error) {
+                console.error('Erro ao carregar o arquivo Markdown:', error);
+                return null;
+            }
         }
 
         // Função para converter Markdown para HTML
@@ -25,12 +32,12 @@
 
         // Função principal
         async function main() {
-            try {
-                const markdown = await loadMarkdown();
+            const markdown = await loadMarkdown();
+            if (markdown) {
                 const html = convertToHtml(markdown);
                 document.getElementById('content').innerHTML = html;
-            } catch (error) {
-                console.error('Erro ao carregar ou converter o Markdown:', error);
+            } else {
+                document.getElementById('content').innerHTML = '<p>Erro ao carregar o conteúdo.</p>';
             }
         }
 
