@@ -5,15 +5,23 @@
 <meta charset="utf-8"/>
 <meta name="generator" content="pdf2htmlEX"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<script> const iframe = document.querySelector('iframe');
+  const textContent = document.querySelector('.text-content');
+  
+  iframe.onload = function() {
+    textContent.style.display = 'block'; 
+  };
+  
+  textContent.style.display = 'none'; // Oculta o texto inicialmente 
+</script>
 <style type="text/css">
- .text-content {
-  position: relative; /* Garante que o z-index funcione */
-  z-index: 1; 
+.text-content {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out; 
 }
 
-iframe {
-  position: relative;
-  z-index: 2; /* Coloca o vídeo na frente do texto */
+iframe:loaded + .text-content {
+  opacity: 1;
 }
 /*! 
  * Base CSS for pdf2htmlEX
