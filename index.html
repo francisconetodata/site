@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Em Construção - Aventura Tibiana</title>
+    <title>Em Construção - Aventura Tibiana 2.0</title>
+    <!-- Carrega a biblioteca de som Tone.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
     <style>
         /* Importa uma fonte pixelada para dar o clima retrô */
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
@@ -12,7 +14,7 @@
         body {
             background-color: #000;
             color: #fff;
-            font-family: 'Press+Start+2P', cursive;
+            font-family: 'Press Start 2P', cursive;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -52,16 +54,32 @@
         /* Container principal do jogo */
         #game-container {
             border: 3px solid #666;
-            box-shadow: 0 0 15px #0fa;
+            box-shadow: 0 0 20px #0fa;
             position: relative;
             width: 704px; /* 22 tiles * 32px */
             height: 544px; /* 17 tiles * 32px */
-            background-color: #333;
+            background-color: #1a1a1a;
         }
 
         #game-canvas {
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABRSURBVFhH7c6xEQAgDMCwwC58g/8hFKIgCUbdbylvgLKyhwMECHgIECBwECCAwCEBAQYECDgECBA4CBBA4JCAAIOCBwgQIHDgX4AABAgQIECg4QH/4gJjPmd1eAAAAABJRU5ErkJggg=='); /* Textura de grama pixelada */
             display: block;
+            image-rendering: pixelated; /* Mantém os sprites nítidos */
+        }
+        
+        /* Painel de Status (Vida, Poções, Pontos) */
+        #stats-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: rgba(0,0,0,0.7);
+            border-bottom: 2px solid #666;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 0.8em;
+            box-sizing: border-box;
         }
 
         /* Container para mensagens de vitória/derrota */
@@ -71,18 +89,20 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.85);
             display: none; /* Começa escondido */
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
+            z-index: 10;
         }
 
         #message-text {
             font-size: 2em;
             color: #ffcc00;
             padding: 20px;
+            text-shadow: 2px 2px #000;
         }
 
         /* Log de combate na parte inferior */
@@ -91,239 +111,280 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 80px;
-            background: rgba(0,0,0,0.6);
+            height: 90px;
+            background: rgba(0,0,0,0.7);
             border-top: 2px solid #666;
             overflow-y: scroll;
             padding: 5px;
             box-sizing: border-box;
             font-size: 0.7em;
             line-height: 1.5;
+            text-align: left;
         }
-        /* Esconde a barra de rolagem mas mantém a funcionalidade */
-        #combat-log::-webkit-scrollbar {
-            display: none;
-        }
-        #combat-log p {
-            margin: 0;
-        }
+        #combat-log::-webkit-scrollbar { display: none; }
+        #combat-log p { margin: 0; }
 
-        .damage-text {
-            animation: text-fade 1s forwards;
-            position: absolute;
-            font-size: 1.2em;
-            pointer-events: none;
-        }
-        
+        /* Classes de cor para o log */
         .hit { color: #ff4136; }
         .heal { color: #2ecc40; }
         .info { color: #7fdbff; }
+        .loot { color: #ffdc00; }
 
+        /* Animação para o texto de dano flutuante */
         @keyframes text-fade {
             from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 0; transform: translateY(-40px); }
         }
 
     </style>
 </head>
 <body>
 
-    <h1 class="construction-title">SITE EM CONSTRUÇÃO</h1>
+    <h1 class="construction-title">AVENTURA TIBIANA</h1>
 
     <div id="game-container">
         <canvas id="game-canvas" width="704" height="544"></canvas>
+        <div id="stats-panel">
+            <div id="player-hp">VIDA: 100/100</div>
+            <div id="player-potions">POÇÕES: 3</div>
+            <div id="player-score">PONTOS: 0</div>
+        </div>
         <div id="message-overlay">
             <div id="message-text"></div>
         </div>
         <div id="combat-log"></div>
     </div>
-    <p style="margin-top: 15px;">Use as SETAS para mover e ESPAÇO para atacar.</p>
+    <p style="margin-top: 15px;">SETAS: Mover | ESPAÇO: Atacar | H: Usar Poção</p>
 
     <script>
         // --- CONFIGURAÇÃO INICIAL ---
         const canvas = document.getElementById('game-canvas');
         const ctx = canvas.getContext('2d');
         const combatLog = document.getElementById('combat-log');
+        const statsHp = document.getElementById('player-hp');
+        const statsPotions = document.getElementById('player-potions');
+        const statsScore = document.getElementById('player-score');
 
         const tileSize = 32;
-        ctx.font = "16px 'Press Start 2P'"; // Define a fonte para o canvas
+        ctx.font = "16px 'Press Start 2P'";
 
-        // --- SPRITES (embutidos como Base64 para ser um arquivo só) ---
-        const playerSprite = new Image();
-        playerSprite.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGxSURBVFhH7ZexSwNBFIYnBQUFIaIYiIiCCKKgIIiCpfAPWFgJ/gOLnaXgR/AflN5LKaIgWFoJ2GgqYpSgoKDiBwTCQ2ImM9lslplk7s1/b2buvfebndm9CY+kU9L+fwGkAUgDCEyQfgDdTbZJpJPNmLprMEYMYvVAVQN0s5mlmQhA1QG0q7mWSiHkMTSngJuyehL1quA7AgygWIk9tMkA/zHQkREwsgAOQLkj6FIndwLYDWCSnhh39/X/A2wP4DkDlTbiuxGsB0B3BbVCcA+BbxpifQBysJg1QGDW9h3b6E7AQBNjZtB4PlLh8g2qAECdAdAr2ZoA7gAYbfwD4DaA3AlhXQ8oDGBWADagcgGjCD6IuYBfVx0bwGoGzCKQHwD+zyX6Alg9AUsmpCfA/L9A8QCuB6D1AXQVoCYAtguxFcBaDJhL4A0AO+TuAHYLpHcBpLcApxJ0GQBnglMjdBmAJQOMxzBL4DOC0wDCfXgrgZkT+GxA+gJoLwLYJTDTAnMZfBOYJ/AJgbcAvQp6L/QmMGeBvQTkBoD3AvQywJgAcmLzu1LwXgVtAM5s4F6N/gDwC8B/CeAagH8A/gXwXcD/BfgV4B+ATwCuArgL4H2A/wT8A/ANwH0A9wDcAXANwFcAbwO4CeAtgLcC/AmwC0C/AHgV4G6A3gH4B+AbgK8A3gZwE8BbAG8F/g3wLcGPAH0D+BfgX4F/BcYF8A3ANYBrAK4B+AYwBcC9wL0A/gM4F+BcgPcCvAfwHuBrgN8C/A7wL8A/AU4CWAJwEcBbAJcBfAswF8DfgX0BvAvgPYB7AW4F+BbgXYD/Bfgf4NcA/wIcBXAQwEEABwEchXkA/A0I/A+QuwB5C5CzADkLkLMAOQhQgIAyAwoUKEBgAYUJFChA4ACFCRYowIAAhggUKEAgggUKEMhgoAAFBhQ4oMAAARUOFKhA4ICCBQoQOECgAAUEFChQYACBBRQkUKAAgQMUJFggAQEGDGBAIAOGDBiYgAEH/g/AewCcG3uHTwR0PgAAAABJRU5ErkJggg==';
+        // --- EFEITOS SONOROS (Tone.js) ---
+        const synth = new Tone.Synth().toDestination();
+        const hitSynth = new Tone.MembraneSynth().toDestination();
+        const healSynth = new Tone.Synth({ oscillator: { type: "sine" }, envelope: { attack: 0.01, decay: 0.2, sustain: 0.2, release: 0.2 } }).toDestination();
 
-        const slimeSprite = new Image();
-        slimeSprite.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADISURBVFhH7Y7RCcAwEMPinp6/d3oDfo+m4A0qYpF2F2EC0qScpAcjIuI3M5M+xAMgQIAAgR4CAnZlAGQECBAgcE9AwqYMQI4AgQABAgQ2BDBsMIAAAQIE1gSwbTCAAAECBBYEMG8wgAABAgQ2BDDGFwYQIECAwIYAHuYLAwgQIEBgQwB/c+cAgAABAgQ2BPg/d+8ACEwJIECAgEwCAgQIECAQ2BLAkp+RAZkSIECAAAECBAgQIJCgAIECAQIECBDoC5j2A2fCG4g1/ZCtAAAAAElFTkSuQmCC';
+        function playSound(note, duration) { if(Tone.context.state === 'running') synth.triggerAttackRelease(note, duration); }
+        function playHitSound() { if(Tone.context.state === 'running') hitSynth.triggerAttackRelease("C1", "8n"); }
+        function playHealSound() { if(Tone.context.state === 'running') healSynth.triggerAttackRelease("C5", "16n"); }
 
-        const batSprite = new Image();
-        batSprite.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFJSURBVFhH7ZaxTgJBGIVpRgPceAs8go4mJp4AB2MvMD2AET2BGxM9gRsnYmJsYmA0jAQRjSgI7l0kCyHhLuzO7iyl1l/y+2Z2d2YWYUL+K+nvfwCkAZgEQChB+gH4ZtYm0tF6RNRj8Q8mGIMAcWqGzJKJgGwCkEsmGgWkIeI5mreAd5KyG3lV8R0BBBBxiW00yQDXBNwZAZMdwAmgMgD6ZCMjwB0AEg0x7u7r/wPYGsA5A5U24r0I1gGgsQJaIbAfgW8aYl0AcjAYM0Bg1vYd2+hOwEATQ2bQeL5Q4fINqgBAnR3QK9mWANwBI42/ANwG0DshSNcDFAYwSwA24DIBowg+iFwAW1cBG8BqBswikB4A/s8F+gJYPQFLJmQnwPw/geIAnA9A6wFchYAaALuF2ApgLQbMJfAWgB3i7gB2C6B3AaS3AKcKdBkAZwJcI9D5ADMswHACswQ+I3AaQLgDbyUwcwK3BqQrgPZqgC0CMy0wl8E3gXkCnxD4GKBXQe+F3gR6Cswu8CUgNwC8l0AvA4wJICcyv1d0o4U2AGc2cK9GfwD4B+CXBLgG+AXwF8B3A/wd4FeAfwA+AdwFcBfA+wH+CfgH4BuA+wDuAPgG4CuAtwHcBPAWgLcCfAswF0C/ANwKcDdArwD8AvgG4CuAtwHcBPAWwFuBvwF8S/AjQL8A/ArwL8C/AuQC+AbgGoBrAK4B+AYwBcC9wL0AvgM4F+BcgPcCvAfwHuBrgN8C/A7wL8A/AU4CWAJwEcBbAJcBfAswF8DfgX0BvAvgPYB7AW4F+BbgXYD/Bfgf4NcA/wIcBXAQwEEABwEchXkA/A0I/A+QuwB5C5CzADkLkLMAOQhQgIAyAwoUKEBgAYUJFChA4ACFCRYowIAAhggUKEAgggUKEMhgoAAFBhQ4oMAAARUOFKhA4ICCBQoQOECgAAUEFChQYACBBRQkUKAAgQMUJFggAQEGDGBAIAOGDBiYgAEH/g/AewCKHXt8sJ7hdwAAAABJRU5ErkJggg==';
+        // Evento para iniciar o áudio no primeiro clique do usuário
+        window.addEventListener('click', () => {
+            if (Tone.context.state !== 'running') {
+                Tone.start();
+            }
+        }, { once: true });
 
+
+        // --- SPRITES (embutidos como Base64) ---
+        const playerSprite = new Image(); playerSprite.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGxSURBVFhH7ZexSwNBFIYnBQUFIaIYiIiCCKKgIIiCpfAPWFgJ/gOLnaXgR/AflN5LKaIgWFoJ2GgqYpSgoKDiBwTCQ2ImM9lslplk7s1/b2buvfebndm9CY+kU9L+fwGkAUgDCEyQfgDdTbZJpJPNmLprMEYMYvVAVQN0s5mlmQhA1QG0q7mWSiHkMTSngJuyehL1quA7AgygWIk9tMkA/zHQkREwsgAOQLkj6FIndwLYDWCSnhh39/X/A2wP4DkDlTbiuxGsB0B3BbVCcA+BbxpifQBysJg1QGDW9h3b6E7AQBNjZtB4PlLh8g2qAECdAdAr2ZoA7gAYbfwD4DaA3AlhXQ8oDGBWADagcgGjCD6IuYBfVx0bwGoGzCKQHwD+zyX6Alg9AUsmpCfA/L9A8QCuB6D1AXQVoCYAtguxFcBaDJhL4A0AO+TuAHYLpHcBpLcApxJ0GQBnglMjdBmAJQOMxzBL4DOC0wDCfXgrgZkT+GxA+gJoLwLYJTDTAnMZfBOYJ/AJgbcAvQp6L/QmMGeBvQTkBoD3AvQywJgAcmLzu1LwXgVtAM5s4F6N/gDwC8B/CeAagH8A/gXwXcD/BfgV4B+ATwCuArgL4H2A/wT8A/ANwH0A9wDcAXANwFcAbwO4CeAtgLcC/AmwC0C/AHgV4G6A3gH4B+AbgK8A3gZwE8BbAG8F/g3wLcGPAH0D+BfgX4F/BcYF8A3ANYBrAK4B+AYwBcC9wL0A/gM4F+BcgPcCvAfwHuBrgN8C/A7wL8A/AU4CWAJwEcBbAJcBfAswF8DfgX0BvAvgPYB7AW4F+BbgXYD/Bfgf4NcA/wIcBXAQwEEABwEchXkA/A0I/A+QuwB5C5CzADkLkLMAOQhQgIAyAwoUKEBgAYUJFChA4ACFCRYowIAAhggUKEAgggUKEMhgoAAFBhQ4oMAAARUOFKhA4ICCBQoQOECgAAUEFChQYACBBRQkUKAAgQMUJFggAQEGDGBAIAOGDBiYgAEH/g/AewCcG3uHTwR0PgAAAABJRU5ErkJggg==';
+        const slimeSprite = new Image(); slimeSprite.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADISURBVFhH7Y7RCcAwEMPinp6/d3oDfo+m4A0qYpF2F2EC0qScpAcjIuI3M5M+xAMgQIAAgR4CAnZlAGQECBAgcE9AwqYMQI4AgQABAgQ2BDBsMIAAAQIE1gSwbTCAAAECBBYEMG8wgAABAgQ2BDDGFwYQIECAwIYAHuYLAwgQIEBgQwB/c+cAgAABAgQ2BPg/d+8ACEwJIECAgEwCAgQIECAQ2BLAkp+RAZkSIECAAAECBAgQIJCgAIECAQIECBDoC5j2A2fCG4g1/ZCtAAAAAElFTkSuQmCC';
+        const batSprite = new Image(); batSprite.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFJSURBVFhH7ZaxTgJBGIVpRgPceAs8go4mJp4AB2MvMD2AET2BGxM9gRsnYmJsYmA0jAQRjSgI7l0kCyHhLuzO7iyl1l/y+2Z2d2YWYUL+K+nvfwCkAZgEQChB+gH4ZtYm0tF6RNRj8Q8mGIMAcWqGzJKJgGwCkEsmGgWkIeI5mreAd5KyG3lV8R0BBBBxiW00yQDXBNwZAZMdwAmgMgD6ZCMjwB0AEg0x7u7r/wPYGsA5A5U24r0I1gGgsQJaIbAfgW8aYl0AcjAYM0Bg1vYd2+hOwEATQ2bQeL5Q4fINqgBAnR3QK9mWANwBI42/ANwG0DshSNcDFAYwSwA24DIBowg+iFwAW1cBG8BqBswikB4A/s8F+gJYPQFLJmQnwPw/geIAnA9A6wFchYAaALuF2ApgLQbMJfAWgB3i7gB2C6B3AaS3AKcKdBkAZwJcI9D5ADMswHACswQ+I3AaQLgDbyUwcwK3BqQrgPZqgC0CMy0wl8E3gXkCnxD4GKBXQe+F3gR6Cswu8CUgNwC8l0AvA4wJICcyv1d0o4U2AGc2cK9GfwD4B+CXBLgG+AXwF8B3A/wd4FeAfwA+AdwFcBfA+wH+CfgH4BuA+wDuAPgG4CuAtwHcBPAWgLcCfAswF0C/ANwKcDdArwD8AvgG4CuAtwHcBPAWwFuBvwF8S/AjQL8A/ArwL8C/AuQC+AbgGoBrAK4B+AYwBcC9wL0AvgM4F+BcgPcCvAfwHuBrgN8C/A7wL8A/AU4CWAJwEcBbAJcBfAswF8DfgX0BvAvgPYB7AW4F+BbgXYD/Bfgf4NcA/wIcBXAQwEEABwEchXkA/A0I/A+QuwB5C5CzADkLkLMAOQhQgIAyAwoUKEBgAYUJFChA4ACFCRYowIAAhggUKEAgggUKEMhgoAAFBhQ4oMAAARUOFKhA4ICCBQoQOECgAAUEFChQYACBBRQkUKAAgQMUJFggAQEGDGBAIAOGDBiYgAEH/g/AewCKHXt8sJ7hdwAAAABJRU5ErkJggg==';
+        const orcSprite = new Image(); orcSprite.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALASURBVFhH7ZddSFNhGMfX9L7pndxNlqQlbyNIIgoygkRIaQgy8KAiKoMoKCiiIKiHIqgo6CEKiqCHIKiHIgjqYR+UhUKKgh56y4f63ubN13F/Z/Y544mBe+f5fs7vOec5z3lX/lM6pY8c/wdkSjL5lAxJgUyJQUyKQUyKQUyKQUyKQUyKQUyKQUyKQUyKQUyKQUyKQSyKQSyKQSyKQSwsApkSg5gU+5gUg5gUg5gU+5gUg5gU+5gUg5gU+5gUg5gU+5gUg5gUg5gU+5gU+5gU+5gUe5gUe5gUe5gUe5gUu5gUu5gUe5gUu5gUe5gUe5gUu5gUe5gUu5gUu5gUe5gUu5gUe5gUe5gUu5gUu5gUe5gUe5gUu5hYBFJj+JW39D4GvK2A5wD3SgB/hpcH8DcGfKSAuYDrAe4UAF8CPlfAswDPlABfAqYBPK+AawDnAvcCvC/AF4BnAs+VAFcDpMsmOAbg/YL/XyH5T8A5AM+L2BxgZgQzL5m+B5gO8HjAPxL/AJAJmI3wcwH3AnwKMDfAhwA+y08A/ATgZIDJAHcCzFCAHwHslgC/A9gdYFbANwG+AvgpQJaArwC+y08AvgZInu3/BvC2BPhI928B3pdgOQFTAN4uQNaAz/LzgJ8E3I/wMwFfA9zPyJ9u4O8C7uVkYgM/AnhfgLMFyBmwGWBvgEcBvskjA+wKMDPC1ADPBnixAF8BvMvPgM8A/IngHwB+AvAwQJ8C9D/gfQX6D/A/gX4H+Avg3wP9BvAvgb4B+E+APgX4B+B/Au0E+Afgn0C7APwD+G+gXYD+D7S/QHsA/C/QngD+L9CeAP5f0BwA/wv0BwD/A/0B4L+hfwD+L+h/AP839D+A/4f6B+D/Qf0D8P+w/gH4f1h/APw/rD8A/p/XB8D/u+sD4P9d/cHw/65+YPj/Vv+Z+P9W/5n4/1b/mfj/Vv+Z+L/2n9/k/+39AzLgTjR/s1dAAAAAAElFTkSuQmCC';
+        const treeSprite = new Image(); treeSprite.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHPSURBVFhH7ZddSgNBEIbnDAoevFnwEnjxFvGg4EE8ehU9ePGgePAgCIIgCD4kCAiiIN7E/35M08zspCfN1sCDB91U9VRXd1V1hZ+M8Uj19B8gHYAmAEQhSj8Av03bJNrB9D5iP0R/sAGDEBCHhjFSKCAygKQihgFIQ8RzNFuAcyK5m3hV8R0BBiC5xDYapQAnAe4MgYkG4ASYDIDgJBsZAXcASNzEuLun/x/A1gC9AyoN4rsRzAEgQ4W0QmAfgl8aYl0AcjAYM0Bg1vYd2+hOwEATQ2bQeL5Q4fINqgBAnR3QK9mWANwBI42/ANwG0DshSNcDFAYwSwA24DIBowg+iFwAW1cBG8BqBswikB4A/s8F+gJYPQFLJmQnwPw/geIAnA9A6wFchYAaALuF2ApgLQbMJfAWgB3i7gB2C6B3AaS3AKcKdBkAZwJcI9D5ADMswHACswQ+I3AaQLgDbyUwcwK3BqQrgPZqgC0CMy0wl8E3gXkCnxD4GKBXQe+F3gR6Cswu8CUgNwC8l0AvA4wJICcyv1d0o4U2AGc2cK9GfwD4B+CXBLgG+AXwF8B3A/wd4FeAfwA+AdwFcBfA+wH+CfgH4BuA+wDuAPgG4CuAtwHcBPAWgLcCfAswF0C/ANwKcDdArwD8AvgG4CuAtwHcBPAWwFuBvwF8S/AjQL8A/ArwL8C/AuQC+AbgGoBrAK4B+AYwBcC9wL0AvgM4F+BcgPcCvAfwHuBrgN8C/A7wL8A/AU4CWAJwEcBbAJcBfAswF8DfgX0BvAvgPYB7AW4F+BbgXYD/Bfgf4NcA/wIcBXAQwEEABwEchXkA/A0I/A+QuwB5C5CzADkLkLMAOQhQgIAyAwoUKEBgAYUJFChA4ACFCRYowIAAhggUKEAgggUKEMhgoAAFBhQ4oMAAARUOFKhA4ICCBQoQOECgAAUEFChQYACBBRQkUKAAgQMUJFggAQEGDGBAIAOGDBiYgAEH/g/AewD/kHuHU7vT6QAAAABJRU5ErkJggg==';
+        const rockSprite = new Image(); rockSprite.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADqSURBVFhH7Y/BDoAgDES/0f//tZ6gQYxJpQzdlh7S0kIplZKIrwG/AAYIECBAYCdA2JkByAgQIEDgnoDsTKADyBEgQIAAgU0BhA0GECBAgMCOAFobDCBAgACBDQFkbjCAAAECBDYGEL/FCQMIECBAYEOAsL+wgwACBAgQ2BDA/89eAggECBAgQCAjgAABAgQ2BRD85cQAIUCAAIE/Avw9kQGIEiBAgACBAgQIECDQoECBAAECBAgQ6DeYbgC1mxt/kC9pDQAAAABJRU5ErkJggg==';
+
+        // --- MAPA DO JOGO ---
+        // 0: Grama, 1: Árvore, 2: Rocha
+        const map = [
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,2,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,2,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,1,1,0,0,0,0,2,2,0,0,0,0,1,1,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+            [1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
+            [1,0,2,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,2,0,0,1],
+            [1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
+            [1,1,0,0,0,0,0,0,0,2,0,2,0,0,0,0,0,0,0,0,1,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,2,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,2,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        ];
+
+        const grassSprite = new Image();
+        grassSprite.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABRSURBVFhH7c6xEQAgDMCwwC58g/8hFKIgCUbdbylvgLKyhwMECHgIECBwECCAwCEBAQYECDgECBA4CBBA4JCAAIOCBwgQIHDgX4AABAgQIECg4QH/4gJjPmd1eAAAAABJRU5ErkJggg==';
+        
         // --- ENTIDADES DO JOGO ---
-        const player = {
-            x: tileSize * 2,
-            y: tileSize * 8,
-            width: 32, height: 32,
-            speed: 4,
-            health: 100, maxHealth: 100,
-            sprite: playerSprite,
-            attackPower: 12
-        };
-
+        const player = { x: tileSize * 2, y: tileSize * 8, width: 32, height: 32, speed: 4, health: 100, maxHealth: 100, sprite: playerSprite, attackPower: 12, potions: 3, score: 0, hitTimer: 0 };
         let monsters = [];
         let floatingTexts = [];
         const keys = {};
 
         // --- FUNÇÕES AUXILIARES ---
         function createMonster(x, y, type) {
-            const base = { x: x * tileSize, y: y * tileSize, width: 32, height: 32, isAlive: true };
-            if (type === 'slime') {
-                return { ...base, sprite: slimeSprite, health: 30, maxHealth: 30, attackPower: 5, name: 'Slime' };
-            }
-            if (type === 'bat') {
-                return { ...base, sprite: batSprite, health: 20, maxHealth: 20, attackPower: 8, name: 'Morcego' };
-            }
+            const base = { x: x * tileSize, y: y * tileSize, width: 32, height: 32, isAlive: true, hitTimer: 0, speed: 1.5 };
+            if (type === 'slime') return { ...base, sprite: slimeSprite, health: 30, maxHealth: 30, attackPower: 5, name: 'Slime', points: 10 };
+            if (type === 'bat') return { ...base, sprite: batSprite, health: 20, maxHealth: 20, attackPower: 8, name: 'Morcego', points: 15 };
+            if (type === 'orc') return { ...base, speed: 1, sprite: orcSprite, health: 80, maxHealth: 80, attackPower: 15, name: 'Orc', points: 50 };
         }
 
         function spawnMonsters() {
             monsters.push(createMonster(10, 5, 'slime'));
             monsters.push(createMonster(15, 12, 'slime'));
             monsters.push(createMonster(18, 4, 'bat'));
-            monsters.push(createMonster(8, 14, 'bat'));
+            monsters.push(createMonster(6, 14, 'bat'));
+            monsters.push(createMonster(19, 8, 'orc')); // O chefão
         }
 
-        function logMessage(text, className) {
-            const p = document.createElement('p');
-            p.textContent = text;
-            p.className = className;
-            combatLog.appendChild(p);
-            combatLog.scrollTop = combatLog.scrollHeight; // Auto-scroll para a última mensagem
+        function isWalkable(x, y) {
+            const tileX = Math.floor(x / tileSize);
+            const tileY = Math.floor(y / tileSize);
+            if(map[tileY] === undefined || map[tileY][tileX] === undefined) return false;
+            return map[tileY][tileX] === 0;
         }
 
-        function showFloatingText(text, x, y, className) {
-            floatingTexts.push({ text, x, y, className, timer: 60 });
-        }
-
-        function showEndGameMessage(msg) {
-            const overlay = document.getElementById('message-overlay');
-            const textEl = document.getElementById('message-text');
-            textEl.textContent = msg;
-            overlay.style.display = 'flex';
-        }
-
-        function getDistance(ent1, ent2) {
-            const dx = ent1.x - ent2.x;
-            const dy = ent1.y - ent2.y;
-            return Math.sqrt(dx * dx + dy * dy);
+        function logMessage(text, className) { combatLog.innerHTML += `<p class="${className}">${text}</p>`; combatLog.scrollTop = combatLog.scrollHeight; }
+        function showFloatingText(text, x, y, className) { floatingTexts.push({ text, x, y, className, timer: 60 }); }
+        function showEndGameMessage(msg) { document.getElementById('message-text').textContent = msg; document.getElementById('message-overlay').style.display = 'flex'; }
+        function getDistance(ent1, ent2) { const dx = ent1.x - ent2.x; const dy = ent1.y - ent2.y; return Math.sqrt(dx * dx + dy * dy); }
+        function updateStats() {
+            statsHp.textContent = `VIDA: ${player.health}/${player.maxHealth}`;
+            statsPotions.textContent = `POÇÕES: ${player.potions}`;
+            statsScore.textContent = `PONTOS: ${player.score}`;
         }
 
         // --- LÓGICA DO JOGO (UPDATE) ---
         function update() {
-            // Movimentação do jogador
-            if (keys['ArrowUp'] && player.y > 0) player.y -= player.speed;
-            if (keys['ArrowDown'] && player.y < canvas.height - player.height - 80) player.y += player.speed; // Limite por causa do log
-            if (keys['ArrowLeft'] && player.x > 0) player.x -= player.speed;
-            if (keys['ArrowRight'] && player.x < canvas.width - player.width) player.x += player.speed;
+            // Movimentação do jogador com colisão
+            let nextX = player.x, nextY = player.y;
+            if (keys['ArrowUp']) nextY -= player.speed;
+            if (keys['ArrowDown']) nextY += player.speed;
+            if (keys['ArrowLeft']) nextX -= player.speed;
+            if (keys['ArrowRight']) nextX += player.speed;
+            
+            if (isWalkable(nextX, nextY) && isWalkable(nextX + player.width -1, nextY) && isWalkable(nextX, nextY + player.height -1) && isWalkable(nextX + player.width -1, nextY + player.height -1)) {
+                 player.x = nextX;
+                 player.y = nextY;
+            }
+
+            // Usar poção de cura
+            if (keys['KeyH']) {
+                if (player.potions > 0 && player.health < player.maxHealth) {
+                    player.potions--;
+                    const healAmount = 30;
+                    player.health = Math.min(player.maxHealth, player.health + healAmount);
+                    logMessage(`Você usou uma poção e recuperou ${healAmount} de vida.`, 'heal');
+                    showFloatingText(healAmount, player.x + 16, player.y, 'heal');
+                    playHealSound();
+                    updateStats();
+                }
+                delete keys['KeyH'];
+            }
 
             // Ataque do jogador
             if (keys['Space']) {
+                playSound("C4", "8n");
                 monsters.forEach(monster => {
-                    if (monster.isAlive && getDistance(player, monster) < 50) { // Raio de ataque
+                    if (monster.isAlive && getDistance(player, monster) < 50) {
                         const damage = Math.floor(Math.random() * player.attackPower) + 5;
                         monster.health -= damage;
+                        monster.hitTimer = 10;
                         logMessage(`Você causou ${damage} de dano no ${monster.name}.`, 'hit');
                         showFloatingText(damage, monster.x + 16, monster.y, 'hit');
                         
                         if (monster.health <= 0) {
                             monster.isAlive = false;
-                            logMessage(`Você derrotou um ${monster.name}!`, 'info');
+                            player.score += monster.points;
+                            logMessage(`Você derrotou um ${monster.name}! (+${monster.points} pts)`, 'loot');
+                            updateStats();
                         }
                     }
                 });
-                delete keys['Space']; // Ataque único por pressionamento
+                delete keys['Space'];
             }
             
             // Lógica dos monstros
             monsters.forEach(monster => {
                 if(monster.isAlive) {
-                    if(getDistance(player, monster) < 200) { // Raio de "aggro"
-                        // Persegue o jogador
-                        if (player.x < monster.x) monster.x -= 1;
-                        if (player.x > monster.x) monster.x += 1;
-                        if (player.y < monster.y) monster.y -= 1;
-                        if (player.y > monster.y) monster.y += 1;
-                        
-                        // Ataca o jogador
-                        if (getDistance(player, monster) < 40 && Math.random() < 0.02) {
+                    if(getDistance(player, monster) < 250) {
+                        let mNextX = monster.x, mNextY = monster.y;
+                        if (player.x < monster.x) mNextX -= monster.speed;
+                        if (player.x > monster.x) mNextX += monster.speed;
+                        if (player.y < monster.y) mNextY -= monster.speed;
+                        if (player.y > monster.y) mNextY += monster.speed;
+                        if (isWalkable(mNextX, mNextY)) { monster.x = mNextX; monster.y = mNextY; }
+
+                        if (getDistance(player, monster) < 45 && Math.random() < 0.03) {
+                            playHitSound();
                             const damage = Math.floor(Math.random() * monster.attackPower) + 1;
                             player.health -= damage;
+                            player.hitTimer = 10;
                             logMessage(`${monster.name} causou ${damage} de dano em você.`, 'hit');
                             showFloatingText(damage, player.x + 16, player.y, 'hit');
-                            
-                            if (player.health <= 0) {
-                                player.health = 0;
-                                showEndGameMessage("Você foi derrotado!");
-                                isGameOver = true;
-                            }
+                            updateStats();
+                            if (player.health <= 0) { player.health = 0; showEndGameMessage("Você foi derrotado!"); isGameOver = true; }
                         }
                     }
                 }
+                if (monster.hitTimer > 0) monster.hitTimer--;
             });
+            if (player.hitTimer > 0) player.hitTimer--;
 
-            // Atualiza textos flutuantes
-            floatingTexts = floatingTexts.filter(text => {
-                text.timer--;
-                text.y -= 0.5;
-                return text.timer > 0;
-            });
-            
-            // Verifica condição de vitória
-            if (monsters.every(m => !m.isAlive)) {
-                 showEndGameMessage("Você limpou a área! O site completo será lançado em breve.");
-                 isGameOver = true;
-            }
+            floatingTexts = floatingTexts.filter(t => { t.timer--; t.y -= 0.5; return t.timer > 0; });
+            if (monsters.every(m => !m.isAlive)) { showEndGameMessage(`VOCÊ VENCEU!\nPontuação Final: ${player.score}`); isGameOver = true; }
         }
 
         // --- RENDERIZAÇÃO (DRAW) ---
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Desenha jogador
-            ctx.drawImage(player.sprite, player.x, player.y, player.width, player.height);
+            // Desenha o mapa
+            for(let y = 0; y < map.length; y++) {
+                for(let x = 0; x < map[y].length; x++) {
+                    const tileX = x * tileSize;
+                    const tileY = y * tileSize;
+                    ctx.drawImage(grassSprite, tileX, tileY);
+                    if(map[y][x] === 1) ctx.drawImage(treeSprite, tileX, tileY);
+                    if(map[y][x] === 2) ctx.drawImage(rockSprite, tileX, tileY);
+                }
+            }
+            
+            // Função para desenhar entidade com efeito de dano
+            function drawEntity(entity) {
+                if (entity.hitTimer > 0 && entity.hitTimer % 4 < 2) {
+                     // Não desenha para criar o efeito de piscar
+                } else {
+                    ctx.drawImage(entity.sprite, entity.x, entity.y, entity.width, entity.height);
+                }
+            }
+
+            drawEntity(player);
             drawHealthBar(player, '#2ecc40');
 
-            // Desenha monstros
             monsters.forEach(monster => {
                 if (monster.isAlive) {
-                    ctx.drawImage(monster.sprite, monster.x, monster.y, monster.width, monster.height);
+                    drawEntity(monster);
                     drawHealthBar(monster, '#ff4136');
                 }
             });
 
-            // Desenha textos flutuantes
-            floatingTexts.forEach(text => {
-                ctx.fillStyle = text.className === 'hit' ? '#ff4136' : '#2ecc40';
-                ctx.globalAlpha = text.timer / 60;
-                ctx.fillText(text.text, text.x, text.y);
+            floatingTexts.forEach(t => {
+                ctx.fillStyle = t.className === 'hit' ? '#ff4136' : '#2ecc40';
+                ctx.globalAlpha = t.timer / 60;
+                ctx.fillText(t.text, t.x, t.y);
                 ctx.globalAlpha = 1.0;
             });
         }
         
-        function drawHealthBar(character, color) {
-            const barWidth = character.width;
-            const barHeight = 6;
-            const x = character.x;
-            const y = character.y - barHeight - 5;
-            
-            ctx.fillStyle = '#333';
-            ctx.fillRect(x, y, barWidth, barHeight);
-
-            const healthPercentage = character.health / character.maxHealth;
-            ctx.fillStyle = color;
-            ctx.fillRect(x, y, barWidth * healthPercentage, barHeight);
-            
-            // Adiciona borda para melhor visualização
-            ctx.strokeStyle = '#000';
-            ctx.strokeRect(x,y, barWidth, barHeight);
+        function drawHealthBar(c, color) {
+            const barWidth = c.width; const barHeight = 6; const x = c.x; const y = c.y - barHeight - 5;
+            ctx.fillStyle = '#333'; ctx.fillRect(x, y, barWidth, barHeight);
+            ctx.fillStyle = color; ctx.fillRect(x, y, barWidth * (c.health / c.maxHealth), barHeight);
+            ctx.strokeStyle = '#000'; ctx.strokeRect(x,y, barWidth, barHeight);
         }
 
         // --- GAME LOOP ---
@@ -340,7 +401,8 @@
         window.addEventListener('keyup', (e) => delete keys[e.code]);
         
         spawnMonsters();
-        logMessage("Monstros apareceram! Prepare-se para a batalha.", 'info');
+        updateStats();
+        logMessage("Aventureiro, cuidado! Monstros guardam esta área.", 'info');
         gameLoop();
 
     </script>
