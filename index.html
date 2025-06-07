@@ -3,375 +3,346 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Em Construção... Mas com Aventura!</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>Em Construção - Aventura Tibiana</title>
     <style>
-        /* --- ESTILOS GERAIS --- */
+        /* Importa uma fonte pixelada para dar o clima retrô */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        /* Estilização geral do corpo da página */
         body {
-            background-color: #1e1e2e;
-            color: #cdd6f4;
-            font-family: 'Press Start 2P', cursive;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Press+Start+2P', cursive;
             display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            min-height: 100vh;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        /* --- CONTAINER PRINCIPAL --- */
-        .container {
-            border: 4px solid #89b4fa;
-            padding: 2rem;
-            background-color: #313244;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(137, 180, 250, 0.4);
-            max-width: 800px;
-            width: 100%;
-        }
-
-        h1 {
-            color: #fab387; /* Laranja */
-            font-size: 1.8rem;
-            text-shadow: 2px 2px #000;
-        }
-
-        p {
-            color: #a6e3a1; /* Verde */
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        /* --- ÁREA DO JOGO --- */
-        #game-area {
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-end;
-            margin: 2rem 0;
-            padding: 1rem;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><g fill="%2345475a" fill-opacity="0.4"><rect x="50" width="50" height="50"/><rect y="50" width="50" height="50"/></g></svg>');
-            background-size: 30px 30px;
-            border-radius: 10px;
-            border: 2px dashed #585b70;
-        }
-
-        .character {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .character h2 {
-            font-size: 1rem;
-            margin-bottom: 10px;
-            color: #f9e2af; /* Amarelo */
-        }
-        
-        .sprite {
-            font-size: 5rem;
-            margin-bottom: 15px;
-            transition: transform 0.1s ease-in-out;
-        }
-
-        /* Animação de tremor */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-5px); }
-            40%, 80% { transform: translateX(5px); }
-        }
-        .shake {
-            animation: shake 0.3s 1;
-        }
-
-        /* --- Barras de Vida --- */
-        .health-bar-container {
-            width: 150px;
-            height: 20px;
-            background-color: #11111b;
-            border-radius: 5px;
-            border: 2px solid #6c7086;
+            height: 100vh;
+            margin: 0;
             overflow: hidden;
-            margin-bottom: 5px;
+            text-align: center;
         }
 
-        .health-bar {
-            height: 100%;
-            width: 100%;
-            border-radius: 3px;
-            transition: width 0.3s ease-in-out;
+        /* Título principal com animação de neon piscando */
+        .construction-title {
+            font-size: 2.5em;
+            text-align: center;
+            animation: flicker 1.5s infinite alternate;
+            margin-bottom: 20px;
+            color: #fff;
         }
 
-        #player-health { background-color: #a6e3a1; } /* Verde */
-        #monster-health { background-color: #f38ba8; } /* Vermelho */
-
-        #hp-text {
-            font-size: 0.8rem;
-        }
-
-        /* --- Ações e Mensagens --- */
-        #actions {
-            margin-top: 1rem;
-        }
-
-        #attack-btn {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1.2rem;
-            padding: 15px 30px;
-            background-color: #89b4fa; /* Azul */
-            color: #1e1e2e;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.2s;
-            box-shadow: 0 4px #45475a;
-        }
-
-        #attack-btn:hover {
-            background-color: #94e2d5; /* Verde-água */
-            transform: translateY(-2px);
-        }
-
-        #attack-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px #45475a;
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow:
+                    0 0 4px #fff,
+                    0 0 11px #fff,
+                    0 0 19px #fff,
+                    0 0 40px #0fa,
+                    0 0 80px #0fa,
+                    0 0 90px #0fa,
+                    0 0 100px #0fa,
+                    0 0 150px #0fa;
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
         }
         
-        #attack-btn:disabled {
-            background-color: #6c7086;
-            cursor: not-allowed;
-            box-shadow: 0 4px #45475a;
-            transform: translateY(0);
+        /* Container principal do jogo */
+        #game-container {
+            border: 3px solid #666;
+            box-shadow: 0 0 15px #0fa;
+            position: relative;
+            width: 704px; /* 22 tiles * 32px */
+            height: 544px; /* 17 tiles * 32px */
+            background-color: #333;
         }
 
-        #message-log {
-            margin-top: 1.5rem;
-            height: 60px;
-            font-size: 0.8rem;
-            color: #bac2de;
-            line-height: 1.6;
+        #game-canvas {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABRSURBVFhH7c6xEQAgDMCwwC58g/8hFKIgCUbdbylvgLKyhwMECHgIECBwECCAwCEBAQYECDgECBA4CBBA4JCAAIOCBwgQIHDgX4AABAgQIECg4QH/4gJjPmd1eAAAAABJRU5ErkJggg=='); /* Textura de grama pixelada */
+            display: block;
         }
-        
-        /* --- Tela de Fim de Jogo --- */
-        #game-over-screen {
-            background-color: rgba(30, 30, 46, 0.9);
-            position: fixed;
+
+        /* Container para mensagens de vitória/derrota */
+        #message-overlay {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none; /* Começa escondido */
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            z-index: 100;
+            justify-content: center;
+            text-align: center;
         }
 
-        #game-over-screen h2 {
-            font-size: 3rem;
-            color: #fab387;
-            text-shadow: 4px 4px #000;
+        #message-text {
+            font-size: 2em;
+            color: #ffcc00;
+            padding: 20px;
+        }
+
+        /* Log de combate na parte inferior */
+        #combat-log {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(0,0,0,0.6);
+            border-top: 2px solid #666;
+            overflow-y: scroll;
+            padding: 5px;
+            box-sizing: border-box;
+            font-size: 0.7em;
+            line-height: 1.5;
+        }
+        /* Esconde a barra de rolagem mas mantém a funcionalidade */
+        #combat-log::-webkit-scrollbar {
+            display: none;
+        }
+        #combat-log p {
+            margin: 0;
+        }
+
+        .damage-text {
+            animation: text-fade 1s forwards;
+            position: absolute;
+            font-size: 1.2em;
+            pointer-events: none;
         }
         
-        #game-over-screen p {
-            font-size: 1.2rem;
-            margin-top: 1rem;
-        }
+        .hit { color: #ff4136; }
+        .heal { color: #2ecc40; }
+        .info { color: #7fdbff; }
 
-        .hidden {
-            display: none;
+        @keyframes text-fade {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-30px); }
         }
 
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Página em Construção!</h1>
-        <p>Nosso Herói Construtor está lutando bravamente contra os monstros do código para lançar este site. Ajude-o na batalha!</p>
+    <h1 class="construction-title">SITE EM CONSTRUÇÃO</h1>
 
-        <div id="game-area">
-            <div class="character" id="player">
-                <h2>Herói Construtor</h2>
-                <div class="sprite" id="player-sprite">🦸</div>
-                <div class="health-bar-container">
-                    <div class="health-bar" id="player-health"></div>
-                </div>
-                <span id="player-hp-text"></span>
-            </div>
-
-            <div class="character" id="monster">
-                <h2 id="monster-name"></h2>
-                <div class="sprite" id="monster-sprite"></div>
-                <div class="health-bar-container">
-                    <div class="health-bar" id="monster-health"></div>
-                </div>
-                <span id="monster-hp-text"></span>
-            </div>
+    <div id="game-container">
+        <canvas id="game-canvas" width="704" height="544"></canvas>
+        <div id="message-overlay">
+            <div id="message-text"></div>
         </div>
-
-        <div id="actions">
-            <button id="attack-btn">Atacar!</button>
-        </div>
-
-        <div id="message-log">
-            <p id="log-message">Um novo desafio aparece!</p>
-        </div>
+        <div id="combat-log"></div>
     </div>
-    
-    <div id="game-over-screen" class="hidden">
-        <h2 id="game-over-title"></h2>
-        <p id="game-over-message"></p>
-    </div>
+    <p style="margin-top: 15px;">Use as SETAS para mover e ESPAÇO para atacar.</p>
 
     <script>
-        // --- ELEMENTOS DO DOM ---
-        const playerSprite = document.getElementById('player-sprite');
-        const playerHealthBar = document.getElementById('player-health');
-        const playerHpText = document.getElementById('player-hp-text');
-        
-        const monsterSprite = document.getElementById('monster-sprite');
-        const monsterName = document.getElementById('monster-name');
-        const monsterHealthBar = document.getElementById('monster-health');
-        const monsterHpText = document.getElementById('monster-hp-text');
-        
-        const attackBtn = document.getElementById('attack-btn');
-        const logMessage = document.getElementById('log-message');
+        // --- CONFIGURAÇÃO INICIAL ---
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const combatLog = document.getElementById('combat-log');
 
-        const gameOverScreen = document.getElementById('game-over-screen');
-        const gameOverTitle = document.getElementById('game-over-title');
-        const gameOverMessage = document.getElementById('game-over-message');
+        const tileSize = 32;
+        ctx.font = "16px 'Press Start 2P'"; // Define a fonte para o canvas
 
-        // --- DADOS DOS MONSTROS ---
-        const monsters = [
-            { name: "Bug Inofensivo", sprite: "🐛", maxHp: 30, minDmg: 3, maxDmg: 6 },
-            { name: "Fantasma do CSS", sprite: "👻", maxHp: 50, minDmg: 5, maxDmg: 10 },
-            { name: "Erro de Sintaxe", sprite: "👾", maxHp: 75, minDmg: 8, maxDmg: 15 },
-            { name: "Monstro da Procrastinação", sprite: "👹", maxHp: 100, minDmg: 12, maxDmg: 20 },
-            { name: "O CHEFÂO FINAL: Erro 404", sprite: "💀", maxHp: 150, minDmg: 18, maxDmg: 25 }
-        ];
+        // --- SPRITES (embutidos como Base64 para ser um arquivo só) ---
+        const playerSprite = new Image();
+        playerSprite.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGxSURBVFhH7ZexSwNBFIYnBQUFIaIYiIiCCKKgIIiCpfAPWFgJ/gOLnaXgR/AflN5LKaIgWFoJ2GgqYpSgoKDiBwTCQ2ImM9lslplk7s1/b2buvfebndm9CY+kU9L+fwGkAUgDCEyQfgDdTbZJpJPNmLprMEYMYvVAVQN0s5mlmQhA1QG0q7mWSiHkMTSngJuyehL1quA7AgygWIk9tMkA/zHQkREwsgAOQLkj6FIndwLYDWCSnhh39/X/A2wP4DkDlTbiuxGsB0B3BbVCcA+BbxpifQBysJg1QGDW9h3b6E7AQBNjZtB4PlLh8g2qAECdAdAr2ZoA7gAYbfwD4DaA3AlhXQ8oDGBWADagcgGjCD6IuYBfVx0bwGoGzCKQHwD+zyX6Alg9AUsmpCfA/L9A8QCuB6D1AXQVoCYAtguxFcBaDJhL4A0AO+TuAHYLpHcBpLcApxJ0GQBnglMjdBmAJQOMxzBL4DOC0wDCfXgrgZkT+GxA+gJoLwLYJTDTAnMZfBOYJ/AJgbcAvQp6L/QmMGeBvQTkBoD3AvQywJgAcmLzu1LwXgVtAM5s4F6N/gDwC8B/CeAagH8A/gXwXcD/BfgV4B+ATwCuArgL4H2A/wT8A/ANwH0A9wDcAXANwFcAbwO4CeAtgLcC/AmwC0C/AHgV4G6A3gH4B+AbgK8A3gZwE8BbAG8F/g3wLcGPAH0D+BfgX4F/BcYF8A3ANYBrAK4B+AYwBcC9wL0A/gM4F+BcgPcCvAfwHuBrgN8C/A7wL8A/AU4CWAJwEcBbAJcBfAswF8DfgX0BvAvgPYB7AW4F+BbgXYD/Bfgf4NcA/wIcBXAQwEEABwEchXkA/A0I/A+QuwB5C5CzADkLkLMAOQhQgIAyAwoUKEBgAYUJFChA4ACFCRYowIAAhggUKEAgggUKEMhgoAAFBhQ4oMAAARUOFKhA4ICCBQoQOECgAAUEFChQYACBBRQkUKAAgQMUJFggAQEGDGBAIAOGDBiYgAEH/g/AewCcG3uHTwR0PgAAAABJRU5ErkJggg==';
 
-        // --- ESTADO DO JOGO ---
-        let player = {
-            maxHp: 100,
-            hp: 100,
-            minDmg: 10,
-            maxDmg: 18
+        const slimeSprite = new Image();
+        slimeSprite.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADISURBVFhH7Y7RCcAwEMPinp6/d3oDfo+m4A0qYpF2F2EC0qScpAcjIuI3M5M+xAMgQIAAgR4CAnZlAGQECBAgcE9AwqYMQI4AgQABAgQ2BDBsMIAAAQIE1gSwbTCAAAECBBYEMG8wgAABAgQ2BDDGFwYQIECAwIYAHuYLAwgQIEBgQwB/c+cAgAABAgQ2BPg/d+8ACEwJIECAgEwCAgQIECAQ2BLAkp+RAZkSIECAAAECBAgQIJCgAIECAQIECBDoC5j2A2fCG4g1/ZCtAAAAAElFTkSuQmCC';
+
+        const batSprite = new Image();
+        batSprite.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFJSURBVFhH7ZaxTgJBGIVpRgPceAs8go4mJp4AB2MvMD2AET2BGxM9gRsnYmJsYmA0jAQRjSgI7l0kCyHhLuzO7iyl1l/y+2Z2d2YWYUL+K+nvfwCkAZgEQChB+gH4ZtYm0tF6RNRj8Q8mGIMAcWqGzJKJgGwCkEsmGgWkIeI5mreAd5KyG3lV8R0BBBBxiW00yQDXBNwZAZMdwAmgMgD6ZCMjwB0AEg0x7u7r/wPYGsA5A5U24r0I1gGgsQJaIbAfgW8aYl0AcjAYM0Bg1vYd2+hOwEATQ2bQeL5Q4fINqgBAnR3QK9mWANwBI42/ANwG0DshSNcDFAYwSwA24DIBowg+iFwAW1cBG8BqBswikB4A/s8F+gJYPQFLJmQnwPw/geIAnA9A6wFchYAaALuF2ApgLQbMJfAWgB3i7gB2C6B3AaS3AKcKdBkAZwJcI9D5ADMswHACswQ+I3AaQLgDbyUwcwK3BqQrgPZqgC0CMy0wl8E3gXkCnxD4GKBXQe+F3gR6Cswu8CUgNwC8l0AvA4wJICcyv1d0o4U2AGc2cK9GfwD4B+CXBLgG+AXwF8B3A/wd4FeAfwA+AdwFcBfA+wH+CfgH4BuA+wDuAPgG4CuAtwHcBPAWgLcCfAswF0C/ANwKcDdArwD8AvgG4CuAtwHcBPAWwFuBvwF8S/AjQL8A/ArwL8C/AuQC+AbgGoBrAK4B+AYwBcC9wL0AvgM4F+BcgPcCvAfwHuBrgN8C/A7wL8A/AU4CWAJwEcBbAJcBfAswF8DfgX0BvAvgPYB7AW4F+BbgXYD/Bfgf4NcA/wIcBXAQwEEABwEchXkA/A0I/A+QuwB5C5CzADkLkLMAOQhQgIAyAwoUKEBgAYUJFChA4ACFCRYowIAAhggUKEAgggUKEMhgoAAFBhQ4oMAAARUOFKhA4ICCBQoQOECgAAUEFChQYACBBRQkUKAAgQMUJFggAQEGDGBAIAOGDBiYgAEH/g/AewCKHXt8sJ7hdwAAAABJRU5ErkJggg==';
+
+        // --- ENTIDADES DO JOGO ---
+        const player = {
+            x: tileSize * 2,
+            y: tileSize * 8,
+            width: 32, height: 32,
+            speed: 4,
+            health: 100, maxHealth: 100,
+            sprite: playerSprite,
+            attackPower: 12
         };
-        
-        let currentMonsterIndex = 0;
-        let isPlayerTurn = true;
-        let currentMonster;
 
-        // --- FUNÇÕES DO JOGO ---
-        
-        function getDamage(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
+        let monsters = [];
+        let floatingTexts = [];
+        const keys = {};
+
+        // --- FUNÇÕES AUXILIARES ---
+        function createMonster(x, y, type) {
+            const base = { x: x * tileSize, y: y * tileSize, width: 32, height: 32, isAlive: true };
+            if (type === 'slime') {
+                return { ...base, sprite: slimeSprite, health: 30, maxHealth: 30, attackPower: 5, name: 'Slime' };
+            }
+            if (type === 'bat') {
+                return { ...base, sprite: batSprite, health: 20, maxHealth: 20, attackPower: 8, name: 'Morcego' };
+            }
         }
-        
-        function updateUI() {
-            // Atualiza jogador
-            playerHealthBar.style.width = `${(player.hp / player.maxHp) * 100}%`;
-            playerHpText.textContent = `HP: ${player.hp} / ${player.maxHp}`;
+
+        function spawnMonsters() {
+            monsters.push(createMonster(10, 5, 'slime'));
+            monsters.push(createMonster(15, 12, 'slime'));
+            monsters.push(createMonster(18, 4, 'bat'));
+            monsters.push(createMonster(8, 14, 'bat'));
+        }
+
+        function logMessage(text, className) {
+            const p = document.createElement('p');
+            p.textContent = text;
+            p.className = className;
+            combatLog.appendChild(p);
+            combatLog.scrollTop = combatLog.scrollHeight; // Auto-scroll para a última mensagem
+        }
+
+        function showFloatingText(text, x, y, className) {
+            floatingTexts.push({ text, x, y, className, timer: 60 });
+        }
+
+        function showEndGameMessage(msg) {
+            const overlay = document.getElementById('message-overlay');
+            const textEl = document.getElementById('message-text');
+            textEl.textContent = msg;
+            overlay.style.display = 'flex';
+        }
+
+        function getDistance(ent1, ent2) {
+            const dx = ent1.x - ent2.x;
+            const dy = ent1.y - ent2.y;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        // --- LÓGICA DO JOGO (UPDATE) ---
+        function update() {
+            // Movimentação do jogador
+            if (keys['ArrowUp'] && player.y > 0) player.y -= player.speed;
+            if (keys['ArrowDown'] && player.y < canvas.height - player.height - 80) player.y += player.speed; // Limite por causa do log
+            if (keys['ArrowLeft'] && player.x > 0) player.x -= player.speed;
+            if (keys['ArrowRight'] && player.x < canvas.width - player.width) player.x += player.speed;
+
+            // Ataque do jogador
+            if (keys['Space']) {
+                monsters.forEach(monster => {
+                    if (monster.isAlive && getDistance(player, monster) < 50) { // Raio de ataque
+                        const damage = Math.floor(Math.random() * player.attackPower) + 5;
+                        monster.health -= damage;
+                        logMessage(`Você causou ${damage} de dano no ${monster.name}.`, 'hit');
+                        showFloatingText(damage, monster.x + 16, monster.y, 'hit');
+                        
+                        if (monster.health <= 0) {
+                            monster.isAlive = false;
+                            logMessage(`Você derrotou um ${monster.name}!`, 'info');
+                        }
+                    }
+                });
+                delete keys['Space']; // Ataque único por pressionamento
+            }
             
-            // Atualiza monstro
-            monsterHealthBar.style.width = `${(currentMonster.hp / currentMonster.maxHp) * 100}%`;
-            monsterHpText.textContent = `HP: ${currentMonster.hp} / ${currentMonster.maxHp}`;
-            monsterName.textContent = currentMonster.name;
-            monsterSprite.textContent = currentMonster.sprite;
-        }
-        
-        function showLogMessage(message) {
-            logMessage.textContent = message;
-        }
+            // Lógica dos monstros
+            monsters.forEach(monster => {
+                if(monster.isAlive) {
+                    if(getDistance(player, monster) < 200) { // Raio de "aggro"
+                        // Persegue o jogador
+                        if (player.x < monster.x) monster.x -= 1;
+                        if (player.x > monster.x) monster.x += 1;
+                        if (player.y < monster.y) monster.y -= 1;
+                        if (player.y > monster.y) monster.y += 1;
+                        
+                        // Ataca o jogador
+                        if (getDistance(player, monster) < 40 && Math.random() < 0.02) {
+                            const damage = Math.floor(Math.random() * monster.attackPower) + 1;
+                            player.health -= damage;
+                            logMessage(`${monster.name} causou ${damage} de dano em você.`, 'hit');
+                            showFloatingText(damage, player.x + 16, player.y, 'hit');
+                            
+                            if (player.health <= 0) {
+                                player.health = 0;
+                                showEndGameMessage("Você foi derrotado!");
+                                isGameOver = true;
+                            }
+                        }
+                    }
+                }
+            });
 
-        function triggerShake(element) {
-            element.classList.add('shake');
-            setTimeout(() => element.classList.remove('shake'), 300);
-        }
-
-        function monsterAttack() {
-            if (player.hp <= 0) return; // Não ataca se o jogador já perdeu
+            // Atualiza textos flutuantes
+            floatingTexts = floatingTexts.filter(text => {
+                text.timer--;
+                text.y -= 0.5;
+                return text.timer > 0;
+            });
             
-            const damage = getDamage(currentMonster.minDmg, currentMonster.maxDmg);
-            player.hp = Math.max(0, player.hp - damage);
-            triggerShake(playerSprite);
-            showLogMessage(`${currentMonster.name} atacou e causou ${damage} de dano!`);
-            updateUI();
-
-            if (player.hp <= 0) {
-                endGame(false); // Jogador perdeu
-            } else {
-                isPlayerTurn = true;
-                attackBtn.disabled = false;
+            // Verifica condição de vitória
+            if (monsters.every(m => !m.isAlive)) {
+                 showEndGameMessage("Você limpou a área! O site completo será lançado em breve.");
+                 isGameOver = true;
             }
         }
 
-        function attack() {
-            if (!isPlayerTurn) return;
-
-            const damage = getDamage(player.minDmg, player.maxDmg);
-            currentMonster.hp = Math.max(0, currentMonster.hp - damage);
-            triggerShake(monsterSprite);
-            showLogMessage(`Você atacou e causou ${damage} de dano!`);
-            updateUI();
+        // --- RENDERIZAÇÃO (DRAW) ---
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            isPlayerTurn = false;
-            attackBtn.disabled = true;
+            // Desenha jogador
+            ctx.drawImage(player.sprite, player.x, player.y, player.width, player.height);
+            drawHealthBar(player, '#2ecc40');
 
-            if (currentMonster.hp <= 0) {
-                showLogMessage(`${currentMonster.name} foi derrotado!`);
-                setTimeout(nextMonster, 1500);
-            } else {
-                setTimeout(monsterAttack, 1000);
-            }
-        }
+            // Desenha monstros
+            monsters.forEach(monster => {
+                if (monster.isAlive) {
+                    ctx.drawImage(monster.sprite, monster.x, monster.y, monster.width, monster.height);
+                    drawHealthBar(monster, '#ff4136');
+                }
+            });
 
-        function nextMonster() {
-            currentMonsterIndex++;
-            if (currentMonsterIndex >= monsters.length) {
-                endGame(true); // Jogador venceu
-            } else {
-                loadMonster(currentMonsterIndex);
-                showLogMessage(`Um ${currentMonster.name} selvagem apareceu!`);
-                isPlayerTurn = true;
-                attackBtn.disabled = false;
-            }
+            // Desenha textos flutuantes
+            floatingTexts.forEach(text => {
+                ctx.fillStyle = text.className === 'hit' ? '#ff4136' : '#2ecc40';
+                ctx.globalAlpha = text.timer / 60;
+                ctx.fillText(text.text, text.x, text.y);
+                ctx.globalAlpha = 1.0;
+            });
         }
         
-        function endGame(playerWon) {
-            attackBtn.disabled = true;
-            gameOverScreen.classList.remove('hidden');
-            if (playerWon) {
-                gameOverTitle.textContent = "VITÓRIA!";
-                gameOverMessage.textContent = "Você derrotou todos os monstros! O site está quase pronto. Volte em breve!";
-                gameOverMessage.style.color = "#a6e3a1"; // Verde
-            } else {
-                gameOverTitle.textContent = "GAME OVER";
-                gameOverMessage.textContent = "O Herói foi derrotado... Os bugs venceram por enquanto. Tente novamente mais tarde!";
-                gameOverMessage.style.color = "#f38ba8"; // Vermelho
-            }
+        function drawHealthBar(character, color) {
+            const barWidth = character.width;
+            const barHeight = 6;
+            const x = character.x;
+            const y = character.y - barHeight - 5;
+            
+            ctx.fillStyle = '#333';
+            ctx.fillRect(x, y, barWidth, barHeight);
+
+            const healthPercentage = character.health / character.maxHealth;
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, barWidth * healthPercentage, barHeight);
+            
+            // Adiciona borda para melhor visualização
+            ctx.strokeStyle = '#000';
+            ctx.strokeRect(x,y, barWidth, barHeight);
         }
-        
-        function loadMonster(index) {
-            const monsterData = monsters[index];
-            currentMonster = {
-                ...monsterData,
-                hp: monsterData.maxHp
-            };
-            updateUI();
+
+        // --- GAME LOOP ---
+        let isGameOver = false;
+        function gameLoop() {
+            if (isGameOver) return;
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
         }
 
         // --- INICIALIZAÇÃO ---
-        function init() {
-            loadMonster(0);
-            attackBtn.addEventListener('click', attack);
-        }
+        window.addEventListener('keydown', (e) => keys[e.code] = true);
+        window.addEventListener('keyup', (e) => delete keys[e.code]);
+        
+        spawnMonsters();
+        logMessage("Monstros apareceram! Prepare-se para a batalha.", 'info');
+        gameLoop();
 
-        init();
     </script>
 </body>
 </html>
