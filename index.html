@@ -6,23 +6,48 @@
     <title>Currículo - Francisco de Assis Pereira Neto</title>
     <link rel="icon" type="image/png" href="favicon-32x32.png">
     <style>
-        body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
             margin: 0;
             padding: 0;
-            min-height: 100vh;
+            box-sizing: border-box;
         }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(71, 85, 105, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(51, 65, 85, 0.06) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
         .container {
-            max-width: 900px;
-            margin: 30px auto;
-            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1), 0 8px 25px rgba(0,0,0,0.05);
-            border-top: 8px solid linear-gradient(90deg, #0056b3, #004085);
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 0;
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
         }
@@ -33,135 +58,203 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 8px;
-            background: linear-gradient(90deg, #0056b3, #004085, #0056b3);
+            height: 4px;
+            background: linear-gradient(90deg, #1e293b, #334155, #475569);
             background-size: 200% 100%;
-            animation: gradient 3s ease infinite;
+            animation: gradientMove 3s ease infinite;
         }
         
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
         
-        /* Header com foto */
+        .header-section {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 50px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="none"><path d="M0,100 C150,120 350,0 500,50 C650,100 850,-20 1000,30 L1000,0 L0,0 Z" fill="rgba(255,255,255,0.05)"/></svg>') no-repeat;
+            background-size: cover;
+            opacity: 0.7;
+        }
+        
         .header-content {
             display: flex;
             align-items: center;
-            gap: 30px;
-            margin-bottom: 30px;
+            gap: 40px;
+            position: relative;
+            z-index: 2;
         }
         
         .profile-photo {
-            flex-shrink: 0;
-        }
-        
-        .profile-photo img {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid transparent;
-            background: linear-gradient(white, white) padding-box, 
-                        linear-gradient(135deg, #0056b3, #004085, #0056b3) border-box;
-            box-shadow: 0 8px 25px rgba(0,86,179,0.25);
-            transition: all 0.4s ease;
             position: relative;
         }
         
-        .profile-photo img:hover {
-            transform: scale(1.05) rotate(2deg);
-            box-shadow: 0 12px 35px rgba(0,86,179,0.35);
+        .profile-photo::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            background: linear-gradient(45deg, #64748b, #475569, #334155);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .profile-photo img {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.95);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .profile-photo:hover img {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 1);
         }
         
         .header-text {
             flex: 1;
+            color: white;
         }
         
-        h1, h2, h3 {
-            color: #004085;
-            margin-bottom: 0.5em;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 10px;
-        }
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            border-bottom: none;
-            background: linear-gradient(135deg, #0d2c4b 0%, #0056b3 50%, #004085 100%);
+        .header-text h1 {
+            font-size: 2.8em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-align: center;
-            font-weight: 700;
+            line-height: 1.1;
             letter-spacing: -1px;
         }
+        
         .subtitle {
-            font-size: 1.2em;
-            color: #555;
-            margin-bottom: 20px;
+            font-size: 1.3em;
+            margin-bottom: 25px;
+            opacity: 0.95;
+            font-weight: 500;
+            color: #cbd5e1;
         }
+        
         .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
             list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px 20px;
         }
+        
         .contact-info li {
-            font-size: 0.95em;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 10px 14px;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
         }
-        .contact-info a {
-            color: #0056b3;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-        .contact-info a:hover {
-            color: #004085;
-            text-decoration: underline;
+        
+        .contact-info li:hover {
+            background: rgba(255, 255, 255, 0.15);
             transform: translateY(-1px);
         }
         
-        /* Responsividade para mobile */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-                gap: 20px;
-            }
-            
-            .profile-photo img {
-                width: 120px;
-                height: 120px;
-            }
-            
-            h1 {
-                font-size: 2em;
-            }
-            
-            .contact-info {
-                justify-content: center;
-            }
+        .contact-info a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .main-content {
+            padding: 40px;
         }
         
         .section {
-            margin-bottom: 30px;
+            margin-bottom: 50px;
+            position: relative;
         }
+        
         .section-title {
-            font-size: 1.8em;
-            margin-bottom: 20px;
-        }
-        .job {
+            font-size: 1.9em;
+            font-weight: 700;
             margin-bottom: 25px;
+            position: relative;
+            padding-left: 20px;
+            color: #1e293b;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(135deg, #334155, #475569);
+            border-radius: 2px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 20px;
+            bottom: -3px;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #334155, #475569);
+            border-radius: 1px;
+        }
+        
+        .summary-text {
+            font-size: 1.05em;
+            line-height: 1.7;
+            color: #475569;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             padding: 25px;
             border-radius: 12px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(0,86,179,0.1);
-            background: linear-gradient(145deg, #ffffff 0%, #f9f9f9 100%);
+            border: 1px solid #e2e8f0;
             position: relative;
+            text-align: justify;
+        }
+        
+        .summary-text::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #334155, #475569);
+        }
+        
+        .job-grid {
+            display: grid;
+            gap: 25px;
+        }
+        
+        .job {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 25px;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
         }
         
@@ -172,53 +265,75 @@
             left: 0;
             width: 4px;
             height: 100%;
-            background: linear-gradient(135deg, #0056b3, #004085);
+            background: linear-gradient(135deg, #334155, #475569);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
         
         .job:hover {
-            background: linear-gradient(145deg, #f9f9f9 0%, #ffffff 100%);
-            border: 1px solid rgba(0,86,179,0.2);
-            box-shadow: 0 8px 25px rgba(0,86,179,0.1);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(30, 41, 59, 0.12);
+            border-color: #334155;
         }
         
         .job:hover::before {
             opacity: 1;
         }
+        
         .job-title {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #333;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 6px;
         }
+        
         .job-company {
-            font-style: italic;
-            color: #555;
+            font-size: 1.05em;
+            color: #475569;
+            font-weight: 600;
+            margin-bottom: 4px;
         }
+        
         .job-date {
-            color: #777;
+            color: #64748b;
             font-size: 0.9em;
+            margin-bottom: 18px;
+            font-weight: 500;
         }
+        
         .job-description {
-            margin-top: 10px;
-            padding-left: 20px;
+            padding-left: 0;
         }
+        
         .job-description li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            color: #475569;
+            line-height: 1.6;
+            position: relative;
+            padding-left: 20px;
+            text-align: justify;
         }
+        
+        .job-description li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #334155;
+            font-weight: bold;
+        }
+        
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
         }
         
         .skill-category {
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
             padding: 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(0,86,179,0.1);
-            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -230,108 +345,173 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, #0056b3, #004085);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            background: linear-gradient(90deg, #334155, #475569);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
         }
         
         .skill-category:hover {
-            background: linear-gradient(145deg, #f8f9fa 0%, #ffffff 100%);
-            border: 1px solid rgba(0,86,179,0.2);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,86,179,0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(30, 41, 59, 0.1);
+            border-color: #334155;
         }
         
         .skill-category:hover::before {
-            opacity: 1;
-        }
-        .skill-category h3 {
-            font-size: 1.2em;
-            color: #0056b3;
-            border-bottom: 1px solid #dee2e6;
-            padding-bottom: 5px;
-            margin-top: 0;
-        }
-        .skill-category ul {
-            list-style: none;
-            padding: 0;
-        }
-        .skill-category li {
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #e9ecef 0%, #f1f3f4 100%);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 0.95em;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
-            position: relative;
-            overflow: hidden;
+            transform: scaleX(1);
         }
         
-        .skill-category li::before {
+        .skill-category h3 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+        
+        .skill-category ul {
+            list-style: none;
+        }
+        
+        .skill-category li {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            margin-bottom: 8px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 500;
+            color: #334155;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .skill-category li:hover {
+            background: linear-gradient(135deg, #334155, #475569);
+            color: white;
+            transform: translateX(5px);
+            border-color: #334155;
+        }
+        
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+        
+        .education-entry {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .education-entry::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 100%;
+            left: 0;
+            width: 3px;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
+            background: linear-gradient(135deg, #334155, #475569);
+            border-radius: 0 2px 2px 0;
         }
         
-        .skill-category:hover li:hover {
-            background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
-            color: white;
-            transform: translateX(5px);
+        .education-entry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 41, 59, 0.08);
         }
         
-        .skill-category:hover li:hover::before {
-            left: 100%;
-        }
-        .education-entry, .leadership-entry {
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-        
-        .education-entry:hover, .leadership-entry:hover {
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-        }
-        .degree, .role {
+        .degree {
             font-size: 1.1em;
-            font-weight: bold;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 6px;
         }
-        .institution, .organization {
-            font-style: italic;
-            color: #555;
+        
+        .institution {
+            color: #475569;
+            font-weight: 600;
+            margin-bottom: 4px;
         }
+        
         .date {
-            color: #777;
-            font-size: 0.9em;
+            color: #64748b;
+            font-size: 0.85em;
+            font-weight: 500;
         }
-        .footer-text {
-            text-align: center;
-            font-size: 1em;
-            color: #777;
-            margin-top: 40px;
-            border-top: 1px solid #e9ecef;
-            padding-top: 20px;
+        
+        .certifications-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 30px;
         }
-        .competitive-edge {
-            background: linear-gradient(135deg, #f0f7ff 0%, #e6f3ff 100%);
-            border: none;
-            border-left: 5px solid #0056b3;
-            padding: 25px;
-            margin: 30px 0;
-            border-radius: 12px;
+        
+        .cert-year-group {
+            margin-bottom: 35px;
+        }
+        
+        .cert-year-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #334155;
+        }
+        
+        .cert-category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .cert-category {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
             transition: all 0.3s ease;
+        }
+        
+        .cert-category:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(30, 41, 59, 0.08);
+            border-color: #334155;
+        }
+        
+        .cert-category h4 {
+            font-size: 1em;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+        
+        .cert-institution {
+            font-size: 0.85em;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .cert-date {
+            font-size: 0.8em;
+            color: #94a3b8;
+            font-style: italic;
+        }
+        
+        .competitive-edge {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border: none;
+            padding: 35px;
+            margin: 40px 0;
+            border-radius: 20px;
             position: relative;
             overflow: hidden;
+            color: white;
         }
         
         .competitive-edge::before {
@@ -341,34 +521,125 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(0,86,179,0.05) 0%, rgba(0,64,133,0.08) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="none"><path d="M0,100 C150,120 350,0 500,50 C650,100 850,-20 1000,30 L1000,0 L0,0 Z" fill="rgba(255,255,255,0.03)"/></svg>') no-repeat;
+            background-size: cover;
         }
         
-        .competitive-edge:hover {
-            background: linear-gradient(135deg, #e6f3ff 0%, #cce7ff 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(0,86,179,0.2);
+        .competitive-edge h2 {
+            color: white;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
         }
         
-        .competitive-edge:hover::before {
-            opacity: 1;
-        }
         .competitive-edge ul {
-            list-style-type: '✓ ';
-            padding-left: 25px;
+            position: relative;
+            z-index: 2;
         }
+        
         .competitive-edge li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-weight: 500;
+            font-size: 1em;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .competitive-edge li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: #cbd5e1;
+        }
+        
+        .leadership-entry {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .leadership-entry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 41, 59, 0.08);
+        }
+        
+        .role {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+        
+        .organization {
+            color: #475569;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .footer-text {
+            text-align: center;
+            font-size: 0.95em;
+            color: #64748b;
+            margin-top: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 16px;
+            }
+            
+            .header-section {
+                padding: 30px 20px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 25px;
+            }
+            
+            .header-text h1 {
+                font-size: 2.2em;
+            }
+            
+            .profile-photo img {
+                width: 130px;
+                height: 130px;
+            }
+            
+            .main-content {
+                padding: 25px 20px;
+            }
+            
+            .section-title {
+                font-size: 1.6em;
+            }
+            
+            .skills-grid, .education-grid, .cert-category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .certifications-section {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <header>
+        <header class="header-section">
             <div class="header-content">
                 <div class="profile-photo">
                     <img src="1741016260820.jpg" alt="Francisco de Assis Pereira Neto">
@@ -380,174 +651,345 @@
                         <li>📍 Ijaci, MG - Brasil (Remoto)</li>
                         <li>📞 <a href="tel:+5531995861974">+55 31 99586-1974</a></li>
                         <li>✉️ <a href="mailto:francisconetodata@gmail.com">francisconetodata@gmail.com</a></li>
-                        <li>💼 <a href="https://linkedin.com/in/francisconetodata" target="_blank">linkedin.com/in/francisconetodata</a></li>
-                        <li>🔗 <a href="https://github.com/francisconetodata" target="_blank">github.com/francisconetodata</a></li>
-                        <li>📊 <a href="https://www.kaggle.com/francisconetoinit" target="_blank">kaggle.com/francisconetoinit</a></li>
+                        <li>💼 <a href="https://linkedin.com/in/francisconetodata" target="_blank">LinkedIn</a></li>
+                        <li>🔗 <a href="https://github.com/francisconetodata" target="_blank">GitHub</a></li>
+                        <li>📊 <a href="https://www.kaggle.com/francisconetoinit" target="_blank">Kaggle</a></li>
                     </ul>
                 </div>
             </div>
         </header>
 
-        <section class="section">
-            <h2 class="section-title">Resumo Profissional</h2>
-            <p>
-                Cientista e Engenheiro de Dados com mais de 4 anos de experiência transformando dados brutos em insights estratégicos para otimização de processos industriais e tomada de decisão. Especialista em desenvolver soluções end-to-end, desde arquitetura de pipelines ETL até implementação de modelos de Machine Learning em produção. Mestrado em Engenharia pela UFMG com foco em modelagem estatística avançada e análise preditiva. Busco oportunidades desafiadoras em Engenharia de Dados ou Ciência de Dados para aplicar expertise técnica em Python, SQL, Azure e Machine Learning na criação de soluções data-driven de alto impacto.
-            </p>
-        </section>
+        <div class="main-content">
+            <section class="section">
+                <h2 class="section-title">Resumo Profissional</h2>
+                <p class="summary-text">
+                    Cientista e Engenheiro de Dados com mais de 4 anos de experiência transformando dados brutos em insights estratégicos para otimização de processos industriais e tomada de decisão. Especialista em desenvolver soluções end-to-end, desde arquitetura de pipelines ETL até implementação de modelos de Machine Learning em produção. Mestrado em Engenharia pela UFMG com foco em modelagem estatística avançada e análise preditiva. Busco oportunidades desafiadoras em Engenharia de Dados ou Ciência de Dados para aplicar expertise técnica em Python, SQL, Azure e Machine Learning na criação de soluções data-driven de alto impacto.
+                </p>
+            </section>
 
-        <section class="section">
-            <h2 class="section-title">Experiência Profissional</h2>
-            <div class="job">
-                <p class="job-title">Cientista de Dados</p>
-                <p class="job-company">Manipulação - Raia Drogasil</p>
-                <p class="job-date">Outubro 2021 - Junho 2025 (3 anos e 8 meses)</p>
-                <ul class="job-description">
-                    <li>Desenvolveu e implementou modelos de Machine Learning (regressão, classificação) que melhoraram a acurácia de previsões de demanda, otimizando estratégias de estoque e reduzindo custos operacionais.</li>
-                    <li>Automatizou processos ETL utilizando Python e SQL, garantindo integridade para análises críticas de negócio.</li>
-                    <li>Criou e gerenciou portfólio de dashboards interativos em Power BI para monitoramento de KPIs em tempo real, fornecendo insights que suportaram decisões estratégicas da liderança.</li>
-                    <li>Conduziu análises exploratórias complexas para identificar padrões de comportamento de clientes, influenciando diretamente estratégias de marketing e desenvolvimento de produtos.</li>
-                    <li>Liderou projetos de ciência de dados desde concepção até produção, colaborando com equipes de engenharia e negócios para garantir entrega de soluções de alto impacto.</li>
+            <section class="section">
+                <h2 class="section-title">Experiência Profissional</h2>
+                <div class="job-grid">
+                    <div class="job">
+                        <p class="job-title">Cientista de Dados</p>
+                        <p class="job-company">Manipulação - Raia Drogasil</p>
+                        <p class="job-date">Outubro 2021 - Junho 2025 (3 anos e 8 meses)</p>
+                        <ul class="job-description">
+                            <li>Desenvolveu e implementou modelos de Machine Learning (regressão, classificação) que melhoraram a acurácia de previsões de demanda, otimizando estratégias de estoque e reduzindo custos operacionais.</li>
+                            <li>Automatizou processos ETL utilizando Python e SQL, garantindo integridade para análises críticas de negócio.</li>
+                            <li>Criou e gerenciou portfólio de dashboards interativos em Power BI para monitoramento de KPIs em tempo real, fornecendo insights que suportaram decisões estratégicas da liderança.</li>
+                            <li>Conduziu análises exploratórias complexas para identificar padrões de comportamento de clientes, influenciando diretamente estratégias de marketing e desenvolvimento de produtos.</li>
+                            <li>Liderou projetos de ciência de dados desde concepção até produção, colaborando com equipes de engenharia e negócios para garantir entrega de soluções de alto impacto.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="job">
+                        <p class="job-title">Pesquisador</p>
+                        <p class="job-company">Universidade Federal de Minas Gerais (UFMG)</p>
+                        <p class="job-date">Março 2020 - Dezembro 2022 (2 anos e 10 meses)</p>
+                        <ul class="job-description">
+                            <li>Construiu algoritmos em R para análise do setor financeiro, desenvolvendo modelos de previsão de séries temporais em ambientes de backtesting com validação rigorosa.</li>
+                            <li>Implementou técnicas avançadas de regressão e estatística para analisar grandes volumes de dados de mercado, aplicando Modelos Lineares Mistos para estruturas complexas.</li>
+                            <li>Colaborou em ambiente de pesquisa intensiva, aplicando métodos de Machine Learning para resolver problemas complexos e gerar novas abordagens analíticas.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="job">
+                        <p class="job-title">Assistente Administrativo</p>
+                        <p class="job-company">TBI Segurança</p>
+                        <p class="job-date">Novembro 2018 - Março 2019 (5 meses)</p>
+                        <ul class="job-description">
+                            <li>Otimizou análise de dados jurídicos utilizando Excel avançado (Tabelas Dinâmicas, Power Query).</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Competências Técnicas</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3>Linguagens & Bancos de Dados</h3>
+                        <ul>
+                            <li>Python (Pandas, NumPy, Scikit-learn)</li>
+                            <li>R</li>
+                            <li>SQL (MySQL, PostgreSQL)</li>
+                            <li>MongoDB</li>
+                            <li>Java</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Data Science & Machine Learning</h3>
+                        <ul>
+                            <li>Análise Preditiva & Modelagem Estatística</li>
+                            <li>Regressão, Classificação & Séries Temporais</li>
+                            <li>NLP & Deep Learning (PyTorch)</li>
+                            <li>LLMs & AI Engineering</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Engenharia de Dados & Cloud</h3>
+                        <ul>
+                            <li>ETL & Pipelines de Dados</li>
+                            <li>Azure (Databricks, Azure AI) & Microsoft Fabric</li>
+                            <li>Data Warehouse & Docker</li>
+                            <li>Containerização & DevOps</li>
+                            <li>Automação de Processos</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3>BI & Visualização</h3>
+                        <ul>
+                            <li>Power BI & Dashboards Interativos</li>
+                            <li>Storytelling com Dados</li>
+                            <li>KPI Monitoring</li>
+                            <li>Análise Exploratória</li>
+                            <li>Plotly & Streamlit</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Frameworks & Ferramentas</h3>
+                        <ul>
+                            <li>Django & FastAPI</li>
+                            <li>LangChain & Streamlit</li>
+                            <li>Git/GitHub</li>
+                            <li>Power Platform (Power Automate, Power Apps)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2 class="section-title">Formação Acadêmica</h2>
+                <div class="education-grid">
+                    <div class="education-entry">
+                        <p class="degree">Mestrado em Engenharia de Produção</p>
+                        <p class="institution">Universidade Federal de Minas Gerais (UFMG)</p>
+                        <p class="date">2020 - 2022</p>
+                    </div>
+                    <div class="education-entry">
+                        <p class="degree">Bacharelado em Engenharia Mecânica</p>
+                        <p class="institution">Universidade Federal de Minas Gerais (UFMG)</p>
+                        <p class="date">2014 - 2019</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Certificações e Especializações</h2>
+                <div class="certifications-section">
+                    
+                    <div class="cert-year-group">
+                        <h3 class="cert-year-title">2025</h3>
+                        <div class="cert-category-grid">
+                            <div class="cert-category">
+                                <h4>FastAPI - The Complete Course 2025 (Beginner + Advanced)</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Junho 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>LangChain Mastery: Build GenAI Apps with LangChain & Pinecone</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Junho 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Learn Streamlit Python</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Junho 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>PyTorch for Deep Learning Bootcamp</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Junho 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Super Academia Data Warehouse - 7 cursos em 1</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Junho 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Governança de Dados</h4>
+                                <p class="cert-institution">Enap</p>
+                                <p class="cert-date">Março 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Fundamentos da Lei Geral de Proteção de Dados</h4>
+                                <p class="cert-institution">Enap</p>
+                                <p class="cert-date">Março 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Processamento de Linguagem Natural</h4>
+                                <p class="cert-institution">Enap</p>
+                                <p class="cert-date">Março 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Fundamentos da Visão Computacional - IA do Azure</h4>
+                                <p class="cert-institution">Enap</p>
+                                <p class="cert-date">Março 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Storytelling com Dados para Comunicação Profissional</h4>
+                                <p class="cert-institution">Enap</p>
+                                <p class="cert-date">Março 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Ética em IA</h4>
+                                <p class="cert-institution">Enap</p>
+                                <p class="cert-date">Março 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>SUPER ACADEMIA BI - 19 cursos em 1</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Fevereiro 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Complete Data Science, Machine Learning, DL, NLP Bootcamp</h4>
+                                <p class="cert-institution">KRISHAI Technologies</p>
+                                <p class="cert-date">Fevereiro 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Super Academia Engenharia de Dados - 9 cursos em 1</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Janeiro 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Microsoft Fabric - Arquitetura e Engenharia de Dados</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Janeiro 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Azure Databricks & Spark For Data Engineers</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Janeiro 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>LLM Mastery: Hands-on Code, Align and Master LLMs</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Janeiro 2025</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Become an LLM Engineer in 8 weeks</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Janeiro 2025</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cert-year-group">
+                        <h3 class="cert-year-title">2024</h3>
+                        <div class="cert-category-grid">
+                            <div class="cert-category">
+                                <h4>Complete Ethical Hacking Bootcamp</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Agosto 2024</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Programação Concorrente e Assíncrona com Python</h4>
+                                <p class="cert-institution">Geek University</p>
+                                <p class="cert-date">Março 2024</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cert-year-group">
+                        <h3 class="cert-year-title">2022-2023</h3>
+                        <div class="cert-category-grid">
+                            <div class="cert-category">
+                                <h4>Aprenda DOCKER do Zero ao Avançado</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Fevereiro 2023</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Java COMPLETO Programação Orientada a Objetos</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Dezembro 2022</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Supervised Machine Learning: Regression and Classification</h4>
+                                <p class="cert-institution">DeepLearning.AI</p>
+                                <p class="cert-date">Dezembro 2022</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Curso de Django Web Framework e Django Rest Framework</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Julho 2022</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Docker para Desenvolvedores (Docker Swarm e Kubernetes)</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Junho 2022</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Curso de Python 3 do Básico Ao Avançado</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Fevereiro 2022</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cert-year-group">
+                        <h3 class="cert-year-title">2020-2021</h3>
+                        <div class="cert-category-grid">
+                            <div class="cert-category">
+                                <h4>Microsoft Power BI Para Data Science, Versão 2.0</h4>
+                                <p class="cert-institution">Data Science Academy</p>
+                                <p class="cert-date">Setembro 2021</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Python Fundamentos Para Análise de Dados 3.0</h4>
+                                <p class="cert-institution">Data Science Academy</p>
+                                <p class="cert-date">Setembro 2021</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>The Data Scientist's Toolbox</h4>
+                                <p class="cert-institution">Johns Hopkins University</p>
+                                <p class="cert-date">Abril 2021</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Formação Cientista de Dados com Python e R</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Julho 2020</p>
+                            </div>
+                            <div class="cert-category">
+                                <h4>Séries Temporais e Análises Preditivas: O curso completo</h4>
+                                <p class="cert-institution">Udemy</p>
+                                <p class="cert-date">Julho 2020</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Liderança e Voluntariado</h2>
+                <div class="leadership-entry">
+                    <p class="role">Presidente, Tesoureiro e Diretor</p>
+                    <p class="organization">Rotaract Club BH-Leste</p>
+                    <p>Liderou equipes multidisciplinares no planejamento e execução de projetos de impacto social. Desenvolveu competências em gestão de pessoas, planejamento estratégico e orçamentário.</p>
+                </div>
+            </section>
+            
+            <section class="competitive-edge">
+                <h2 class="section-title" style="border-bottom: none; color: white; padding-left: 0;">Diferenciais Competitivos</h2>
+                <ul>
+                    <li><strong>Perfil Híbrido:</strong> Combinação única de Engenharia e Ciência de Dados</li>
+                    <li><strong>Ciclo Completo:</strong> Experiência desde ETL até modelos em produção</li>
+                    <li><strong>Impacto Mensurável:</strong> Histórico de resultados quantificados em eficiência e custos</li>
+                    <li><strong>Tecnologias Emergentes:</strong> Especialização em LLMs e AI Engineering</li>
+                    <li><strong>Liderança Técnica:</strong> Experiência em gestão de projetos e equipes</li>
+                    <li><strong>Formação Sólida:</strong> Mestrado em Engenharia pela UFMG</li>
+                    <li><strong>Atualização Constante:</strong> +40 certificações recentes em tecnologias de ponta</li>
                 </ul>
-            </div>
-            <div class="job">
-                <p class="job-title">Pesquisador</p>
-                <p class="job-company">Universidade Federal de Minas Gerais (UFMG)</p>
-                <p class="job-date">Março 2020 - Dezembro 2022 (2 anos e 10 meses)</p>
-                <ul class="job-description">
-                    <li>Construiu algoritmos em R para análise do setor financeiro, desenvolvendo modelos de previsão de séries temporais em ambientes de backtesting com validação rigorosa.</li>
-                    <li>Implementou técnicas avançadas de regressão e estatística para analisar grandes volumes de dados de mercado, aplicando Modelos Lineares Mistos para estruturas complexas.</li>
-                    <li>Colaborou em ambiente de pesquisa intensiva, aplicando métodos de Machine Learning para resolver problemas complexos e gerar novas abordagens analíticas.</li>
-                </ul>
-            </div>
-            <div class="job">
-                <p class="job-title">Assistente Administrativo</p>
-                <p class="job-company">TBI Segurança</p>
-                <p class="job-date">Novembro 2018 - Março 2019 (5 meses)</p>
-                 <ul class="job-description">
-                    <li>Otimizou análise de dados jurídicos utilizando Excel avançado (Tabelas Dinâmicas, Power Query).</li>
-                </ul>
-            </div>
-        </section>
+            </section>
 
-        <section class="section">
-            <h2 class="section-title">Competências Técnicas</h2>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <h3>Linguagens & Bancos de Dados</h3>
-                    <ul>
-                        <li>Python (Pandas, NumPy, Scikit-learn)</li>
-                        <li>R</li>
-                        <li>SQL (MySQL, PostgreSQL)</li>
-                        <li>MongoDB</li>
-                    </ul>
-                </div>
-                <div class="skill-category">
-                    <h3>Data Science & Machine Learning</h3>
-                    <ul>
-                        <li>Análise Preditiva & Modelagem Estatística</li>
-                        <li>Regressão, Classificação & Séries Temporais</li>
-                        <li>NLP & Deep Learning (PyTorch)</li>
-                        <li>LLMs & AI Engineering</li>
-                    </ul>
-                </div>
-                <div class="skill-category">
-                    <h3>Engenharia de Dados & Cloud</h3>
-                    <ul>
-                        <li>ETL & Pipelines de Dados</li>
-                        <li>Azure (Databricks, Azure AI) & Microsoft Fabric</li>
-                        <li>Data Warehouse & Docker</li>
-                        <li>Containerização & DevOps</li>
-                        <li>Automação de Processos</li>
-                    </ul>
-                </div>
-                <div class="skill-category">
-                    <h3>BI & Visualização</h3>
-                    <ul>
-                        <li>Power BI & Dashboards Interativos</li>
-                        <li>Storytelling com Dados</li>
-                        <li>KPI Monitoring</li>
-                        <li>Análise Exploratória</li>
-                    </ul>
-                </div>
-                 <div class="skill-category">
-                    <h3>Frameworks & Ferramentas</h3>
-                    <ul>
-                        <li>Django & FastAPI</li>
-                        <li>LangChain & Streamlit</li>
-                        <li>Git/GitHub</li>
-                        <li>Power Platform (Power Automate, Power Apps)</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-        
-        <section class="section">
-            <h2 class="section-title">Formação Acadêmica</h2>
-            <div class="education-entry">
-                <p class="degree">Mestrado em Engenharia de Produção</p>
-                <p class="institution">Universidade Federal de Minas Gerais (UFMG)</p>
-                <p class="date">2020 - 2022</p>
-            </div>
-            <div class="education-entry">
-                <p class="degree">Bacharelado em Engenharia Mecânica</p>
-                <p class="institution">Universidade Federal de Minas Gerais (UFMG)</p>
-                <p class="date">2014 - 2019</p>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2 class="section-title">Certificações e Especializações</h2>
-             <div class="skills-grid">
-                <div class="skill-category">
-                    <h3>LLMs & AI Engineering (2025)</h3>
-                    <ul><li>LLM Mastery, Become an LLM Engineer, LangChain Mastery</li></ul>
-                </div>
-                <div class="skill-category">
-                    <h3>Data Engineering (2025)</h3>
-                     <ul><li>Super Academia Engenharia de Dados, Azure Databricks & Spark, Microsoft Fabric</li></ul>
-                </div>
-                <div class="skill-category">
-                    <h3>Deep Learning & Development (2024-2025)</h3>
-                    <ul><li>PyTorch for Deep Learning, FastAPI, Programação Concorrente</li></ul>
-                </div>
-                 <div class="skill-category">
-                    <h3>Governança & Compliance (2025)</h3>
-                    <ul><li>Governança de Dados, Fundamentos da LGPD</li></ul>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2 class="section-title">Liderança e Voluntariado</h2>
-            <div class="leadership-entry">
-                <p class="role">Presidente, Tesoureiro e Diretor</p>
-                <p class="organization">Rotaract Club BH-Leste</p>
-                <p>Liderou equipes multidisciplinares no planejamento e execução de projetos de impacto social. Desenvolveu competências em gestão de pessoas, planejamento estratégico e orçamentário.</p>
-            </div>
-        </section>
-        
-        <section class="competitive-edge">
-             <h2 class="section-title" style="border-bottom: none; color: #004085;">Diferenciais Competitivos</h2>
-             <ul>
-                <li><strong>Perfil Híbrido:</strong> Combinação única de Engenharia e Ciência de Dados</li>
-                <li><strong>Ciclo Completo:</strong> Experiência desde ETL até modelos em produção</li>
-                <li><strong>Impacto Mensurável:</strong> Histórico de resultados quantificados em eficiência e custos</li>
-                <li><strong>Tecnologias Emergentes:</strong> Especialização em LLMs e AI Engineering</li>
-                <li><strong>Liderança Técnica:</strong> Experiência em gestão de projetos e equipes</li>
-                <li><strong>Formação Sólida:</strong> Mestrado em Engenharia pela UFMG</li>
-                <li><strong>Atualização Constante:</strong> Certificações recentes em tecnologias de ponta</li>
-            </ul>
-        </section>
-
-        <footer>
-            <p class="footer-text">Disponibilidade para início imediato e trabalho remoto.</p>
-            <p class="footer-text">Última atualização deste currículo: 30 de junho de 2025.</p>
-        </footer>
-
+            <footer>
+                <p class="footer-text">
+                    <strong>Disponibilidade para início imediato e trabalho remoto.</strong><br>
+                    Última atualização deste currículo: 30 de junho de 2025.
+                </p>
+            </footer>
+        </div>
     </div>
-
 </body>
 </html>
-
-</body>
 </html>
