@@ -22,6 +22,32 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             border-top: 8px solid #0056b3;
         }
+        
+        /* Header com foto */
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .profile-photo {
+            flex-shrink: 0;
+        }
+        
+        .profile-photo img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #0056b3;
+            box-shadow: 0 4px 12px rgba(0,86,179,0.2);
+        }
+        
+        .header-text {
+            flex: 1;
+        }
+        
         h1, h2, h3 {
             color: #004085;
             margin-bottom: 0.5em;
@@ -30,26 +56,22 @@
         }
         h1 {
             font-size: 2.5em;
-            text-align: center;
             margin-bottom: 10px;
             border-bottom: none;
             color: #0d2c4b;
         }
         .subtitle {
-            text-align: center;
             font-size: 1.2em;
             color: #555;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         .contact-info {
             list-style: none;
             padding: 0;
-            margin-bottom: 30px;
+            margin: 0;
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px 30px;
-            text-align: center;
+            gap: 10px 20px;
         }
         .contact-info li {
             font-size: 0.95em;
@@ -62,6 +84,29 @@
         .contact-info a:hover {
             text-decoration: underline;
         }
+        
+        /* Responsividade para mobile */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .profile-photo img {
+                width: 120px;
+                height: 120px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .contact-info {
+                justify-content: center;
+            }
+        }
+        
         .section {
             margin-bottom: 30px;
         }
@@ -159,15 +204,22 @@
 
     <div class="container">
         <header>
-            <h1>FRANCISCO DE ASSIS PEREIRA NETO</h1>
-            <p class="subtitle">Cientista de Dados & Engenheiro de Dados | +4 anos em Data Science & Engineering</p>
-            <ul class="contact-info">
-                <li>📍 Ijaci, MG - Brasil (Remoto)</li>
-                <li>📞 <a href="tel:+5531995861974">+55 31 99586-1974</a></li>
-                <li>✉️ <a href="mailto:francisconetodata@gmail.com">francisconetodata@gmail.com</a></li>
-                <li>💼 <a href="https://linkedin.com/in/francisconetodata" target="_blank">linkedin.com/in/francisconetodata</a></li>
-                <li>🔗 <a href="https://github.com/francisconetodata" target="_blank">github.com/francisconetodata</a></li>
-            </ul>
+            <div class="header-content">
+                <div class="profile-photo">
+                    <img src="1741016260820.jpg" alt="Francisco de Assis Pereira Neto">
+                </div>
+                <div class="header-text">
+                    <h1>FRANCISCO DE ASSIS PEREIRA NETO</h1>
+                    <p class="subtitle">Cientista de Dados & Engenheiro de Dados | +4 anos em Data Science & Engineering</p>
+                    <ul class="contact-info">
+                        <li>📍 Ijaci, MG - Brasil (Remoto)</li>
+                        <li>📞 <a href="tel:+5531995861974">+55 31 99586-1974</a></li>
+                        <li>✉️ <a href="mailto:francisconetodata@gmail.com">francisconetodata@gmail.com</a></li>
+                        <li>💼 <a href="https://linkedin.com/in/francisconetodata" target="_blank">linkedin.com/in/francisconetodata</a></li>
+                        <li>🔗 <a href="https://github.com/francisconetodata" target="_blank">github.com/francisconetodata</a></li>
+                    </ul>
+                </div>
+            </div>
         </header>
 
         <section class="section">
