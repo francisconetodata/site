@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚙</text></svg>">
+    <title>Especialista em Recursos de Multas</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --background: #0a0e1a;
+            --surface: #1e293b;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        .bg-animation {
+            position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; opacity: 0.5;
+        }
+        .bg-animation::before {
+            content: ''; position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+            background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(37, 99, 235, 0.2) 0%, transparent 50%);
+            animation: rotate 40s linear infinite;
+        }
+        @keyframes rotate { to { transform: rotate(360deg); } }
+        .fade-in-up { animation: fadeInUp 1s ease forwards; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .header {
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .header.scrolled {
+            background: rgba(10, 14, 26, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex; gap: 2rem; list-style: none;
+        }
+        .nav-links a {
+            color: var(--text); text-decoration: none; transition: color 0.3s ease;
+            position: relative; font-weight: 500; padding-bottom: 8px;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 0; height: 2px; background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--accent); }
+        .nav-links a:hover::after { width: 100%; }
+        .hamburger { display: none; }
+        .section {
+            padding: 6rem 2rem; max-width: 1200px; margin: 0 auto;
+        }
+        .section-title {
+            text-align: center; font-size: 2.5rem; margin-bottom: 4rem;
+            position: relative;
+        }
+        .section-title::after {
+            content: ''; position: absolute; bottom: -15px; left: 50%;
+            transform: translateX(-50%); width: 80px; height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; padding-top: 8rem; position: relative;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+        .hero-subtitle {
+            font-size: 1.25rem; color: var(--text-muted); margin-bottom: 2.5rem;
+            max-width: 650px; margin-left: auto; margin-right: auto;
+        }
+        .cta-button {
+            display: inline-block; padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white; text-decoration: none; border-radius: 50px;
+            font-weight: bold; font-size: 1.1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+            cursor: pointer; border: none;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 30px rgba(59, 130, 246, 0.5);
+        }
+        .scroll-indicator {
+            position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            animation: bounce 2s infinite; font-size: 2rem; color: var(--text-muted);
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, -10px); }
+        }
+        .features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .feature-card {
+            background: var(--surface); padding: 2rem; border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent);
+        }
+        .feature-icon {
+            font-size: 2rem; margin-bottom: 1.5rem; display: inline-block;
+        }
+        .feature-card h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+        .feature-card p { color: var(--text-muted); }
+        #services { background: rgba(30, 41, 59, 0.3); }
+        .service-item {
+            display: flex; align-items: center; gap: 3rem; margin-bottom: 4rem;
+        }
+        .service-item:last-child { margin-bottom: 0; }
+        .service-item:nth-child(even) { flex-direction: row-reverse; }
+        .service-content { flex: 1; }
+        .service-content h3 { font-size: 2rem; margin-bottom: 1rem; color: var(--accent); }
+        .service-visual {
+            flex: 1; height: 300px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 5rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+        }
+        .contact-container { max-width: 700px; margin: 0 auto; text-align: center; }
+        .contact-container .cta-button { margin-top: 1.5rem; }
+        .footer {
+            padding: 3rem 2rem; background: var(--secondary); text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .footer p { color: var(--text-muted); margin: 0.5rem 0; }
+        .disclaimer {
+            font-size: 0.85rem;
+            color: #7a8a9e;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center; /* Garantindo centralização do texto */
+        }
+        .animate-on-scroll { opacity: 0; transition: opacity 0.8s ease, transform 0.8s ease; }
+        .animate-on-scroll.slide-in-left { transform: translateX(-50px); }
+        .animate-on-scroll.slide-in-right { transform: translateX(50px); }
+        .animate-on-scroll.is-visible { opacity: 1; transform: translateX(0); }
+
+        /* Estilos do Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none; /* Alterado por JS */
+            align-items: center; justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content {
+            background: var(--surface);
+            padding: 2.5rem; border-radius: 16px;
+            max-width: 500px; width: 90%;
+            text-align: center; position: relative;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-content h2 { color: var(--text); margin-bottom: 1rem; }
+        .modal-content p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+        .modal-close {
+            position: absolute; top: 15px; right: 20px;
+            background: none; border: none; color: var(--text-muted);
+            font-size: 2rem; cursor: pointer; transition: color 0.3s ease;
+        }
+        .modal-close:hover { color: var(--text); }
+        .modal-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+        .modal-button {
+            padding: 0.8rem 1.5rem; font-weight: bold; border-radius: 50px;
+            border: none; cursor: pointer; transition: all 0.3s ease;
+        }
+        .modal-button.confirm { background: var(--success); color: white; }
+        .modal-button.confirm:hover { background: #0f9b6b; }
+        .modal-button.cancel { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); }
+        .modal-button.cancel:hover { background: var(--text-muted); color: var(--secondary); }
+
+        @media (max-width: 768px) {
+            .logo { font-size: 1rem; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: var(--secondary);
+                flex-direction: column; justify-content: center; align-items: center; transition: right 0.5s ease-in-out;
+            }
+            .nav-links.active { right: 0; }
+            .hamburger {
+                display: block; cursor: pointer; z-index: 1001; width: 30px; height: 25px;
+                display: flex; flex-direction: column; justify-content: space-between;
+            }
+            .hamburger span {
+                display: block; width: 100%; height: 3px; background-color: var(--text);
+                border-radius: 3px; transition: all 0.3s ease-in-out;
+            }
+            .hamburger.active span:nth-child(1) { transform: translateY(11px) rotate(45deg); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: translateY(-11px) rotate(-45deg); }
+            .service-item, .service-item:nth-child(even) { flex-direction: column; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero-subtitle { font-size: 1.1rem; }
+            .section { padding: 4rem 1.5rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important; scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation"></div>
+
+    <header class="header" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">Consultoria em Recursos Administrativos</a>
+            <nav>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#features">Vantagens</a></li>
+                    <li><a href="#services">Serviços</a></li>
+                    <li><a href="#contact">Contato</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content fade-in-up">
+                <h1>Sua Consultoria em Recursos de Multas</h1>
+                <p class="hero-subtitle">Análise detalhada e recursos bem fundamentados para suas multas de trânsito. Ofereço um serviço profissional e sou comprometido com o seu resultado.</p>
+                <a href="#contact" class="cta-button">Solicite uma Análise</a>
+            </div>
+            <a href="#features" class="scroll-indicator" aria-label="Rolar para baixo">↓</a>
+        </section>
+
+        <section id="features" class="section">
+            <h2 class="section-title">Por que contar com meu trabalho?</h2>
+            <div class="features-grid">
+                <div class="feature-card animate-on-scroll slide-in-left">
+                    <span class="feature-icon" role="img" aria-label="Ícone de gráfico">📊</span>
+                    <h3>Análise Detalhada</h3>
+                    <p>Avalio completamente sua multa, identificando todas as possibilidades de defesa para construir o melhor recurso.</p>
+                </div>
+                <div class="feature-card animate-on-scroll slide-in-left" style="transition-delay: 0.2s;">
+                    <span class="feature-icon" role="img" aria-label="Ícone de raio">✉️</span>
+                    <h3>Agilidade e Foco</h3>
+                    <p>Elaboro seu recurso com rapidez e atenção total, respeitando rigorosamente todos os prazos administrativos.</p>
+                </div>
+                <div class="feature-card animate-on-scroll slide-in-left" style="transition-delay: 0.4s;">
+                     <span class="feature-icon" role="img" aria-label="Ícone de verificado">📈</span>
+                    <h3>Experiência Comprovada</h3>
+                    <p>Possuo um sólido histórico de sucesso em recursos, alcançando resultados positivos para meus clientes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="section">
+            <div class="services-container">
+                <h2 class="section-title">Meus Serviços</h2>
+                
+                <div class="service-item animate-on-scroll slide-in-left">
+                    <div class="service-content">
+                        <h3>Defesa Prévia</h3>
+                        <p>Elaboro sua defesa antes da aplicação da penalidade. Minha argumentação técnica é baseada na legislação de trânsito vigente para aumentar suas chances.</p>
+                    </div>
+                    <div class="service-visual" role="img" aria-label="Ícone de documento">📝</div>
+                </div>
+
+                <div class="service-item animate-on-scroll slide-in-right">
+                    <div class="service-content">
+                        <h3>Recurso para a JARI</h3>
+                        <p>Desenvolvo o recurso para a Junta Administrativa (JARI) com fundamentação detalhada e uma análise minuciosa de cada ponto do auto de infração.</p>
+                    </div>
+                    <div class="service-visual" role="img" aria-label="Ícone de balança da justiça">🖇️</div>
+                </div>
+
+                <div class="service-item animate-on-scroll slide-in-left">
+                    <div class="service-content">
+                        <h3>Recurso para o CETRAN</h3>
+                        <p>Preparo seu recurso em segunda instância (CETRAN) com uma argumentação ainda mais robusta, buscando reverter decisões desfavoráveis.</p>
+                    </div>
+                    <div class="service-visual" role="img" aria-label="Ícone de prédio governamental">📑</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="contact-container">
+                <h2 class="section-title">Inicie Seu Recurso Agora</h2>
+                <p>Não perca o prazo! Entre em contato comigo e receba uma análise preliminar gratuita da sua multa. O formulário é simples e rápido de preencher.</p>
+                <a id="open-form-button" href="https://forms.gle/rVnRGhWRq686hX7o8" class="cta-button" target="_blank" rel="noopener noreferrer">Acessar Formulário</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; <span id="current-year"></span> Consultoria em Recursos Administrativos. Todos os direitos reservados.</p>
+            <p>Serviço de consultoria administrativa para recursos de multas de trânsito.</p>
+            
+            <p>
+                <strong>Aviso Importante:</strong> Os serviços aqui oferecidos são de natureza estritamente administrativa (defesas e recursos de trânsito) e não configuram consultoria, assessoria ou qualquer ato privativo da advocacia, conforme a Lei nº 8.906/94.
+            </p>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="disclaimer-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close-button" aria-label="Fechar">&times;</button>
+            <h2>Aviso Importante</h2>
+            <p>Os serviços aqui oferecidos são de natureza estritamente administrativa (defesas e recursos de trânsito) e não configuram consultoria, assessoria ou qualquer ato privativo da advocacia, conforme a Lei nº 8.906/94.</p>
+            <div class="modal-actions">
+                <button class="modal-button cancel" id="modal-cancel-button">Cancelar</button>
+                <button class="modal-button confirm" id="modal-confirm-button">Estou ciente e desejo continuar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // -- Lógica do menu e animações (sem alterações) --
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('nav-links');
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                });
+            });
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            animatedElements.forEach(el => observer.observe(el));
+
+            // --- NOVA LÓGICA PARA O MODAL DE AVISO ---
+            const openFormButton = document.getElementById('open-form-button');
+            const disclaimerModal = document.getElementById('disclaimer-modal');
+            const closeModalButton = document.getElementById('modal-close-button');
+            const cancelButton = document.getElementById('modal-cancel-button');
+            const confirmButton = document.getElementById('modal-confirm-button');
+
+            const openModal = () => disclaimerModal.classList.add('active');
+            const closeModal = () => disclaimerModal.classList.remove('active');
+
+            // Abrir modal ao clicar no botão do formulário
+            openFormButton.addEventListener('click', function(event) {
+                event.preventDefault(); // Impede a navegação imediata
+                openModal();
+            });
+
+            // Confirmar e ir para o formulário
+            confirmButton.addEventListener('click', function() {
+                const formUrl = openFormButton.getAttribute('href');
+                window.open(formUrl, '_blank'); // Abre o link em nova aba
+                closeModal();
+            });
+            
+            // Fechar modal
+            closeModalButton.addEventListener('click', closeModal);
+            cancelButton.addEventListener('click', closeModal);
+            disclaimerModal.addEventListener('click', function(event) {
+                // Fecha o modal apenas se o clique for no fundo (overlay)
+                if (event.target === disclaimerModal) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
