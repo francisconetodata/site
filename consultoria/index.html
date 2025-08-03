@@ -389,68 +389,76 @@
 
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // -- Lógica do menu e animações (sem alterações) --
-            const navbar = document.getElementById('navbar');
-            window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
-            const hamburger = document.getElementById('hamburger');
-            const navLinks = document.getElementById('nav-links');
-            hamburger.addEventListener('click', () => {
-                hamburger.classList.toggle('active');
-                navLinks.classList.toggle('active');
-            });
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    hamburger.classList.remove('active');
-                    navLinks.classList.remove('active');
-                });
-            });
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-            const animatedElements = document.querySelectorAll('.animate-on-scroll');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            animatedElements.forEach(el => observer.observe(el));
-
-            // --- NOVA LÓGICA PARA O MODAL DE AVISO ---
-            const openFormButton = document.getElementById('open-form-button');
-            const disclaimerModal = document.getElementById('disclaimer-modal');
-            const closeModalButton = document.getElementById('modal-close-button');
-            const cancelButton = document.getElementById('modal-cancel-button');
-            const confirmButton = document.getElementById('modal-confirm-button');
-
-            const openModal = () => disclaimerModal.classList.add('active');
-            const closeModal = () => disclaimerModal.classList.remove('active');
-
-            // Abrir modal ao clicar no botão do formulário
-            openFormButton.addEventListener('click', function(event) {
-                event.preventDefault(); // Impede a navegação imediata
-                openModal();
-            });
-
-            // Confirmar e ir para o formulário
-            confirmButton.addEventListener('click', function() {
-                const formUrl = openFormButton.getAttribute('href');
-                window.open(formUrl, '_blank'); // Abre o link em nova aba
-                closeModal();
-            });
-            
-            // Fechar modal
-            closeModalButton.addEventListener('click', closeModal);
-            cancelButton.addEventListener('click', closeModal);
-            disclaimerModal.addEventListener('click', function(event) {
-                // Fecha o modal apenas se o clique for no fundo (overlay)
-                if (event.target === disclaimerModal) {
-                    closeModal();
-                }
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // -- Lógica do menu e animações --
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
             });
         });
-    </script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        animatedElements.forEach(el => observer.observe(el));
+
+        // --- LÓGICA CORRETA PARA O MODAL ---
+        const openFormButton = document.getElementById('open-form-button');
+        const disclaimerModal = document.getElementById('disclaimer-modal');
+        const closeModalButton = document.getElementById('modal-close-button');
+        const agreeCheckbox = document.getElementById('agree-checkbox');
+        const proceedButton = document.getElementById('modal-proceed-button');
+
+        const openModal = () => {
+            // Reseta o estado do modal ao abrir
+            agreeCheckbox.checked = false; 
+            proceedButton.disabled = true;
+            disclaimerModal.classList.add('active');
+        }
+        const closeModal = () => disclaimerModal.classList.remove('active');
+
+        // Abrir modal ao clicar no botão do formulário
+        openFormButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Impede a navegação imediata
+            openModal();
+        });
+
+        // Habilita/desabilita o botão "Continuar" com base no checkbox
+        agreeCheckbox.addEventListener('change', function() {
+            proceedButton.disabled = !this.checked;
+        });
+        
+        // Ação do botão "Continuar" para abrir o formulário
+        proceedButton.addEventListener('click', function() {
+            const formUrl = openFormButton.getAttribute('href');
+            window.open(formUrl, '_blank'); // Abre o link em nova aba
+            closeModal();
+        });
+        
+        // Fechar modal pelo botão 'X' ou clicando fora
+        closeModalButton.addEventListener('click', closeModal);
+        disclaimerModal.addEventListener('click', function(event) {
+            if (event.target === disclaimerModal) {
+                closeModal();
+            }
+        });
+    });
+</script>
 </body>
 </html>
