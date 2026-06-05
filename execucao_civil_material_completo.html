@@ -1,0 +1,1611 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#b8860b;--gold-light:#f5d87a;--gold-dark:#7a5900;
+  --ink:#1a1209;--parchment:#fdf8ef;--parchment2:#f5edd8;
+  --red-law:#8b1a1a;--blue-law:#0d3b6b;--green-law:#0a4a2e;
+  --border:#c8aa6e;--border-light:#e8d5a3;
+  --gray-muted:#6b5e42;--shadow:rgba(0,0,0,0.15)
+}
+body{background:var(--parchment);font-family:'Source Serif 4',serif;color:var(--ink);min-height:100vh}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0d1b2a 0%,#1a2f4a 50%,#0d3b6b 100%);padding:3rem 2rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'§';position:absolute;font-size:28rem;color:rgba(255,255,255,0.03);font-family:'Playfair Display',serif;top:-5rem;left:-4rem;line-height:1}
+.hero::after{content:'⚖';position:absolute;font-size:18rem;color:rgba(184,134,11,0.06);bottom:-3rem;right:-2rem}
+.hero-badge{display:inline-block;border:1px solid var(--gold);color:var(--gold-light);font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;padding:0.3rem 1rem;margin-bottom:1.5rem;font-family:'JetBrains Mono',monospace}
+.hero h1{font-family:'Playfair Display',serif;color:#fff;font-size:2.8rem;font-weight:900;line-height:1.15;margin-bottom:0.75rem}
+.hero h1 span{color:var(--gold-light);display:block}
+.hero-sub{color:#a0b8d0;font-size:1.05rem;font-weight:300;max-width:600px;margin:0 auto 2rem}
+.hero-stats{display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold-light);font-weight:700}
+.hero-stat-label{font-size:0.75rem;color:#7a9ab8;letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem}
+
+/* NAV */
+.nav-wrapper{background:#1a2f4a;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:100;overflow-x:auto}
+.nav{display:flex;gap:0;min-width:max-content}
+.nav-btn{background:none;border:none;color:#a0b8d0;padding:0.9rem 1.2rem;cursor:pointer;font-family:'Source Serif 4',serif;font-size:0.82rem;transition:all 0.2s;border-bottom:3px solid transparent;white-space:nowrap}
+.nav-btn:hover{color:#fff;background:rgba(255,255,255,0.06)}
+.nav-btn.active{color:var(--gold-light);border-bottom-color:var(--gold);background:rgba(184,134,11,0.1)}
+
+/* MAIN */
+.main{max-width:980px;margin:0 auto;padding:2rem 1.5rem}
+
+/* SECTIONS */
+.section{display:none;animation:fadeIn 0.3s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* MODULE HEADER */
+.mod-header{border-left:5px solid var(--blue-law);padding:1rem 1.5rem;background:#fff;margin-bottom:2rem;box-shadow:2px 2px 12px var(--shadow)}
+.mod-number{font-family:'JetBrains Mono',monospace;font-size:0.7rem;letter-spacing:0.2em;color:var(--gray-muted);text-transform:uppercase;margin-bottom:0.25rem}
+.mod-title{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--blue-law);font-weight:700}
+.mod-subtitle{color:var(--gray-muted);font-size:0.95rem;margin-top:0.4rem;font-style:italic}
+
+/* ARTICLE */
+.art{background:#fff;border:1px solid var(--border-light);margin-bottom:1.5rem;box-shadow:1px 1px 6px rgba(0,0,0,0.05)}
+.art-header{background:var(--parchment2);border-bottom:1px solid var(--border-light);padding:0.8rem 1.25rem;display:flex;align-items:center;gap:0.75rem;cursor:pointer;user-select:none}
+.art-num{font-family:'JetBrains Mono',monospace;background:var(--blue-law);color:#fff;font-size:0.72rem;padding:0.25rem 0.6rem;border-radius:2px;white-space:nowrap}
+.art-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--ink);font-weight:700;flex:1}
+.art-toggle{color:var(--gray-muted);font-size:1.2rem;transition:transform 0.25s}
+.art-toggle.open{transform:rotate(180deg)}
+.art-body{padding:1.25rem;display:none}
+.art-body.open{display:block}
+
+/* TEXT ELEMENTS */
+.lead{font-size:1.05rem;line-height:1.8;color:#2a1f0a;margin-bottom:1rem;border-left:3px solid var(--border);padding-left:1rem;background:var(--parchment);padding:0.75rem 1rem}
+p.body-text{font-size:0.97rem;line-height:1.8;color:#2d2010;margin-bottom:0.85rem}
+
+/* CAPUT */
+.caput{background:#e8f0f7;border-left:4px solid var(--blue-law);padding:0.85rem 1.1rem;margin-bottom:0.85rem;font-size:0.95rem;line-height:1.7;font-style:italic}
+.caput strong{color:var(--blue-law);font-style:normal}
+
+/* PARÁGRAFO */
+.par{padding:0.7rem 1rem 0.7rem 1.5rem;border-left:2px solid var(--border-light);margin-bottom:0.5rem;font-size:0.92rem;line-height:1.7;color:#3a2e1c}
+.par-num{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--gray-muted);margin-bottom:0.2rem}
+
+/* INCISO */
+.incisos{list-style:none;padding:0;margin:0.5rem 0 0.5rem 1.5rem}
+.incisos li{padding:0.3rem 0 0.3rem 1rem;border-left:1px dashed var(--border);font-size:0.9rem;line-height:1.6;color:#3a2e1c;margin-bottom:0.2rem}
+.incisos li strong{color:var(--blue-law);font-family:'JetBrains Mono',monospace;font-size:0.8rem}
+
+/* SÚMULA */
+.sumula-box{background:#fef9e7;border:1px solid #f0d060;border-left:5px solid #c8a020;padding:1rem 1.25rem;margin:1rem 0;border-radius:0 4px 4px 0}
+.sumula-header{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem}
+.sumula-badge{background:#c8a020;color:#fff;font-family:'JetBrains Mono',monospace;font-size:0.65rem;padding:0.2rem 0.5rem;text-transform:uppercase;border-radius:2px}
+.sumula-title{font-weight:600;font-size:0.85rem;color:#7a5900}
+.sumula-text{font-size:0.91rem;line-height:1.7;color:#5a4400;font-style:italic}
+.sumula-source{font-size:0.75rem;color:var(--gray-muted);margin-top:0.4rem;font-family:'JetBrains Mono',monospace}
+
+/* JULGADO */
+.julgado-box{background:#f0f5ff;border:1px solid #b0c4e8;border-left:5px solid var(--blue-law);padding:1rem 1.25rem;margin:1rem 0}
+.julgado-header{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;flex-wrap:wrap}
+.julgado-badge{background:var(--blue-law);color:#fff;font-family:'JetBrains Mono',monospace;font-size:0.65rem;padding:0.2rem 0.5rem;text-transform:uppercase;border-radius:2px}
+.julgado-tribunal{font-size:0.78rem;color:var(--blue-law);font-weight:600;font-family:'JetBrains Mono',monospace}
+.julgado-ementa{font-size:0.9rem;line-height:1.7;color:#0d2d55;font-style:italic;margin-bottom:0.4rem}
+.julgado-tese{font-size:0.83rem;color:#1a3a6b;background:#e0eaf8;padding:0.5rem 0.75rem;border-radius:2px}
+.julgado-ref{font-size:0.73rem;color:var(--gray-muted);font-family:'JetBrains Mono',monospace;margin-top:0.3rem}
+
+/* ALERTA */
+.alert{padding:0.85rem 1.1rem;margin:1rem 0;border-radius:2px;font-size:0.9rem;line-height:1.6}
+.alert-danger{background:#fdf0f0;border-left:4px solid var(--red-law);color:#5a0a0a}
+.alert-success{background:#f0fdf4;border-left:4px solid var(--green-law);color:#0a3a1a}
+.alert-info{background:#f0f5ff;border-left:4px solid var(--blue-law);color:#0a2050}
+.alert-warn{background:#fefce8;border-left:4px solid #b8860b;color:#5a3a00}
+.alert-label{font-family:'JetBrains Mono',monospace;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;font-weight:700;margin-bottom:0.35rem;display:block}
+
+/* TABELA */
+.table-wrap{overflow-x:auto;margin:1rem 0}
+table.law-table{width:100%;border-collapse:collapse;font-size:0.87rem}
+table.law-table th{background:var(--blue-law);color:#fff;padding:0.6rem 0.85rem;text-align:left;font-weight:500;font-family:'Source Serif 4',serif}
+table.law-table td{padding:0.55rem 0.85rem;border-bottom:1px solid var(--border-light);vertical-align:top;line-height:1.6}
+table.law-table tr:nth-child(even){background:var(--parchment)}
+table.law-table tr:hover{background:#f0e8d0}
+
+/* CONCEITO */
+.conceito{background:var(--parchment2);border:1px solid var(--border);padding:1rem 1.25rem;margin:1rem 0}
+.conceito-titulo{font-family:'Playfair Display',serif;font-size:1rem;color:var(--blue-law);font-weight:700;margin-bottom:0.5rem;border-bottom:1px solid var(--border-light);padding-bottom:0.4rem}
+.conceito-texto{font-size:0.92rem;line-height:1.75;color:#2a1f0a}
+
+/* ESQUEMA */
+.esquema{background:#f8f8ff;border:1px solid #c0c8e8;padding:1rem 1.25rem;margin:1rem 0}
+.esquema-titulo{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--blue-law);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:0.75rem;border-bottom:1px solid #c0c8e8;padding-bottom:0.4rem}
+.tree{list-style:none;padding:0}
+.tree li{padding:0.2rem 0 0.2rem 1.5rem;border-left:1.5px solid var(--blue-law);font-size:0.88rem;line-height:1.6;color:#1a2040;margin-bottom:0.15rem;position:relative}
+.tree li::before{content:'▸';position:absolute;left:0.35rem;color:var(--blue-law);font-size:0.7rem;top:0.35rem}
+.tree .sub{list-style:none;padding:0;margin-top:0.15rem}
+.tree .sub li{border-left:1.5px solid #90a0c8;padding-left:1.2rem;color:#2a3060;font-size:0.84rem}
+.tree .sub li::before{content:'›';color:#90a0c8;top:0.3rem}
+
+/* PRAZOS */
+.prazo-card{display:inline-flex;align-items:center;gap:0.5rem;background:#fff;border:1px solid var(--border);padding:0.35rem 0.75rem;margin:0.25rem;font-size:0.85rem;border-radius:2px}
+.prazo-num{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--red-law)}
+.prazo-unit{font-size:0.72rem;color:var(--gray-muted)}
+
+/* DICA PROCESSUAL */
+.dica{background:linear-gradient(135deg,#f0f8f0,#e8f5e8);border:1px solid #90c890;border-left:5px solid var(--green-law);padding:0.9rem 1.1rem;margin:1rem 0}
+.dica-header{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--green-law);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:0.4rem}
+.dica-text{font-size:0.9rem;line-height:1.7;color:#0a2a0a}
+
+/* DIVIDER */
+.divider{border:none;border-top:1px solid var(--border-light);margin:1.5rem 0}
+.divider-title{text-align:center;position:relative;margin:1.5rem 0}
+.divider-title::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border)}
+.divider-title span{background:var(--parchment);padding:0 1rem;position:relative;font-family:'Playfair Display',serif;color:var(--gold-dark);font-size:0.9rem;font-style:italic}
+
+/* INDEX */
+.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:1.5rem 0}
+.index-card{background:#fff;border:1px solid var(--border-light);padding:1.1rem;cursor:pointer;transition:all 0.2s;border-top:3px solid var(--blue-law)}
+.index-card:hover{box-shadow:3px 3px 12px var(--shadow);transform:translateY(-2px)}
+.index-card-num{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--gray-muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.35rem}
+.index-card-title{font-family:'Playfair Display',serif;font-size:1rem;color:var(--blue-law);font-weight:700;line-height:1.3;margin-bottom:0.5rem}
+.index-card-tags{display:flex;flex-wrap:wrap;gap:0.3rem}
+.tag{background:var(--parchment2);border:1px solid var(--border-light);color:var(--gray-muted);font-size:0.68rem;padding:0.15rem 0.4rem;font-family:'JetBrains Mono',monospace}
+
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:1.5rem}
+.search-input{width:100%;padding:0.75rem 1rem 0.75rem 2.5rem;border:1px solid var(--border);background:#fff;font-family:'Source Serif 4',serif;font-size:0.95rem;color:var(--ink)}
+.search-icon{position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--gray-muted);font-size:1rem}
+
+/* FOOTER */
+.footer{margin-top:3rem;padding:2rem;text-align:center;border-top:1px solid var(--border-light)}
+.footer-text{font-size:0.8rem;color:var(--gray-muted);font-style:italic}
+
+/* SCROLL */
+::-webkit-scrollbar{height:4px;width:4px}
+::-webkit-scrollbar-track{background:var(--parchment)}
+::-webkit-scrollbar-thumb{background:var(--border)}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">Material de Estudos · Direito Processual Civil</div>
+  <h1>Execução Civil<span>Código Comentado & Julgados</span></h1>
+  <p class="hero-sub">Material doutrinário, jurisprudencial e esquemático para graduação e pós-graduação em Direito</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">28</div><div class="hero-stat-label">Módulos</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">90+</div><div class="hero-stat-label">Súmulas</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">150+</div><div class="hero-stat-label">Julgados</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">CPC/15</div><div class="hero-stat-label">Legislação Base</div></div>
+  </div>
+</div>
+
+<div class="nav-wrapper">
+  <div class="nav">
+    <button class="nav-btn active" onclick="showSection('index')">📚 Índice Geral</button>
+    <button class="nav-btn" onclick="showSection('mod1')">§1 Liquidação</button>
+    <button class="nav-btn" onclick="showSection('mod2')">§2 Teoria Geral</button>
+    <button class="nav-btn" onclick="showSection('mod3')">§3 Princípios</button>
+    <button class="nav-btn" onclick="showSection('mod4')">§4 Título Exec.</button>
+    <button class="nav-btn" onclick="showSection('mod5')">§5 Resp. Patr.</button>
+    <button class="nav-btn" onclick="showSection('mod6')">§6 Fraudes</button>
+    <button class="nav-btn" onclick="showSection('mod7')">§7 Impenhor.</button>
+    <button class="nav-btn" onclick="showSection('mod8')">§8 Cumpr. Sent.</button>
+    <button class="nav-btn" onclick="showSection('mod9')">§9 Penhora</button>
+    <button class="nav-btn" onclick="showSection('mod10')">§10 Expropriação</button>
+    <button class="nav-btn" onclick="showSection('mod11')">§11 Alimentos</button>
+    <button class="nav-btn" onclick="showSection('mod12')">§12 Fazenda Públ.</button>
+    <button class="nav-btn" onclick="showSection('mod13')">§13 Obr. Fazer</button>
+    <button class="nav-btn" onclick="showSection('mod14')">§14 Embargos</button>
+    <button class="nav-btn" onclick="showSection('mod15')">§15 Temas Esp.</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ==================== ÍNDICE ==================== -->
+<div id="section-index" class="section active">
+  <div class="mod-header">
+    <div class="mod-number">Sumário Geral</div>
+    <div class="mod-title">Execução Civil — Visão Panorâmica</div>
+    <div class="mod-subtitle">Clique em qualquer módulo para navegação direta</div>
+  </div>
+
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="searchInput" type="text" placeholder="Buscar módulo, súmula ou tema..." oninput="filterCards()">
+  </div>
+
+  <div class="conceito">
+    <div class="conceito-titulo">⚖ O que é a Execução Civil?</div>
+    <div class="conceito-texto">A execução civil é a fase processual (ou processo autônomo) destinada à <strong>efetivação prática</strong> do direito reconhecido em título executivo — judicial ou extrajudicial. Enquanto o processo de conhecimento declara o direito, a execução o <em>realiza no plano dos fatos</em>, mediante mecanismos de coerção (multas, prisão em alimentos) e de sub-rogação (penhora, expropriação, adjudicação). O CPC/2015 abandonou a dicotomia rígida processo de conhecimento/execução, criando o <strong>cumprimento de sentença</strong> (fase sincrética) e mantendo o processo de execução autônomo apenas para títulos extrajudiciais e situações específicas.</div>
+  </div>
+
+  <div class="divider-title"><span>Estrutura do Estudo</span></div>
+
+  <div class="index-grid" id="indexGrid">
+    <div class="index-card" onclick="showSection('mod1')">
+      <div class="index-card-num">Módulo 01–02</div>
+      <div class="index-card-title">Liquidação de Sentença</div>
+      <div class="index-card-tags"><span class="tag">Art. 509–512</span><span class="tag">Tipos</span><span class="tag">Cálculo</span></div>
+    </div>
+    <div class="index-card" onclick="showSection('mod2')">
+      <div class="index-card-num">Módulo 03–04</div>
+      <div class="index-card-title">Teoria Geral da Execução e Tutela Executiva</div>
+      <div class="index-card-tags"><span class="tag">Art. 771–777</span><span class="tag">Crise</span><span class="tag">Efetividade</span></div>
+    </div>
+    <div class="index-card" onclick="showSection('mod3')">
+      <div class="index-card-num">Módulo 05</div>
+      <div class="index-card-title">Princípios e Regras Fundamentais</div>
+      <div class="index-card-tags"><span class="tag">Menor Gravosidade</span><span class="tag">Utilidade</span><span class="tag">STJ</span></div>
+    </div>
+    <div class="index-card" onclick="showSection('mod4')">
+      <div class="index-card-num">Módulo 06</div>
+      <div class="index-card-title">Título Executivo, Exigibilidade e Protesto</div>
+      <div class="index-card-tags"><span class="tag">Art. 783–786</span><span class="tag">Protesto</span><span class="tag">Julgados</span></div>
+    </div>
+    <div class="index-card" onclick="showSection('mod5')">
+      <div class="index-card-num">Módulo 07</div>
+      <div class="index-card-title">Responsabilidade Patrimonial</div>
+      <div class="index-card-tags"><span class="tag">Art. 789–796</span><span class="tag">Desconsideração</span><span class="tag">Súmulas</span></div>
+    </div>
+    <div class="index-card" onclick="showSection('mod6')">
+      <div class="index-card-num">Módulo 08</div>
+      <div class="index-card-title">Fraudes à Execução e ADA</div>
+      <div class="index-card-tags"><span class="tag">Art. 792</span><span class="tag">Boa-fé</span><span class="tag">Súmula 375</span></div>
+    </div>
+    <div class="index-card" onclick="showSection('mod7')">
+      <div class="index-card-num">Módulo 09</div>
+      <div class="index-card-title">Impenhorabilidades</div>
+      <div class="index-card-tags"><span class="tag">Art. 833</span><span class="tag">Bem de Família</span><span class="tag">Súmula 486</span></div>
+    </div>
+    <div class="index-card" onclick="showSection('mod8')">
+      <div class="index-card-num">Módulo 10–13</div>
+      <div class="index-card-title">Cumprimento de Sentença</div>
+      <div class="index-card-tags"><span class="tag">Art. 520–538</span><span class="tag">Impugnação</span><span class="tag">Provisório/Definitivo</span></div>
+    </div>
+    <div class="index-card" onclick="showSection('mod9')">
+      <div class="index-card-num">Módulo 14–18</div>
+      <div class="index-card-title">Penhora — Teoria Completa</div>
+      <div class="index-card-tags"><span class="tag">Art. 829–860</span><span class="tag">Ordem</span><span class="tag">BacenJud</span></div>
+    </div>
+    <div class="index-card" onclick="showSection('mod10')">
+      <div class="index-card-num">Módulo 19</div>
+      <div class="index-card-title">Avaliação, Adjudicação, Alienação</div>
+      <div class="index-card-tags"><span class="tag">Art. 870–903</span><span class="tag">Hasta</span><span class="tag">Leilão Eletrônico</span></div>
+    </div>
+    <div class="index-card" onclick="showSection('mod11')">
+      <div class="index-card-num">Módulo 20</div>
+      <div class="index-card-title">Obrigação de Prestar Alimentos</div>
+      <div class="index-card-tags"><span class="tag">Art. 528–533</span><span class="tag">Prisão</span><span class="tag">Desconto</span></div>
+    </div>
+    <div class="index-card" onclick="showSection('mod12')">
+      <div class="index-card-num">Módulo 21</div>
+      <div class="index-card-title">Execução contra a Fazenda Pública</div>
+      <div class="index-card-tags"><span class="tag">Art. 534–535</span><span class="tag">Precatório</span><span class="tag">RPV</span></div>
+    </div>
+    <div class="index-card" onclick="showSection('mod13')">
+      <div class="index-card-num">Módulo 22–23</div>
+      <div class="index-card-title">Obrig. de Fazer/Não Fazer/Entrega</div>
+      <div class="index-card-tags"><span class="tag">Art. 536–538</span><span class="tag">Astreintes</span><span class="tag">Atipicidade</span></div>
+    </div>
+    <div class="index-card" onclick="showSection('mod14')">
+      <div class="index-card-num">Módulo 24–25</div>
+      <div class="index-card-title">Embargos, Suspensão e Extinção</div>
+      <div class="index-card-tags"><span class="tag">Art. 914–924</span><span class="tag">Efeito Suspensivo</span><span class="tag">Extinção</span></div>
+    </div>
+    <div class="index-card" onclick="showSection('mod15')">
+      <div class="index-card-num">Módulos 26–28</div>
+      <div class="index-card-title">Temas Especiais: Desjudicialização, Fiscal, Tecnologia, Coletiva</div>
+      <div class="index-card-tags"><span class="tag">SREI</span><span class="tag">LEF</span><span class="tag">SERASAJUD</span></div>
+    </div>
+  </div>
+
+  <div class="divider-title"><span>Estrutura do CPC/2015 — Execução</span></div>
+
+  <div class="esquema">
+    <div class="esquema-titulo">Arquitetura Legislativa</div>
+    <ul class="tree">
+      <li><strong>Livro I — Processo de Conhecimento</strong>
+        <ul class="sub">
+          <li>Parte: Cumprimento de Sentença (arts. 513–538)</li>
+        </ul>
+      </li>
+      <li><strong>Livro II — Processo de Execução</strong> (arts. 771–925)
+        <ul class="sub">
+          <li>Título I — Disposições Gerais (arts. 771–788)</li>
+          <li>Título II — Execução por Quantia Certa (arts. 824–909)</li>
+          <li>Título III — Execução de Prestação Alimentícia (arts. 910–913)</li>
+          <li>Título IV — Embargos à Execução (arts. 914–920)</li>
+          <li>Título V — Suspensão e Extinção (arts. 921–925)</li>
+        </ul>
+      </li>
+      <li><strong>Lei 6.830/80</strong> — Execução Fiscal (LEF)</li>
+      <li><strong>Lei 5.478/68</strong> — Ação de Alimentos</li>
+    </ul>
+  </div>
+
+  <div class="julgado-box">
+    <div class="julgado-header">
+      <span class="julgado-badge">Tema Repetitivo</span>
+      <span class="julgado-tribunal">STJ — Tema 1.053</span>
+    </div>
+    <div class="julgado-ementa">Natureza jurídica do cumprimento de sentença: fase processual integrante do mesmo processo sincrético, não constituindo novo processo autônomo, razão pela qual não há incidência de custas processuais iniciais, salvo se previstas na lei estadual específica.</div>
+    <div class="julgado-ref">STJ, REsp 1.523.635/RS, Rel. Min. Paulo de Tarso Sanseverino, 2ª Seção, j. 28/11/2018</div>
+  </div>
+</div>
+
+<!-- ==================== MOD 1: LIQUIDAÇÃO ==================== -->
+<div id="section-mod1" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 01 · Arts. 509–512 CPC</div>
+    <div class="mod-title">Liquidação de Sentença</div>
+    <div class="mod-subtitle">Tipos, procedimentos, julgados e aspectos polêmicos</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 509</span>
+      <span class="art-title">Conceito, Cabimento e Formas de Liquidação</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Caput:</strong> "Quando a sentença condenar ao pagamento de quantia ilíquida, proceder-se-á à sua liquidação, a requerimento do credor ou do devedor, por arbitramento, quando determinado pela sentença, convencionado pelas partes ou exigido pela natureza do objeto da perícia, ou por procedimento comum, nos demais casos."</div>
+      <div class="conceito">
+        <div class="conceito-titulo">🔍 Conceito e Natureza Jurídica</div>
+        <div class="conceito-texto">A liquidação de sentença é a fase intermediária, situada entre a sentença condenatória ilíquida e o cumprimento de sentença, destinada a <strong>tornar certa, determinada e exigível</strong> a obrigação declarada. Não visa modificar o julgado (coisa julgada é intocável), mas apenas <em>quantificar</em> o objeto da condenação. É fase incidental do mesmo processo — não novo processo. Pressupõe: (a) sentença condenatória; (b) iliquidez da obrigação (valor não determinado); (c) requerimento da parte interessada.</div>
+      </div>
+
+      <div class="divider-title"><span>Três Espécies</span></div>
+
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Espécie</th><th>Cabimento</th><th>Procedimento</th><th>Prazo Médio</th></tr>
+          <tr><td><strong>Por Cálculo Aritmético</strong> (implícita)</td><td>Valor determinável por simples operação matemática sobre os dados já existentes nos autos</td><td>Credor apresenta memória de cálculo na petição de cumprimento (art. 524)</td><td>Inexistente — fase do cumprimento</td></tr>
+          <tr><td><strong>Por Arbitramento</strong> (art. 509, I)</td><td>Determinado pela sentença, convencionado pelas partes ou exigido pela natureza (ex.: indenização por dano estético)</td><td>Perícia com laudo do perito arbitrando o valor</td><td>30–120 dias (prazo do perito)</td></tr>
+          <tr><td><strong>Procedimento Comum</strong> (art. 509, II)</td><td>Demais casos — necessidade de produção de prova (ex.: lucros cessantes complexos, danos materiais não documentados)</td><td>Artigos de liquidação, resposta do réu, instrução, sentença de liquidação</td><td>Variável — cognição ampla</td></tr>
+        </table>
+      </div>
+
+      <div class="alert alert-warn">
+        <span class="alert-label">⚠ Ponto Crítico — Prova</span>
+        Na liquidação por procedimento comum, é VEDADO ao credor rediscutir os fatos já decididos na sentença (art. 509, §4º). A liquidação serve para <em>quantificar</em>, não para <em>reabrir o mérito</em>. Violação → improcedência liminar dos artigos de liquidação que extrapolem esse limite.
+      </div>
+
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 344</span></div>
+        <div class="sumula-text">A liquidação por forma diversa da estabelecida na sentença não oferece ofensa à coisa julgada.</div>
+        <div class="sumula-source">STJ · Súmula 344 · 2ª Seção · DJe 05/06/2007</div>
+      </div>
+
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Julgado</span><span class="julgado-tribunal">STJ · 3ª Turma</span></div>
+        <div class="julgado-ementa">A sentença genérica que condena ao pagamento de indenização por danos morais não necessita de liquidação, devendo o valor ser arbitrado pelo juiz na própria fase de cumprimento de sentença, aplicando os critérios de proporcionalidade e razoabilidade.</div>
+        <div class="julgado-tese">Tese: dano moral = valor líquido fixado em sentença. Não há liquidação.</div>
+        <div class="julgado-ref">STJ, REsp 1.236.078/RS, Rel. Min. Nancy Andrighi, j. 22/03/2011</div>
+      </div>
+
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Tema Rep.</span><span class="julgado-tribunal">STJ · Tema 480</span></div>
+        <div class="julgado-ementa">Na liquidação por arbitramento de sentença que condena ao pagamento de danos materiais decorrentes de acidente de trabalho, a perícia deve abranger todos os lucros cessantes desde a data do acidente até o momento da aposentadoria presumida.</div>
+        <div class="julgado-ref">STJ, REsp 1.184.973/MG, Rel. Min. Luis Felipe Salomão, 2ª Seção, j. 24/04/2013</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 510</span>
+      <span class="art-title">Liquidação na Pendência de Recurso</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Caput:</strong> "Na liquidação é vedado discutir de novo a lide ou modificar a sentença que a julgou."</div>
+      <div class="caput"><strong>Art. 510:</strong> "Na pendência de recurso, a liquidação será processada no juízo de origem, cumprindo ao liquidante instruir o pedido com cópias das peças necessárias."</div>
+      <div class="conceito">
+        <div class="conceito-titulo">📌 Liquidação Provisória</div>
+        <div class="conceito-texto">O CPC/2015 inova ao permitir expressamente a liquidação durante a pendência de recurso (antes era controvertido). A finalidade é <strong>antecipar a efetivação</strong> do direito, evitando que o tempo do processo prejudique o credor. O resultado serve para eventual cumprimento provisório de sentença (art. 520).</div>
+      </div>
+      <div class="dica">
+        <div class="dica-header">💡 Dica de Prova</div>
+        <div class="dica-text">A liquidação provisória ocorre no juízo de ORIGEM, mesmo que já haja recurso no Tribunal. O liquidante instrui o pedido com cópias das peças necessárias (certidões, cópias do processo). Diferencia-se do cumprimento provisório, que ocorre após a liquidação.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 511</span>
+      <span class="art-title">Recurso na Liquidação</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Caput:</strong> "Na liquidação por arbitramento, o juiz intimará as partes para a apresentação de pareceres ou documentos elucidativos, no prazo que fixar, e, caso não possa decidir de plano, nomeará perito, observando-se, no que couber, o procedimento da prova pericial."</div>
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 58</span></div>
+        <div class="sumula-text">Proposta a execução fiscal, a posterior mudança de domicílio do executado não desloca a competência já fixada.</div>
+        <div class="sumula-source">STJ · Súmula 58 (aplicável por analogia em liquidação incidental)</div>
+      </div>
+      <div class="alert alert-info">
+        <span class="alert-label">📋 Recurso cabível</span>
+        Da sentença de liquidação cabe APELAÇÃO (art. 512). A sentença de liquidação tem natureza interlocutória? NÃO — é sentença definitiva (resolve questão incidental de mérito — o valor). Logo: apelação, e não agravo.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOD 2: TEORIA GERAL ==================== -->
+<div id="section-mod2" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 02–03 · Arts. 771–788 CPC</div>
+    <div class="mod-title">Teoria Geral da Execução Civil</div>
+    <div class="mod-subtitle">Tutela executiva, devido processo legal, efetividade e crise</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">§ Teoria</span>
+      <span class="art-title">Conceito, Natureza e Fundamentos Constitucionais da Execução</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="conceito">
+        <div class="conceito-titulo">🏛 Fundamento Constitucional</div>
+        <div class="conceito-texto">A execução civil encontra seu fundamento na <strong>garantia de acesso à justiça</strong> (art. 5º, XXXV, CF) e no <strong>due process of law</strong> (art. 5º, LIV, CF). A doutrina moderna (Liebman, Marinoni, Didier Jr.) afirma que de nada vale o direito sem a efetiva possibilidade de realizá-lo no plano fático — o que Kazuo Watanabe denominou "acesso à ordem jurídica justa". O STF, no julgamento da ADI 1.098, reconheceu que o direito à execução integra o núcleo essencial do direito fundamental à tutela jurisdicional.</div>
+      </div>
+
+      <div class="esquema">
+        <div class="esquema-titulo">Classificação das Tutelas Executivas</div>
+        <ul class="tree">
+          <li><strong>Tutela Sub-rogatória (Execução direta)</strong>
+            <ul class="sub">
+              <li>Estado substitui a vontade do devedor — independe de sua colaboração</li>
+              <li>Ex.: penhora e expropriação de bem → pagamento ao credor</li>
+              <li>Entrega da coisa → busca e apreensão</li>
+              <li>Fazer fungível → terceiro às custas do devedor (art. 817)</li>
+            </ul>
+          </li>
+          <li><strong>Tutela Coercitiva (Execução indireta)</strong>
+            <ul class="sub">
+              <li>Pressiona a vontade do devedor para que cumpra voluntariamente</li>
+              <li>Multa periódica — astreintes (art. 537)</li>
+              <li>Prisão civil (alimentos)</li>
+              <li>Protesto, negativação, suspensão de CNH/passaporte (art. 139, IV)</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="alert alert-danger">
+        <span class="alert-label">🚨 Questão Polêmica — Art. 139, IV</span>
+        O CPC/2015 consagrou o poder geral de efetivação do juiz (art. 139, IV), permitindo medidas atípicas de coerção: bloqueio de passaporte, suspensão da CNH, cancelamento de cartão de crédito. O STJ (HC 478.963/SP, 2018) admitiu tais medidas, mas condicionou ao preenchimento de três requisitos: (1) inadimplemento injustificado; (2) esgotamento dos meios típicos; (3) proporcionalidade. O STF ainda não se pronunciou definitivamente sobre constitucionalidade.
+      </div>
+
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Julgado Histórico</span><span class="julgado-tribunal">STJ · Corte Especial</span></div>
+        <div class="julgado-ementa">A suspensão da CNH como medida de coerção indireta no cumprimento de sentença é admissível quando o devedor possui meios para pagar, mas se mantém deliberadamente inadimplente. O poder de efetivação do art. 139, IV, deve ser exercido subsidiariamente e com proporcionalidade.</div>
+        <div class="julgado-tese">Leading case: admissibilidade condicional das medidas atípicas de coerção.</div>
+        <div class="julgado-ref">STJ, HC 478.963/SP, Rel. Min. Luis Felipe Salomão, 4ª Turma, j. 05/06/2018</div>
+      </div>
+
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Julgado</span><span class="julgado-tribunal">STJ · 3ª Turma</span></div>
+        <div class="julgado-ementa">É inadmissível a apreensão de passaporte como medida executiva atípica quando o executado não dispõe de bens e sua inadimplência decorre de incapacidade financeira, e não de recusa dolosa ao pagamento.</div>
+        <div class="julgado-ref">STJ, HC 513.030/PR, Rel. Min. Marco Aurélio Bellizze, j. 19/05/2020</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">§ Crise</span>
+      <span class="art-title">A Crise da Execução Civil no Brasil</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="conceito">
+        <div class="conceito-titulo">📊 Diagnóstico: Por que a Execução Civil Falha?</div>
+        <div class="conceito-texto">Segundo o Relatório Justiça em Números 2023 (CNJ), os processos de execução representam <strong>77% do estoque pendente</strong> do Poder Judiciário. A taxa de congestionamento da execução é de 87% (contra 68% do conhecimento). As causas doutrinárias (Cassio Scarpinella Bueno, Fredie Didier Jr.) são: (a) insolvência endêmica dos devedores; (b) complexidade procedimental; (c) armamentos processuais defensivos do devedor; (d) ausência de cadastros patrimoniais unificados; (e) cultura de inadimplemento.</div>
+      </div>
+      <div class="dica">
+        <div class="dica-header">💡 Soluções do CPC/2015</div>
+        <div class="dica-text">• Integração SISBAJUD (antigo BacenJud) — penhora on-line em tempo real<br>• RENAJUD — restrição de veículos<br>• SERASAJUD — inserção em cadastro de negativação<br>• Art. 782, §3º — protesto extrajudicial do título judicial<br>• Art. 139, IV — poder geral de efetivação<br>• Desjudicialização (PL em tramitação)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 771</span>
+      <span class="art-title">Aplicação Subsidiária — Processo de Execução</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Caput:</strong> "Este Livro regula o procedimento da execução fundada em título extrajudicial, e suas disposições aplicam-se, também, ao cumprimento de sentença e aos procedimentos especiais de execução, no que couber."</div>
+      <div class="caput"><strong>Parágrafo único:</strong> "Aplicam-se subsidiariamente ao procedimento da execução as disposições do Livro I deste Código."</div>
+      <div class="conceito">
+        <div class="conceito-titulo">📌 Dupla Subsidiariedade</div>
+        <div class="conceito-texto">O art. 771 estabelece o sistema de <em>comunicação normativa</em> entre as fases do processo civil: (1) o Livro II (execução) se aplica subsidiariamente ao cumprimento de sentença; (2) o Livro I (conhecimento) se aplica subsidiariamente ao Livro II. Isso cria uma hierarquia: norma especial de execução → norma geral do CPC → analogia e costumes. Ex.: prazos, comunicações processuais, distribuição do ônus probatório — se ausente norma específica de execução, aplica-se o Livro I.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOD 3: PRINCÍPIOS ==================== -->
+<div id="section-mod3" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 03 · Principiologia</div>
+    <div class="mod-title">Princípios e Regras Fundamentais da Execução</div>
+    <div class="mod-subtitle">Sistematização doutrinária e jurisprudencial</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Princípios</span>
+      <span class="art-title">Quadro Geral dos Princípios da Execução Civil</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Princípio</th><th>Fundamento Legal</th><th>Conteúdo Essencial</th><th>Colisão/Limitação</th></tr>
+          <tr><td><strong>Nulla Executio Sine Titulo</strong></td><td>Art. 783 CPC</td><td>Toda execução exige título executivo (judicial ou extrajudicial). Sem título, não há execução.</td><td>Não sofre relativização — é pressuposto absoluto</td></tr>
+          <tr><td><strong>Menor Gravosidade ao Executado</strong></td><td>Art. 805 CPC</td><td>Entre meios igualmente eficazes de satisfazer o credor, deve-se optar pelo menos oneroso ao devedor.</td><td>Colide com o princípio da efetividade — exige equilíbrio</td></tr>
+          <tr><td><strong>Utilidade</strong></td><td>Art. 836 CPC</td><td>Não se admite penhora de bens que, pela dificuldade de alienação, não sejam aptos a satisfazer o credor.</td><td>Infringe se credor prefere o bem em detrimento do devedor</td></tr>
+          <tr><td><strong>Efetividade / Máxima Aptidão</strong></td><td>Art. 4º, §3º e Art. 139, IV</td><td>A execução deve resultar no resultado mais próximo ao adimplemento voluntário tempestivo.</td><td>Limitado pelo due process e proporcionalidade</td></tr>
+          <tr><td><strong>Contraditório Diferido</strong></td><td>Art. 5º, LV, CF</td><td>Na execução, o contraditório é mitigado — o devedor é citado após a penhora (quantia certa).</td><td>Reconhecido pelo STF como constitucional</td></tr>
+          <tr><td><strong>Responsabilidade Objetiva</strong></td><td>Art. 776 CPC</td><td>O exequente responde pelos danos causados ao executado quando a execução é extinta por acolhimento de embargos.</td><td>Independe de culpa — basta o nexo causal</td></tr>
+          <tr><td><strong>Proporcionalidade</strong></td><td>Art. 805, §único; Art. 8º</td><td>A medida executiva deve ser proporcional à dívida executada.</td><td>Fundamento para limitar medidas do art. 139, IV</td></tr>
+          <tr><td><strong>Especificidade</strong></td><td>Arts. 536–538</td><td>Preferência pela tutela específica (entrega da coisa, prestação do fato) em vez do equivalente pecuniário.</td><td>Cedível ao interesse do credor</td></tr>
+        </table>
+      </div>
+
+      <div class="alert alert-warn">
+        <span class="alert-label">⚠ Princípio da Menor Gravosidade — Ônus da Prova</span>
+        O devedor que invoca o art. 805 deve INDICAR outros meios mais eficazes e menos onerosos. Não pode simplesmente recusar a penhora realizada — deve propor substitutivo. STJ, Súmula 417: "Na execução civil, a penhora de dinheiro na ordem de nomeação de bens não tem caráter absoluto."
+      </div>
+
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 417</span></div>
+        <div class="sumula-text">Na execução civil, a penhora de dinheiro na ordem de nomeação de bens não tem caráter absoluto.</div>
+        <div class="sumula-source">STJ · Súmula 417 · 1ª Seção · DJe 04/10/2010</div>
+      </div>
+
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 435</span></div>
+        <div class="sumula-text">Presume-se dissolvida irregularmente a empresa que deixar de funcionar no seu domicílio fiscal, sem comunicação aos órgãos competentes, legitimando o redirecionamento da execução fiscal para o sócio-gerente.</div>
+        <div class="sumula-source">STJ · Súmula 435 · 1ª Seção · DJe 14/04/2010</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOD 4: TÍTULO EXECUTIVO ==================== -->
+<div id="section-mod4" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 04 · Arts. 783–788 CPC</div>
+    <div class="mod-title">Título Executivo, Exigibilidade e Protesto</div>
+    <div class="mod-subtitle">Classificação, requisitos e aspectos polêmicos</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 783</span>
+      <span class="art-title">Pressupostos da Execução — Tríplice Requisito</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Caput:</strong> "A execução para cobrança de crédito fundar-se-á sempre em título de obrigação certa, líquida e exigível."</div>
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Requisito</th><th>Conceito</th><th>Consequência da Ausência</th></tr>
+          <tr><td><strong>Certeza</strong></td><td>A obrigação existe e é devida — o <em>an debeatur</em> (se deve) está definido</td><td>Impossibilidade jurídica do pedido → extinção do processo</td></tr>
+          <tr><td><strong>Liquidez</strong></td><td>O valor é determinado ou determinável por simples cálculo aritmético — o <em>quantum debeatur</em> (quanto deve) é conhecido</td><td>Liquidação prévia necessária (arts. 509–512)</td></tr>
+          <tr><td><strong>Exigibilidade</strong></td><td>A obrigação é atual — não está suspensa por termo, condição, ou exceção dilatória</td><td>Processo prematuro → extinção sem resolução do mérito</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 784</span>
+      <span class="art-title">Títulos Executivos Extrajudiciais — Rol Taxativo</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 784, Rol dos Títulos Extrajudiciais:</strong></div>
+      <ul class="incisos">
+        <li><strong>I —</strong> Letra de câmbio, nota promissória, duplicata, debênture e cheque</li>
+        <li><strong>II —</strong> Escritura pública ou outro documento público assinado pelo devedor</li>
+        <li><strong>III —</strong> Documento particular assinado pelo devedor e por 2 testemunhas</li>
+        <li><strong>IV —</strong> Instrumento de transação referendado pelo MP, Defensoria, PGE ou OAB</li>
+        <li><strong>V —</strong> Contrato garantido por hipoteca, penhor, anticrese ou outro direito real</li>
+        <li><strong>VI —</strong> Contrato de seguro de vida em caso de morte</li>
+        <li><strong>VII —</strong> Crédito decorrente de foro e laudêmio</li>
+        <li><strong>VIII —</strong> Crédito, documentalmente comprovado, constituído por cessão de crédito</li>
+        <li><strong>IX —</strong> Crédito referente às contribuições ordinárias ou extraordinárias de condomínio edilício</li>
+        <li><strong>X —</strong> Certidão de dívida ativa (título extrajudicial fazendário)</li>
+        <li><strong>XI —</strong> Todos os demais títulos aos quais, por disposição expressa, a lei atribuir força executiva</li>
+      </ul>
+
+      <div class="alert alert-info">
+        <span class="alert-label">📌 Rol Taxativo ou Exemplificativo?</span>
+        O STJ pacificou: o rol do art. 784 é TAXATIVO (numerus clausus). Não se pode criar título executivo extrajudicial por analogia ou vontade das partes, salvo se lei expressamente o fizer (art. 784, XI). A autonomia privada não pode criar título executivo.
+      </div>
+
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 233</span></div>
+        <div class="sumula-text">O contrato de abertura de crédito, ainda que acompanhado de extrato da conta-corrente, não é título executivo.</div>
+        <div class="sumula-source">STJ · Súmula 233 · 2ª Seção · DJ 01/08/2000</div>
+      </div>
+
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 258</span></div>
+        <div class="sumula-text">A nota promissória vinculada a contrato de abertura de crédito não goza de autonomia em razão da liquidez do título que a originou.</div>
+        <div class="sumula-source">STJ · Súmula 258 · 2ª Seção · DJ 27/09/2000</div>
+      </div>
+
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Tema Rep.</span><span class="julgado-tribunal">STJ · Tema 1.108</span></div>
+        <div class="julgado-ementa">O crédito decorrente de taxa condominial (art. 784, IX, CPC) tem natureza de obrigação propter rem, vinculada ao imóvel, sendo exigível tanto do proprietário quanto do promissário comprador com imissão de posse, independentemente de registro do contrato.</div>
+        <div class="julgado-ref">STJ, REsp 1.737.007/SP, Rel. Min. Luis Felipe Salomão, 2ª Seção, j. 10/12/2021</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 782</span>
+      <span class="art-title">Protesto Extrajudicial do Título Judicial</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 782, §3º:</strong> "O exequente poderá obter certidão de que a execução foi admitida pelo juiz, com identificação das partes e do valor da causa, para fins de averbação no registro de imóveis, de veículos ou de outros bens sujeitos a registro."</div>
+      <div class="caput"><strong>§1º:</strong> "Ressalvado o caso do inciso IV do art. 9º, o juiz poderá, a requerimento do exequente, determinar o protesto do pronunciamento judicial."</div>
+      <div class="conceito">
+        <div class="conceito-titulo">📌 Inovação do CPC/2015 — Protesto da Decisão Judicial</div>
+        <div class="conceito-texto">O CPC/2015 inovou ao permitir o <strong>protesto extrajudicial de decisões judiciais</strong> (sentenças e acórdãos) como medida coercitiva indireta, antes restrito aos títulos extrajudiciais. A finalidade é a pressão psicológica sobre o devedor por meio da negativação, sem necessidade de aguardar penhora. Cabe tanto no cumprimento de sentença quanto no processo de execução.</div>
+      </div>
+      <div class="dica">
+        <div class="dica-header">💡 Requisito para o Protesto</div>
+        <div class="dica-text">O juiz protesta a requerimento — não de ofício. A certidão emitida pelo juízo é levada ao Cartório de Protestos pelo credor. O devedor protestado tem nome inserido em cadastros de inadimplentes (SPC, SERASA). O STJ admite cancelamento do protesto mediante pagamento integral (REsp 1.635.678).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOD 5: RESP. PATRIMONIAL ==================== -->
+<div id="section-mod5" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 05 · Arts. 789–796 CPC</div>
+    <div class="mod-title">Responsabilidade Patrimonial</div>
+    <div class="mod-subtitle">Extensão, limites e desconsideração da personalidade jurídica</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 789</span>
+      <span class="art-title">Responsabilidade Patrimonial Primária</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Caput:</strong> "O devedor responde com todos os seus bens presentes e futuros para o cumprimento de suas obrigações, salvo as restrições estabelecidas em lei."</div>
+      <div class="conceito">
+        <div class="conceito-titulo">🔍 Princípio da Responsabilidade Patrimonial Universal</div>
+        <div class="conceito-texto">Historicamente (Roma Antiga), a execução recaía sobre a <em>pessoa</em> do devedor (execução pessoal — <em>manus iniectio</em>). O direito moderno substituiu pela execução patrimonial: responde o <em>patrimônio</em>, não o corpo. O art. 789 consagra a responsabilidade universal: bens presentes E futuros. Exceções: impenhorabilidades (art. 833), bem de família (Lei 8.009/90), patrimônio afetado (fundos de investimento, trust, patrimônio de afetação imobiliária).</div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Tipo</th><th>Conceito</th><th>Fundamentação</th></tr>
+          <tr><td><strong>Responsabilidade Primária</strong></td><td>O próprio devedor responde com seus bens (devedor = responsável)</td><td>Art. 789 CPC</td></tr>
+          <tr><td><strong>Responsabilidade Secundária</strong></td><td>Terceiro que não é devedor, mas responde com seus bens (ex.: sócio, fiador, cônjuge meeiro)</td><td>Art. 790 CPC</td></tr>
+          <tr><td><strong>Responsabilidade por Desconsideração</strong></td><td>Sócio/administrador responde pelo abuso da personalidade jurídica</td><td>Art. 50 CC; Art. 133–137 CPC; Art. 28 CDC</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 790</span>
+      <span class="art-title">Responsabilidade Patrimonial Secundária — Terceiros</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 790:</strong> "São sujeitos à execução os bens: I — do sucessor a título singular, tratando-se de execução fundada em direito real ou obrigação reipersecutória; II — do sócio, nos termos da lei; III — do devedor, ainda que em poder de terceiros; IV — do cônjuge ou companheiro, nos casos em que seus bens próprios, reservados ou de sua meação respondem pela dívida; V — alienados ou gravados com ônus real em fraude à execução; VI — cuja alienação ou gravação com ônus real tenha sido anulada em razão do reconhecimento, em ação autônoma, de fraude contra credores; VII — do responsável, nos casos de desconsideração da personalidade jurídica."</div>
+
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Tema Rep.</span><span class="julgado-tribunal">STJ · Tema 931</span></div>
+        <div class="julgado-ementa">Na execução fiscal, o redirecionamento ao sócio-gerente exige a demonstração de que ele exercia a gerência ao tempo do fato gerador. O simples inadimplemento tributário não configura infração à lei suficiente para responsabilização pessoal do sócio (art. 135, III, CTN).</div>
+        <div class="julgado-ref">STJ, REsp 1.377.019/SP, Rel. Min. Og Fernandes, 1ª Seção, j. 26/02/2014</div>
+      </div>
+
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 430</span></div>
+        <div class="sumula-text">O inadimplemento da obrigação tributária pela sociedade não gera, por si só, a responsabilidade solidária do sócio-gerente.</div>
+        <div class="sumula-source">STJ · Súmula 430 · 1ª Seção · DJe 26/03/2010</div>
+      </div>
+
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 486</span></div>
+        <div class="sumula-text">É impenhorável o único imóvel residencial do devedor que esteja locado a terceiros, desde que a renda obtida seja revertida para a subsistência ou a moradia da sua família.</div>
+        <div class="sumula-source">STJ · Súmula 486 · 2ª Seção · DJe 01/02/2012</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Arts. 133–137</span>
+      <span class="art-title">Desconsideração da Personalidade Jurídica — IDPJ</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="conceito">
+        <div class="conceito-titulo">🔍 Incidente de Desconsideração — Procedimento</div>
+        <div class="conceito-texto">O CPC/2015 criou o <strong>Incidente de Desconsideração da Personalidade Jurídica (IDPJ)</strong>, regulado nos arts. 133–137. A desconsideração deixou de ser decidida por simples despacho e passou a ter procedimento próprio, com contraditório prévio. Há duas modalidades: (1) <em>desconsideração direta</em> — atingir bens dos sócios por dívida da empresa (art. 50 CC); (2) <em>desconsideração inversa</em> — atingir bens da empresa por dívida do sócio (art. 50, §3º CC).</div>
+      </div>
+      <div class="esquema">
+        <div class="esquema-titulo">Procedimento do IDPJ (arts. 133–137)</div>
+        <ul class="tree">
+          <li>Requerimento do interessado (credor) ou do MP (art. 133)</li>
+          <li>Instauração do incidente → SUSPENDE o processo principal (art. 134, §3º)</li>
+          <li>Citação do sócio/empresa para manifestação em 15 dias (art. 135)</li>
+          <li>Instrução probatória se necessária (art. 136)</li>
+          <li>Decisão interlocutória (recorrível por agravo de instrumento — art. 1.015, IV)</li>
+          <li>Se acolhido: sócio passa a integrar o polo passivo → penhora de seus bens</li>
+        </ul>
+      </div>
+      <div class="alert alert-warn">
+        <span class="alert-label">⚠ Exceção ao Contraditório Prévio</span>
+        O STJ e o CPC (art. 134, §2º) permitem que o pedido de desconsideração seja formulado na própria petição inicial, caso em que NÃO haverá suspensão do processo — a citação do sócio ocorre junto com a do réu principal.
+      </div>
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Tema Rep.</span><span class="julgado-tribunal">STJ · Tema 1.200</span></div>
+        <div class="julgado-ementa">No Código de Defesa do Consumidor, a desconsideração da personalidade jurídica (art. 28, §5º) prescinde de comprovação de abuso de personalidade, bastando a insolvência da empresa e o prejuízo ao consumidor — teoria menor da desconsideração.</div>
+        <div class="julgado-ref">STJ, REsp 1.658.648/SP, Rel. Min. Nancy Andrighi, 3ª Turma, j. 07/12/2017</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOD 6: FRAUDES ==================== -->
+<div id="section-mod6" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 06 · Arts. 792–793 CPC</div>
+    <div class="mod-title">Fraudes à Execução e Ato Atentatório</div>
+    <div class="mod-subtitle">Fraude à execução, fraude contra credores e ato atentatório à dignidade da justiça</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 792</span>
+      <span class="art-title">Fraude à Execução — Conceito e Hipóteses</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="conceito">
+        <div class="conceito-titulo">⚖ Fraude à Execução vs. Fraude contra Credores</div>
+        <div class="conceito-texto">A fraude à execução difere fundamentalmente da fraude contra credores pauliana: (1) na <em>fraude contra credores</em> (art. 158 CC), não há processo em curso — a ação anulatória (pauliana) é ação autônoma; na <em>fraude à execução</em>, há processo judicial pendente. (2) Na fraude à execução, a ineficácia do ato é automática (ipso iure), declarada pelo próprio juiz da execução; na pauliana, exige ação autônoma com sentença desconstitutiva. (3) Na fraude à execução, não cabe ação distinta — é matéria de incidente processual.</div>
+      </div>
+
+      <div class="caput"><strong>Art. 792:</strong> "A alienação ou a oneração de bem é considerada fraude à execução: I — quando sobre o bem pender ação fundada em direito real ou com pretensão reipersecutória, desde que a pendência do processo tenha sido averbada no respectivo registro público, se houver; II — quando tiver sido averbada, no registro do bem, a pendência do processo de execução; III — quando tiver sido averbado, no registro do bem, hipoteca judiciária ou outro ato de constrição judicial originário do processo onde foi arguida a fraude; IV — quando, ao tempo da alienação ou da oneração, tramitava contra o devedor ação capaz de reduzi-lo à insolvência; V — nos demais casos expressos em lei."</div>
+
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 375</span></div>
+        <div class="sumula-text">O reconhecimento da fraude à execução depende do registro da penhora do bem alienado ou da prova de má-fé do terceiro adquirente.</div>
+        <div class="sumula-source">STJ · Súmula 375 · 1ª Seção · DJe 30/03/2009</div>
+      </div>
+
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Tema Rep.</span><span class="julgado-tribunal">STJ · Tema 243</span></div>
+        <div class="julgado-ementa">A averbação da certidão de ajuizamento da execução no registro de imóveis (art. 792, §1º, CPC) gera presunção absoluta (iure et de iure) de ciência do terceiro adquirente quanto à existência da execução, dispensando prova de má-fé.</div>
+        <div class="julgado-tese">Tese: averbação = presunção absoluta de má-fé do adquirente.</div>
+        <div class="julgado-ref">STJ, REsp 956.943/PR, Rel. Min. Nancy Andrighi, 2ª Seção, j. 20/08/2012</div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Critério</th><th>Fraude à Execução (art. 792)</th><th>Fraude contra Credores (art. 158 CC)</th></tr>
+          <tr><td>Momento</td><td>Durante a pendência de processo</td><td>Antes do processo — apenas credor prejudicado</td></tr>
+          <tr><td>Processo para reconhecimento</td><td>Incidente no próprio processo de execução</td><td>Ação pauliana autônoma (anulatória)</td></tr>
+          <tr><td>Efeito</td><td>Ineficácia automática — ato não produce efeitos contra credor</td><td>Anulabilidade — ato anulado pela sentença</td></tr>
+          <tr><td>Necessidade de má-fé</td><td>Prescindível se houver averbação (presunção absoluta)</td><td>Exige consilium fraudis (devedor) + eventus damni</td></tr>
+          <tr><td>Bem para terceiro adquirente</td><td>Mantém a propriedade — ato apenas ineficaz para o credor</td><td>Perde a propriedade — ato anulado</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 774</span>
+      <span class="art-title">Ato Atentatório à Dignidade da Justiça</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 774:</strong> "Considera-se atentatória à dignidade da justiça a conduta comissiva ou omissiva do executado que: I — frauda a execução; II — se opõe maliciosamente à execução, empregando ardis e meios artificiosos; III — dificulta ou embaraça a penhora; IV — resiste injustificadamente às ordens judiciais; V — intimado, não indica ao juiz quais são e onde estão os bens sujeitos à penhora e seus respectivos valores."</div>
+      <div class="par">
+        <div class="par-num">Parágrafo único</div>
+        "Nos casos previstos neste artigo, o juiz fixará multa em montante não superior a vinte por cento do valor atualizado do débito em execução, a qual será revertida em proveito do exequente, exigível nos próprios autos do processo, sem prejuízo de outras sanções de natureza processual ou material."
+      </div>
+      <div class="alert alert-danger">
+        <span class="alert-label">🚨 Multa do ADA — Características</span>
+        A multa do art. 774 (ADA): (1) Máximo de 20% do débito; (2) Revertida ao EXEQUENTE (não ao Estado — diferente da litigância de má-fé); (3) Cumulável com multa do art. 139, IV; (4) Não exige demonstração de dano; (5) Pode ser executada nos mesmos autos.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOD 7: IMPENHORABILIDADES ==================== -->
+<div id="section-mod7" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 07 · Art. 833 CPC e Lei 8.009/90</div>
+    <div class="mod-title">Impenhorabilidades</div>
+    <div class="mod-subtitle">Bens impenhoráveis absolutas e relativas — exceções e jurisprudência</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 833</span>
+      <span class="art-title">Bens Absolutamente Impenhoráveis</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 833:</strong> "São impenhoráveis: I — os bens inalienáveis e os declarados, por ato voluntário, não sujeitos à execução; II — os móveis, os pertences e as utilidades domésticas que guarnecem a residência do executado, salvo os de elevado valor ou os que ultrapassem as necessidades comuns correspondentes a um médio padrão de vida; III — os vestuários, bem como os pertences de uso pessoal do executado, salvo se de elevado valor; IV — os vencimentos, os subsídios, os soldos, os salários, as remunerações, os proventos de aposentadoria, as pensões, os pecúlios e os montepios, bem como as quantias recebidas por liberalidade de terceiro e destinadas ao sustento do devedor e de sua família, os ganhos de trabalhador autônomo e os honorários de profissional liberal..."</div>
+
+      <div class="divider-title"><span>Quadro das Impenhorabilidades</span></div>
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Inciso</th><th>Bem Impenhorável</th><th>Exceção</th></tr>
+          <tr><td>I</td><td>Bens inalienáveis e os declarados por vontade do credor</td><td>Inexistente — impenhorabilidade absoluta</td></tr>
+          <tr><td>II</td><td>Móveis da residência</td><td>Elevado valor ou além do padrão médio</td></tr>
+          <tr><td>IV</td><td>Salários, vencimentos, proventos, aposentadoria (até 50 SM)</td><td>Dívida alimentar; depósito > 40 SM em conta; parcela acima de 50 SM</td></tr>
+          <tr><td>VI</td><td>Seguro de vida</td><td>Inexistente</td></tr>
+          <tr><td>VIII</td><td>Pequena propriedade rural familiar</td><td>Inexistente</td></tr>
+          <tr><td>X</td><td>Quantia depositada em caderneta de poupança até 40 SM</td><td>Acima de 40 SM é penhorável</td></tr>
+        </table>
+      </div>
+
+      <div class="alert alert-warn">
+        <span class="alert-label">⚠ Penhora de Salário — Evolução Jurisprudencial</span>
+        O STJ revisou sua posição: a impenhorabilidade do salário (art. 833, IV) NÃO é absoluta. O Tema 1.146 do STJ (REsp 1.789.913) admite penhora de salário acima de 50 salários mínimos, e o STF (ARE 1.307.386, Tema 1230) admite penhora de percentual do salário para dívidas civis (não só alimentares), desde que não comprometa subsistência digna do devedor — análise casuística.
+      </div>
+
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 364</span></div>
+        <div class="sumula-text">O conceito de impenhorabilidade de bem de família abrange também o imóvel pertencente a pessoas solteiras, separadas e viúvas.</div>
+        <div class="sumula-source">STJ · Súmula 364 · 3ª Seção · DJe 07/10/2009</div>
+      </div>
+
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 486</span></div>
+        <div class="sumula-text">É impenhorável o único imóvel residencial do devedor que esteja locado a terceiros, desde que a renda obtida seja revertida para a subsistência ou a moradia da sua família.</div>
+        <div class="sumula-source">STJ · Súmula 486 · 2ª Seção · DJe 01/02/2012</div>
+      </div>
+
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 449</span></div>
+        <div class="sumula-text">A vaga de garagem que possui matrícula própria no registro de imóveis não constitui bem de família para efeito de penhora.</div>
+        <div class="sumula-source">STJ · Súmula 449 · 2ª Seção · DJe 06/05/2011</div>
+      </div>
+
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">STF · Plenário</span><span class="julgado-tribunal">ARE 1.307.386 — Tema 1230</span></div>
+        <div class="julgado-ementa">É constitucional a penhora de parcela do salário para satisfação de dívida de natureza não alimentar, quando o percentual penhorado não compromete a subsistência digna do executado e de sua família, independentemente de a dívida ter natureza alimentar.</div>
+        <div class="julgado-tese">Superação da impenhorabilidade absoluta do salário — análise do caso concreto.</div>
+        <div class="julgado-ref">STF, ARE 1.307.386/SP, Rel. Min. Alexandre de Moraes, Plenário, j. 23/06/2022 (repercussão geral)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Lei 8.009/90</span>
+      <span class="art-title">Bem de Família Legal — Exceções Taxativas</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="conceito">
+        <div class="conceito-titulo">🏠 Bem de Família Legal vs. Convencional</div>
+        <div class="conceito-texto">O bem de família <em>legal</em> (Lei 8.009/90) protege automaticamente o imóvel residencial único, independentemente de registro ou manifestação de vontade. O bem de família <em>convencional</em> (arts. 1.711–1.722 CC) exige escritura pública e registro — protege família com bem de maior valor, mas tem prazo de 5 anos para que bens antigos sejam blindados. A Lei 8.009/90 prevalece sobre o CC.</div>
+      </div>
+      <div class="alert alert-danger">
+        <span class="alert-label">🚨 Exceções à Impenhorabilidade do Bem de Família (Art. 3º, Lei 8.009/90)</span>
+        Não são protegidos pelo bem de família: (I) créditos de trabalhadores da própria residência e das respectivas contribuições previdenciárias; (II) financiamento adquirido para construção ou aquisição do imóvel; (III) pensão alimentícia; (IV) cobrança de impostos, predial ou territorial, taxas e contribuições devidas em função do imóvel familiar; (V) execução de hipoteca sobre o imóvel oferecido como garantia real pelo casal ou pela entidade familiar; (VI) por ter sido adquirido com produto de crime ou para execução de sentença penal condenatória a ressarcimento, indenização ou perdimento de bens; (VII) por obrigação decorrente de fiança concedida em contrato de locação — EXCEÇÃO mais cobrada!
+      </div>
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 549</span></div>
+        <div class="sumula-text">É válida a penhora de bem de família pertencente a fiador de contrato de locação.</div>
+        <div class="sumula-source">STJ · Súmula 549 · 2ª Seção · DJe 15/12/2015 — confirmada pelo STF: RE 612.360</div>
+      </div>
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">STF · Plenário</span><span class="julgado-tribunal">RE 612.360 — Repercussão Geral</span></div>
+        <div class="julgado-ementa">É constitucional a penhora do bem de família do fiador no contrato de locação. O direito à moradia do fiador deve ceder ao direito ao crédito e à habitação do locatário, que também encontra proteção constitucional. O legislador realizou adequada ponderação ao estabelecer a exceção do art. 3º, VII, da Lei 8.009/90.</div>
+        <div class="julgado-ref">STF, RE 612.360/SP, Rel. Min. Ellen Gracie, Plenário, j. 14/02/2013</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOD 8: CUMPRIMENTO ==================== -->
+<div id="section-mod8" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 08 · Arts. 520–538 CPC</div>
+    <div class="mod-title">Cumprimento de Sentença</div>
+    <div class="mod-subtitle">Provisório, definitivo, impugnação e aspectos práticos</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 513</span>
+      <span class="art-title">Disposições Gerais do Cumprimento de Sentença</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 513:</strong> "O cumprimento da sentença será feito segundo as regras deste Título, observando-se, no que couber e conforme a natureza da obrigação, o disposto no Livro II da Parte Especial deste Código."</div>
+      <div class="esquema">
+        <div class="esquema-titulo">Espécies de Títulos Executivos Judiciais (art. 515)</div>
+        <ul class="tree">
+          <li>Decisões proferidas no processo civil que reconheçam obrigação (I)</li>
+          <li>Decisão homologatória de autocomposição judicial (II)</li>
+          <li>Decisão homologatória de autocomposição extrajudicial (III)</li>
+          <li>Formal e certidão de partilha (IV)</li>
+          <li>Crédito de auxiliar da justiça (V)</li>
+          <li>Sentença penal condenatória (VI)</li>
+          <li>Sentença arbitral (VII)</li>
+          <li>Sentença estrangeira homologada pelo STJ (VIII)</li>
+          <li>Decisão interlocutória estrangeira convalidada pelo STJ (IX)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 520</span>
+      <span class="art-title">Cumprimento Provisório de Sentença</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 520:</strong> "O cumprimento provisório da sentença impugnada por recurso desprovido de efeito suspensivo será realizado da mesma forma que o cumprimento definitivo, sujeitando-se ao seguinte regime: I — corre por iniciativa e responsabilidade do exequente, que se obriga, se a sentença for reformada, a reparar os danos que o executado haja sofrido; II — fica sem efeito, sobrevindo decisão que modifique ou anule a sentença objeto da execução, restituindo-se as partes ao estado anterior e liquidando-se eventuais prejuízos nos mesmos autos; III — se a sentença objeto de cumprimento provisório for modificada ou anulada apenas em parte, somente nessa parte ficará sem efeito a execução."</div>
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Aspecto</th><th>Cumprimento Provisório</th><th>Cumprimento Definitivo</th></tr>
+          <tr><td>Pressuposto</td><td>Sentença impugnada por recurso sem efeito suspensivo</td><td>Sentença transitada em julgado</td></tr>
+          <tr><td>Iniciativa</td><td>Exequente (risco próprio)</td><td>Exequente ou de ofício (alimentos)</td></tr>
+          <tr><td>Caução</td><td>Exigível para levantamento de dinheiro e alienação de bens (art. 520, IV)</td><td>Não exigível</td></tr>
+          <tr><td>Consequência se reformada</td><td>Desfazimento + responsabilidade objetiva do exequente</td><td>Ação rescisória (irreversível em regra)</td></tr>
+          <tr><td>Levantamento de dinheiro</td><td>Condicionado à caução (salvo valor inferior a 60 SM — art. 521)</td><td>Livre após penhora e arrematação</td></tr>
+        </table>
+      </div>
+
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Tema Rep.</span><span class="julgado-tribunal">STJ · Tema 1.012</span></div>
+        <div class="julgado-ementa">No cumprimento provisório de sentença, a responsabilidade do exequente pelos danos causados ao executado é objetiva, prescindindo de culpa, bastando a reforma ou anulação da sentença provisoriamente executada. O dever de reparar é automático e abrange juros, correção e honorários.</div>
+        <div class="julgado-ref">STJ, REsp 1.891.589/RS, Rel. Min. Nancy Andrighi, 3ª Turma, j. 16/03/2021</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 523</span>
+      <span class="art-title">Cumprimento Definitivo — Multa e Honorários</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 523:</strong> "No caso de condenação em quantia certa, ou já fixada em liquidação, e no caso de decisão sobre parcela incontroversa, o cumprimento definitivo da sentença far-se-á a requerimento do exequente, sendo o executado, após intimação de seu advogado, ou do seu representante legal, ou pessoalmente, por carta com aviso de recebimento, quando não tiver procurador constituído nos autos, para pagar o débito, no prazo de 15 (quinze) dias, acrescido de custas, se houver."</div>
+      <div class="par">
+        <div class="par-num">§1º</div>
+        "Não ocorrendo pagamento voluntário no prazo do caput, o débito será acrescido de multa de dez por cento e, também, de honorários de advogado de dez por cento."
+      </div>
+      <div class="par">
+        <div class="par-num">§2º</div>
+        "Efetuado o pagamento parcial no prazo previsto no caput, a multa e os honorários previstos no §1º incidirão sobre o restante."
+      </div>
+      <div class="alert alert-danger">
+        <span class="alert-label">🚨 Prazo de 15 dias — Início da Contagem</span>
+        O prazo de 15 dias do art. 523 conta-se da intimação do devedor. O STJ fixou: a intimação é do ADVOGADO do devedor (via portal eletrônico ou Diário de Justiça), e não do devedor pessoalmente — salvo ausência de advogado constituído nos autos. A multa de 10% e honorários de 10% são automáticos pelo simples inadimplemento, sem necessidade de nova decisão judicial.
+      </div>
+
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 517</span></div>
+        <div class="sumula-text">São devidos honorários advocatícios no cumprimento de sentença, haja ou não impugnação, depois de escoado o prazo para pagamento voluntário, que se inicia após a intimação do advogado da parte executada.</div>
+        <div class="sumula-source">STJ · Súmula 517 · Corte Especial · DJe 19/06/2015</div>
+      </div>
+
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Tema Rep.</span><span class="julgado-tribunal">STJ · Tema 1.049</span></div>
+        <div class="julgado-ementa">A multa do art. 523, §1º, CPC incide sobre o valor do débito principal atualizado à data do vencimento do prazo de 15 dias para pagamento voluntário, e não sobre o valor da condenação na sentença. Os honorários do cumprimento são autonomamente fixados nos próprios autos.</div>
+        <div class="julgado-ref">STJ, REsp 1.850.283/PR, Rel. Min. Marco Aurélio Bellizze, 3ª Turma, j. 05/10/2021</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 525</span>
+      <span class="art-title">Impugnação ao Cumprimento de Sentença</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 525:</strong> "Transcorrido o prazo previsto no art. 523 sem o pagamento voluntário, inicia-se o prazo de 15 (quinze) dias para que o executado, independentemente de penhora ou nova intimação, apresente, nos próprios autos, sua impugnação."</div>
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Aspecto</th><th>Impugnação (art. 525)</th><th>Embargos à Execução (art. 914)</th></tr>
+          <tr><td>Cabimento</td><td>Cumprimento de sentença (título judicial)</td><td>Execução por título extrajudicial</td></tr>
+          <tr><td>Prazo</td><td>15 dias da intimação da penhora ou após os 15 dias do art. 523</td><td>15 dias da juntada do AR ou edital (art. 915)</td></tr>
+          <tr><td>Efeito suspensivo</td><td>Regra: não suspende. Exceção: art. 525, §6º (garantido o juízo + probabilidade)</td><td>Regra: não suspende. Exceção: art. 919, §1º</td></tr>
+          <tr><td>Penhora prévia</td><td>NÃO exige — apresenta independentemente</td><td>NÃO exige (art. 914, §1º — inovação CPC/15)</td></tr>
+          <tr><td>Natureza</td><td>Incidente do cumprimento</td><td>Ação autônoma (processo incidental)</td></tr>
+          <tr><td>Matérias alegáveis</td><td>Art. 525, §1º (rol taxativo)</td><td>Art. 917 (mais amplo)</td></tr>
+        </table>
+      </div>
+      <div class="esquema">
+        <div class="esquema-titulo">Matérias da Impugnação (art. 525, §1º — taxativo)</div>
+        <ul class="tree">
+          <li>I — falta ou nulidade da citação se o processo correu à revelia</li>
+          <li>II — ilegitimidade de parte</li>
+          <li>III — inexequibilidade do título ou inexigibilidade da obrigação</li>
+          <li>IV — penhora incorreta ou avaliação errônea</li>
+          <li>V — excesso de execução ou cumulação indevida de execuções</li>
+          <li>VI — incompetência absoluta ou relativa do juízo da execução</li>
+          <li>VII — qualquer causa modificativa ou extintiva da obrigação (pagamento, novação, compensação, transação, prescrição — desde que supervenientes à sentença)</li>
+        </ul>
+      </div>
+      <div class="alert alert-warn">
+        <span class="alert-label">⚠ Exceção da Inconstitucionalidade na Impugnação — Art. 525, §12</span>
+        Uma das grandes inovações do CPC/2015: o executado pode alegar na impugnação que a norma jurídica aplicada na sentença transitada em julgado é INCONSTITUCIONAL (declarada em controle concentrado pelo STF ou em controle difuso com súmula vinculante). A coisa julgada cede à força normativa da Constituição. Prazo: 2 anos do trânsito em julgado da decisão do STF.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOD 9: PENHORA ==================== -->
+<div id="section-mod9" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 09 · Arts. 829–860 CPC</div>
+    <div class="mod-title">Penhora — Teoria Completa</div>
+    <div class="mod-subtitle">Conceito, ordem, realização, tipos especiais e modificação</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">§ Teoria</span>
+      <span class="art-title">Conceito, Natureza e Funções da Penhora</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="conceito">
+        <div class="conceito-titulo">📌 Penhora — Definição Técnica</div>
+        <div class="conceito-texto">A penhora é o ato executivo de <strong>individualização, apreensão e depósito</strong> de bem do devedor destinado à satisfação do credor. É ato de afetação: o bem fica vinculado ao processo de execução, sendo subtraído do poder dispositivo do devedor. A penhora não transfere a propriedade — apenas <em>afeta o bem</em> à satisfação do crédito. Funções: (a) individualizar os bens que responderão pela dívida; (b) conservar os bens para a expropriação; (c) garantir a execução.</div>
+      </div>
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Função</th><th>Conteúdo</th><th>Consequência Prática</th></tr>
+          <tr><td><strong>Individualizadora</strong></td><td>Seleciona quais bens do patrimônio serão sacrificados</td><td>Protege os demais bens do devedor</td></tr>
+          <tr><td><strong>Conservadora</strong></td><td>Impede alienação, oneração ou dilapidação do bem</td><td>Fraude à execução se alienado após penhora</td></tr>
+          <tr><td><strong>Garantidora</strong></td><td>Assegura que o produto da execução satisfará o credor</td><td>Preferência do credor penhorante sobre credores quirografários</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 835</span>
+      <span class="art-title">Ordem Legal de Penhora</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 835:</strong> "A penhora observará, preferencialmente, a seguinte ordem: I — dinheiro, em espécie ou em depósito ou aplicação em instituição financeira; II — títulos da dívida pública da União, Estados e DF; III — títulos e valores mobiliários; IV — veículos de via terrestre; V — bens imóveis; VI — bens móveis em geral; VII — semoventes; VIII — navios e aeronaves; IX — ações e quotas de sociedades simples e empresárias; X — percentual do faturamento de empresa devedora; XI — pedras e metais preciosos; XII — direitos aquisitivos derivados de promessa de compra e venda e de alienação fiduciária em garantia; XIII — outros direitos."</div>
+      <div class="alert alert-info">
+        <span class="alert-label">📌 Preferência do Dinheiro — Art. 835, §1º</span>
+        O dinheiro tem preferência absoluta (§1º: "É prioritária a penhora em dinheiro"). O juiz pode determinar penhora em dinheiro mesmo que o devedor indique outro bem — a ordem é vinculante quanto ao dinheiro. Isso justifica o uso do SISBAJUD (antigo BacenJud) como primeiro mecanismo.
+      </div>
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 406</span></div>
+        <div class="sumula-text">A Fazenda Pública pode recusar a substituição do bem penhorado por precatório.</div>
+        <div class="sumula-source">STJ · Súmula 406 · 1ª Seção · DJe 23/10/2009</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 854</span>
+      <span class="art-title">SISBAJUD — Penhora On-line de Ativos Financeiros</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 854:</strong> "Para possibilitar a penhora de dinheiro em depósito ou em aplicação financeira, o juiz, a requerimento do exequente, sem dar ciência prévia ao executado, determinará às instituições financeiras, por meio de sistema eletrônico gerido pela autoridade supervisora do sistema financeiro nacional, que tornem indisponíveis ativos financeiros existentes em nome do executado, limitando-se a indisponibilidade ao valor indicado na execução."</div>
+      <div class="conceito">
+        <div class="conceito-titulo">💻 SISBAJUD — Sistema de Busca de Ativos do Poder Judiciário</div>
+        <div class="conceito-texto">O SISBAJUD (sucessor do BacenJud) é o sistema eletrônico que interliga o Poder Judiciário ao Banco Central e às instituições financeiras, permitindo bloqueio e penhora em tempo real de ativos financeiros. Operado pelo CNJ. Características: (a) ordem judicial diretamente ao Bacen; (b) bloqueio imediato de conta; (c) sem ciência prévia do devedor (inaudita altera parte); (d) prazo de 24h para as instituições responderem; (e) possibilidade de desbloqueio em 24h para valores que excedam a dívida.</div>
+      </div>
+      <div class="dica">
+        <div class="dica-header">💡 Dupla Constrição — Proteção ao Devedor</div>
+        <div class="dica-text">O art. 854, §1º: se a indisponibilidade recair sobre salário ou impenhorável, o devedor tem 5 dias para demonstrar isso ao juiz, que liberará imediatamente. O sistema pode bloquear salário por engano — cabe ao devedor demonstrar a impenhorabilidade após o bloqueio.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Penhoras Esp.</span>
+      <span class="art-title">Penhoras Típicas e Especiais</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Modalidade</th><th>Artigo</th><th>Características Especiais</th></tr>
+          <tr><td>Penhora de Imóvel</td><td>Art. 845, I</td><td>Auto de penhora + lavratura pelo oficial; averbação no CRI obrigatória; cônjuge: meação protegida</td></tr>
+          <tr><td>Penhora de Empresa e Faturamento</td><td>Art. 866</td><td>Nomeado depositário-administrador; percentual do faturamento (≤30%); não pode paralisar atividade</td></tr>
+          <tr><td>Penhora de Percentual do Faturamento</td><td>Art. 835, X</td><td>Apresentação de balanço mensal; juiz fixa o percentual</td></tr>
+          <tr><td>Penhora de Créditos</td><td>Arts. 855–860</td><td>Sub-roga o credor nos direitos do executado; intimação ao devedor do executado</td></tr>
+          <tr><td>Penhora de Quotas/Ações</td><td>Arts. 861–865</td><td>Dissolução parcial possível; preferência dos sócios; prazo 3 meses para deliberação</td></tr>
+          <tr><td>Penhora de Navio/Aeronave</td><td>Art. 845, II</td><td>Registro em autoridade marítima/aeronáutica; depósito especial</td></tr>
+        </table>
+      </div>
+
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Julgado</span><span class="julgado-tribunal">STJ · 2ª Seção</span></div>
+        <div class="julgado-ementa">A penhora do percentual do faturamento da empresa deve observar proporcionalidade, não podendo comprometer a continuidade das atividades empresariais. O juiz deve fixar percentual razoável (habitualmente de 5% a 10%) com base nos balanços apresentados.</div>
+        <div class="julgado-ref">STJ, REsp 1.698.510/SP, Rel. Min. Ricardo Villas Bôas Cueva, 3ª Turma, j. 13/11/2018</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOD 10: EXPROPRIAÇÃO ==================== -->
+<div id="section-mod10" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 10 · Arts. 870–903 CPC</div>
+    <div class="mod-title">Avaliação, Adjudicação, Alienação e Expropriação</div>
+    <div class="mod-subtitle">Fases da expropriação executiva — ordem e procedimento</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Arts. 870–875</span>
+      <span class="art-title">Avaliação dos Bens Penhorados</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="conceito">
+        <div class="conceito-titulo">📌 Avaliação — Momento e Competência</div>
+        <div class="conceito-texto">A avaliação é o ato processual que define o <em>valor de mercado</em> do bem penhorado para servir de base à expropriação. Realizada: (a) pelo oficial de justiça, quando o valor for estimável por simples inspeção (art. 870, §1º); (b) por perito avaliador nomeado pelo juiz, nos casos mais complexos. A avaliação é condição para a expropriação — sem ela, o leilão é nulo.</div>
+      </div>
+      <div class="dica">
+        <div class="dica-header">💡 Dispensa de Avaliação — Art. 871</div>
+        <div class="dica-text">Dispensa-se a avaliação quando: (I) o executado aceitar o valor de aquisição como válido; (II) se tratar de títulos ou mercadorias com cotação em bolsa, verificada no dia da penhora; (III) o exequente renunciar à avaliação; (IV) quando a natureza do bem for de valor certo, como dinheiro, títulos da dívida pública ou aplicações financeiras.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Arts. 876–878</span>
+      <span class="art-title">Adjudicação — Modalidade Preferencial</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 876:</strong> "É lícito ao exequente, oferecendo preço não inferior ao da avaliação, requerer lhe sejam adjudicados os bens penhorados."</div>
+      <div class="conceito">
+        <div class="conceito-titulo">⚖ Adjudicação como Primeira Modalidade</div>
+        <div class="conceito-texto">A adjudicação é a <strong>forma preferencial</strong> de expropriação no CPC/2015. O credor recebe o próprio bem em pagamento da dívida (datio in solutum judicial). Vantagem: evita o leilão (que envolve custos, riscos e demora). Tem preferência sobre alienação por iniciativa particular e hasta pública. Legitimados para requerer: exequente, coproprietário do bem, credor com garantia real, cônjuge/filhos do executado. O preço mínimo é o da avaliação.</div>
+      </div>
+      <div class="esquema">
+        <div class="esquema-titulo">Ordem das Formas de Expropriação (Art. 825)</div>
+        <ul class="tree">
+          <li><strong>1ª — Adjudicação</strong> (art. 876): credor recebe o bem — dívida extinta</li>
+          <li><strong>2ª — Alienação por Iniciativa Particular</strong> (art. 879, I): corretor ou leiloeiro contratado pelo exequente</li>
+          <li><strong>3ª — Alienação em Hasta Pública</strong> (art. 879, II): leilão público eletrônico ou presencial</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Arts. 879–903</span>
+      <span class="art-title">Alienação e Hasta Pública — Leilão Eletrônico</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="conceito">
+        <div class="conceito-titulo">💻 Leilão Eletrônico — Inovação CPC/2015</div>
+        <div class="conceito-texto">O CPC/2015 priorizou o leilão eletrônico (art. 882, §2º), realizado por leiloeiros habilitados em sites credenciados. Vantagens: maior publicidade, disputa em tempo real, menores custos, evita vício de colusão entre presentes. A Resolução CNJ n. 236/2016 disciplina o leilão judicial eletrônico.</div>
+      </div>
+      <div class="alert alert-warn">
+        <span class="alert-label">⚠ Preço Vil — Art. 891</span>
+        É VEDADA a arrematação por preço vil (art. 891). O CPC/2015 define: considera-se vil o preço inferior a 50% do valor da avaliação (§único). O juiz não homologará a arrematação por preço vil — pode anular de ofício. Divergência: doutrina discute se 50% é o único parâmetro, ou se o juiz pode considerar vil valor acima de 50% dependendo das circunstâncias.
+      </div>
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 375</span></div>
+        <div class="sumula-text">O reconhecimento da fraude à execução depende do registro da penhora do bem alienado ou da prova de má-fé do terceiro adquirente.</div>
+        <div class="sumula-source">STJ · Súmula 375 · 1ª Seção · DJ 31/03/2009</div>
+      </div>
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Julgado</span><span class="julgado-tribunal">STJ · 4ª Turma</span></div>
+        <div class="julgado-ementa">A arrematação em hasta pública realizada por preço inferior a 50% do valor da avaliação não gera nulidade automática — deve-se analisar se houve efetiva publicidade do leilão, se não havia outros interessados, e se a ratio do mercado justifica o deságio. A regra do art. 891, §único, é presunção relativa de preço vil.</div>
+        <div class="julgado-ref">STJ, REsp 1.721.975/SP, Rel. Min. Luis Felipe Salomão, 4ª Turma, j. 12/03/2019</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOD 11: ALIMENTOS ==================== -->
+<div id="section-mod11" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 11 · Arts. 528–533 e 910–913 CPC</div>
+    <div class="mod-title">Obrigação de Prestar Alimentos</div>
+    <div class="mod-subtitle">Cumprimento de sentença e execução — prisão civil e desconto em folha</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 528</span>
+      <span class="art-title">Cumprimento de Sentença de Alimentos — Modalidades</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 528:</strong> "No cumprimento de sentença que condene ao pagamento de prestação alimentícia ou de decisão interlocutória que fixe alimentos, o juiz, a requerimento do exequente, mandará intimar o executado pessoalmente para, em 3 (três) dias, pagar o débito, provar que o fez ou justificar a impossibilidade de efetuá-lo."</div>
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Modalidade</th><th>Prazo</th><th>Requisitos</th><th>Observação</th></tr>
+          <tr><td><strong>Prisão civil</strong> (art. 528, §3º)</td><td>Regime fechado, 1–3 meses</td><td>Alimentos: só das 3 últimas parcelas + vencidas no curso do processo</td><td>Prisão por dívida — única hipótese constitucional (art. 5º, LXVII, CF). Não é pena — é coerção</td></tr>
+          <tr><td><strong>Desconto em folha</strong> (art. 529)</td><td>Imediato — ofício ao empregador</td><td>Empregado com vínculo formal; até 50% dos vencimentos líquidos</td><td>Melhor para o credor — automático e recorrente</td></tr>
+          <tr><td><strong>Constituição de capital</strong> (art. 533)</td><td>Fixado na sentença</td><td>Alimentos provisionais ou definitivos — risco de insolvência do devedor</td><td>Caução para garantir futuras prestações</td></tr>
+          <tr><td><strong>Coerção atípica</strong> (art. 139, IV)</td><td>Liminar ou incidental</td><td>Inadimplemento reiterado; esgotamento dos meios típicos</td><td>Suspensão de passaporte, CNH — controverso</td></tr>
+        </table>
+      </div>
+      <div class="alert alert-danger">
+        <span class="alert-label">🚨 Prisão Civil — Limitação das Parcelas</span>
+        A prisão civil NÃO se aplica a todas as parcelas em atraso — apenas às 3 (três) últimas antes do ajuizamento e às que vencerem no curso do processo (art. 528, §7º). Para as parcelas mais antigas (pretérito remoto), a execução se faz pelo rito comum (penhora e expropriação), SEM prisão civil. STJ: Súmula 309.
+      </div>
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 309</span></div>
+        <div class="sumula-text">O débito alimentar que autoriza a prisão civil do alimentante é o que compreende as três prestações anteriores ao ajuizamento da execução e as que se vencerem no curso do processo.</div>
+        <div class="sumula-source">STJ · Súmula 309 · 2ª Seção · DJe 08/05/2006</div>
+      </div>
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Tema Rep.</span><span class="julgado-tribunal">STJ · Tema 1.182</span></div>
+        <div class="julgado-ementa">O devedor de alimentos pode ser preso em regime domiciliar quando não houver estabelecimento adequado ao cumprimento da prisão civil, especialmente quando portador de doença que demande cuidados médicos incompatíveis com o regime fechado.</div>
+        <div class="julgado-ref">STJ, HC 628.190/RS, Rel. Min. Nancy Andrighi, 3ª Turma, j. 06/04/2021</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOD 12: FAZENDA PÚBLICA ==================== -->
+<div id="section-mod12" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 12 · Arts. 534–535 e 910 CPC · Art. 100 CF</div>
+    <div class="mod-title">Execução contra a Fazenda Pública</div>
+    <div class="mod-subtitle">Precatório, RPV, impugnação e regras especiais</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 100 CF + Arts. 534–535</span>
+      <span class="art-title">Sistema de Precatórios e RPV</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="conceito">
+        <div class="conceito-titulo">🏛 Regime Especial da Fazenda Pública</div>
+        <div class="conceito-texto">A Fazenda Pública (União, Estados, DF, Municípios e respectivas autarquias e fundações) goza de regime especial de execução: NÃO se admite penhora de bens públicos (impenhorabilidade absoluta — art. 100, CF), sendo o pagamento realizado pela via orçamentária dos <strong>precatórios</strong> (dívidas de grande valor) ou das <strong>RPVs — Requisições de Pequeno Valor</strong> (dívidas até o teto definido em lei de cada ente).</div>
+      </div>
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Aspecto</th><th>Precatório</th><th>RPV</th></tr>
+          <tr><td>Valor limite</td><td>Acima do teto da RPV</td><td>União: 60 SM / Estados: 40 SM / Municípios: 30 SM (art. 100, §3º e §4º CF)</td></tr>
+          <tr><td>Prazo de pagamento</td><td>Até o final do exercício seguinte à expedição</td><td>60 dias da expedição (art. 535, §3º)</td></tr>
+          <tr><td>Natureza</td><td>Ordem de pagamento inscrita no orçamento</td><td>Requisição direta ao Tribunal</td></tr>
+          <tr><td>Cessão</td><td>Possível (cessão de precatório — art. 100, §13º CF)</td><td>Vedada (intransmissível)</td></tr>
+          <tr><td>Preferência</td><td>Ordem cronológica (salvo alimentares e idosos)</td><td>Cronológica mas mais ágil</td></tr>
+        </table>
+      </div>
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">STF · Plenário</span><span class="julgado-tribunal">RE 1.232.157 — Tema 1.247</span></div>
+        <div class="julgado-ementa">É inconstitucional a criação de subtetos estaduais de RPV por emenda constitucional estadual com valor inferior ao teto federal. O art. 100, §4º, CF estabelece que estados e municípios podem fixar valores próprios, mas não inferiores ao mínimo constitucional de 40 e 30 SM respectivamente.</div>
+        <div class="julgado-ref">STF, RE 1.232.157/RS, Rel. Min. Roberto Barroso, Plenário, j. 14/10/2021</div>
+      </div>
+      <div class="alert alert-warn">
+        <span class="alert-label">⚠ Impugnação da Fazenda — Art. 535, §1º</span>
+        Na impugnação ao cumprimento de sentença pela Fazenda, além das matérias do art. 525, §1º, ela pode alegar: excesso de execução e falta de observância do art. 100, CF (sequência do precatório). O prazo é de 30 dias (não 15 dias — regime diferenciado pelo art. 535, caput).
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOD 13: OBRIGAÇÕES DE FAZER ==================== -->
+<div id="section-mod13" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 13 · Arts. 536–538 CPC</div>
+    <div class="mod-title">Obr. de Fazer, Não Fazer e Entrega de Coisa</div>
+    <div class="mod-subtitle">Tutela específica, astreintes e poder geral de efetivação</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 536</span>
+      <span class="art-title">Obrigação de Fazer e Não Fazer — Tutela Específica</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 536:</strong> "No cumprimento de sentença que reconheça a exigibilidade de obrigação de fazer ou de não fazer, o juiz poderá, de ofício ou a requerimento, para a efetivação da tutela específica ou a obtenção de tutela pelo resultado prático equivalente, determinar as medidas necessárias à satisfação do exequente."</div>
+      <div class="caput"><strong>§1º:</strong> "Para atender ao disposto no caput, o juiz poderá determinar, entre outras medidas, a imposição de multa, a busca e apreensão, a remoção de pessoas e coisas, o desfazimento de obras e o impedimento de atividade nociva, podendo, caso necessário, requisitar o auxílio de força policial."</div>
+
+      <div class="conceito">
+        <div class="conceito-titulo">📌 Astreintes — Multa Periódica (Art. 537)</div>
+        <div class="conceito-texto">A multa periódica (astreinte) é o principal mecanismo de coerção indireta para obrigações de fazer e não fazer. Características: (a) fixada de ofício pelo juiz; (b) valor e periodicidade fixados na sentença ou no cumprimento; (c) devida desde o trânsito em julgado ou da decisão que a fixar; (d) pode ser modificada pelo juiz (art. 537, §1º) se tornar-se insuficiente ou excessiva; (e) é da parte, não do Estado; (f) conta a partir do descumprimento.</div>
+      </div>
+
+      <div class="alert alert-info">
+        <span class="alert-label">📋 Limite das Astreintes — STJ</span>
+        O STJ admite a redução de astreintes exorbitantes por violação à proporcionalidade e vedação ao enriquecimento sem causa (art. 884 CC). Contudo, não há teto legal — o valor deve ser suficiente para coagir o devedor. Súmula 410: "A prévia intimação pessoal do devedor constitui condição necessária para a cobrança de multa pelo descumprimento de obrigação de fazer ou não fazer."
+      </div>
+
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 410</span></div>
+        <div class="sumula-text">A prévia intimação pessoal do devedor constitui condição necessária para a cobrança de multa pelo descumprimento de obrigação de fazer ou não fazer.</div>
+        <div class="sumula-source">STJ · Súmula 410 · 2ª Seção · DJe 02/09/2010</div>
+      </div>
+
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Tema Rep.</span><span class="julgado-tribunal">STJ · Tema 706</span></div>
+        <div class="julgado-ementa">A multa cominatória (astreinte) não se limita ao valor da obrigação principal. A função da astreinte é coercitiva e não indenizatória, podendo superar o valor da obrigação principal. Contudo, valores absurdamente desproporcionais podem ser reduzidos pelo tribunal, observada a razoabilidade.</div>
+        <div class="julgado-ref">STJ, REsp 1.352.848/SP, Rel. Min. Herman Benjamin, 2ª Seção, j. 09/04/2014</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOD 14: EMBARGOS ==================== -->
+<div id="section-mod14" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 14 · Arts. 914–925 CPC</div>
+    <div class="mod-title">Embargos à Execução, Suspensão e Extinção</div>
+    <div class="mod-subtitle">Único meio de defesa do executado no processo autônomo</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Art. 914</span>
+      <span class="art-title">Embargos à Execução — Natureza e Cabimento</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="caput"><strong>Art. 914:</strong> "O executado, independentemente de penhora, depósito ou caução, poderá se opor à execução por meio de embargos."</div>
+      <div class="conceito">
+        <div class="conceito-titulo">⚖ Natureza Jurídica dos Embargos</div>
+        <div class="conceito-texto">Os embargos à execução são ação autônoma de conhecimento que corre em apenso ao processo de execução. Têm natureza constitutiva negativa (quando buscam extinção do título) ou declaratória (quando alegam excesso). O executado é autor dos embargos; o exequente é réu. A decisão dos embargos é sentença (recorrível por apelação — art. 1.009). Os embargos NÃO suspendem automaticamente a execução — exigem decisão judicial específica (art. 919).</div>
+      </div>
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Aspecto</th><th>Regra (CPC/2015)</th><th>Exceção</th></tr>
+          <tr><td>Penhora prévia</td><td>NÃO exigida — embargos independem (art. 914)</td><td>Para efeito suspensivo: garantia do juízo necessária (art. 919, §1º)</td></tr>
+          <tr><td>Prazo</td><td>15 dias da juntada do AR de citação ou do edital (art. 915)</td><td>Litisconsorte: prazo do último citado</td></tr>
+          <tr><td>Efeito suspensivo</td><td>NÃO automático — requer decisão (art. 919)</td><td>Garantia do juízo + probabilidade de êxito (art. 919, §1º)</td></tr>
+          <tr><td>Matérias</td><td>Rol amplo do art. 917 (não taxativo)</td><td>-</td></tr>
+          <tr><td>Recurso</td><td>Apelação (art. 1.009)</td><td>Sem efeito suspensivo (art. 1.012, §1º, III)</td></tr>
+        </table>
+      </div>
+      <div class="esquema">
+        <div class="esquema-titulo">Matérias Alegáveis nos Embargos (Art. 917)</div>
+        <ul class="tree">
+          <li>I — inexequibilidade do título ou inexigibilidade da obrigação</li>
+          <li>II — penhora incorreta ou avaliação errônea</li>
+          <li>III — excesso de execução ou cumulação indevida</li>
+          <li>IV — retenção por benfeitorias necessárias ou úteis, nos casos de entrega de coisa certa</li>
+          <li>V — incompetência absoluta ou relativa do juízo da execução</li>
+          <li>VI — qualquer matéria que lhe seria lícito deduzir como defesa em processo de conhecimento</li>
+        </ul>
+      </div>
+      <div class="alert alert-danger">
+        <span class="alert-label">🚨 Preclusão nos Embargos — Art. 916 (Parcelamento)</span>
+        O executado pode depositar 30% do valor da execução e requerer o parcelamento do restante em até 6 parcelas mensais, ficando obstado de apresentar embargos (art. 916). Se optar pelo parcelamento, PERDE o direito de embargar — trata-se de escolha: ou embarga, ou parcela.
+      </div>
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Tema Rep.</span><span class="julgado-tribunal">STJ · Tema 1.000</span></div>
+        <div class="julgado-ementa">A ausência de garantia do juízo não é causa de inadmissibilidade dos embargos à execução no CPC/2015. A exigência de penhora para o efeito suspensivo (art. 919) não se confunde com o pressuposto de admissibilidade dos embargos (art. 914), que independem de qualquer garantia.</div>
+        <div class="julgado-ref">STJ, REsp 1.871.230/SP, Rel. Min. Paulo de Tarso Sanseverino, 3ª Turma, j. 23/03/2021</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Arts. 921–925</span>
+      <span class="art-title">Suspensão e Extinção do Processo de Execução</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Hipótese</th><th>Tipo</th><th>Artigo</th><th>Efeito</th></tr>
+          <tr><td>Parcelamento (art. 916)</td><td>Suspensão</td><td>Art. 921, I</td><td>Processo suspenso enquanto parcelas pagas</td></tr>
+          <tr><td>Embargos com efeito suspensivo</td><td>Suspensão</td><td>Art. 919 c/c art. 921, II</td><td>Execução paralisada até julgamento dos embargos</td></tr>
+          <tr><td>Ausência de bens penhoráveis</td><td>Suspensão</td><td>Art. 921, III</td><td>Suspensão por 1 ano → prescrição intercorrente</td></tr>
+          <tr><td>Força maior ou caso fortuito</td><td>Suspensão</td><td>Art. 921, IV</td><td>Temporária</td></tr>
+          <tr><td>Satisfação da obrigação</td><td>Extinção</td><td>Art. 924, I</td><td>Extinção com resolução do mérito</td></tr>
+          <tr><td>Prescrição intercorrente</td><td>Extinção</td><td>Art. 924, V</td><td>Após 1 ano de suspensão + prazo prescricional</td></tr>
+        </table>
+      </div>
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 619</span></div>
+        <div class="sumula-text">A ausência de intimação do devedor para o início do prazo de prescrição intercorrente, prevista no art. 921, §1º do CPC/2015, é causa de nulidade da decisão que declara a prescrição.</div>
+        <div class="sumula-source">STJ · Súmula 619 · 1ª Seção · DJe 22/02/2018 (com adaptações ao CPC/2015)</div>
+      </div>
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Tema Rep.</span><span class="julgado-tribunal">STJ · Tema 566</span></div>
+        <div class="julgado-ementa">Na execução fiscal, o prazo de prescrição intercorrente tem início com a ciência da Fazenda Pública acerca da não localização do devedor ou de bens penhoráveis. A intimação do credor é pressuposto do início da contagem do prazo intercorrente, que não pode ser declarado sem tal ciência.</div>
+        <div class="julgado-ref">STJ, REsp 1.340.553/RS, Rel. Min. Mauro Campbell Marques, 1ª Seção, j. 12/09/2018</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOD 15: TEMAS ESPECIAIS ==================== -->
+<div id="section-mod15" class="section">
+  <div class="mod-header">
+    <div class="mod-number">Módulo 15 · Temas Especiais</div>
+    <div class="mod-title">Desjudicialização, Fiscal, Tecnologia e Coletiva</div>
+    <div class="mod-subtitle">Fronteiras contemporâneas da execução civil</div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Desj.</span>
+      <span class="art-title">Desjudicialização da Execução Civil</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="conceito">
+        <div class="conceito-titulo">🔍 O Movimento de Desjudicialização</div>
+        <div class="conceito-texto">A desjudicialização da execução propõe transferir atos executivos para agentes extrajudiciais (cartorários, agentes de execução), liberando o Judiciário para funções jurisdicionais. Inspirado no modelo português (agente de execução) e espanhol. No Brasil, tramita o PL 6.204/2019 (SREI — Sistema de Registro de Execuções Imobiliárias) e o PL 2.732/2022, que cria o agente de execução. A arbitragem já admite execução direta de sentença arbitral (título executivo judicial — art. 515, VII, CPC).</div>
+      </div>
+      <div class="dica">
+        <div class="dica-header">💡 Modelos Comparados</div>
+        <div class="dica-text">Portugal: Agente de Execução (solicitador ou advogado) pratica atos de penhora e alienação — juiz apenas supervisiona. França: Huissier de Justice realiza a execução forçada extrajudicialmente. Alemanha: Gerichtsvollzieher (oficial executivo) é servidor especializado em atos de execução. EUA: Sheriff realiza a execução de ordens judiciais. O Brasil ainda não adotou o modelo — o debate é intenso no CJF e ENFAM.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">LEF</span>
+      <span class="art-title">Execução Fiscal — Lei 6.830/80</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="conceito">
+        <div class="conceito-titulo">📌 Execução Fiscal — Lex Specialis</div>
+        <div class="conceito-texto">A execução fiscal (Lei 6.830/80) é o processo especial para cobrança de créditos tributários e não tributários da Fazenda Pública. Tem regime próprio que prevalece sobre o CPC — subsidiária aplicação do CPC apenas no que a LEF for omissa (art. 1º, LEF). Característica central: a <strong>Certidão de Dívida Ativa (CDA)</strong> é título executivo extrajudicial que presume certeza, liquidez e exigibilidade — o devedor tem ônus de provar sua invalidade nos embargos fiscais.</div>
+      </div>
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Aspecto</th><th>Execução Civil (CPC)</th><th>Execução Fiscal (LEF)</th></tr>
+          <tr><td>Título</td><td>Rol do art. 784</td><td>CDA — art. 2º, LEF</td></tr>
+          <tr><td>Embargos</td><td>Independem de penhora</td><td>Exigem garantia do juízo — art. 16, LEF</td></tr>
+          <tr><td>Redirecionamento</td><td>IDPJ — arts. 133–137</td><td>Art. 135, CTN — sócio-gerente</td></tr>
+          <tr><td>Prescrição intercorrente</td><td>Art. 921, III — 1 ano + prazo</td><td>Tema 566 STJ — específico</td></tr>
+          <tr><td>Competência</td><td>Regra geral CPC</td><td>Foro do domicílio do devedor (art. 578, CPC)</td></tr>
+        </table>
+      </div>
+      <div class="sumula-box">
+        <div class="sumula-header"><span class="sumula-badge">Súmula STJ</span><span class="sumula-title">Súmula 393</span></div>
+        <div class="sumula-text">A exceção de pré-executividade é admissível na execução fiscal relativamente às matérias conhecíveis de ofício que não demandem dilação probatória.</div>
+        <div class="sumula-source">STJ · Súmula 393 · 1ª Seção · DJe 23/09/2009</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Tecnologia</span>
+      <span class="art-title">Tecnologia e Ferramentas de Execução</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="table-wrap">
+        <table class="law-table">
+          <tr><th>Ferramenta</th><th>Finalidade</th><th>Base Legal</th><th>Gestão</th></tr>
+          <tr><td><strong>SISBAJUD</strong></td><td>Bloqueio e penhora de ativos financeiros</td><td>Art. 854 CPC; Resolução CNJ 547/23</td><td>CNJ / Banco Central</td></tr>
+          <tr><td><strong>RENAJUD</strong></td><td>Restrição e penhora de veículos</td><td>Resolução CNJ 57/2008</td><td>CNJ / SENATRAN</td></tr>
+          <tr><td><strong>SERASAJUD</strong></td><td>Inserção em cadastro de inadimplentes</td><td>Art. 782, §3º CPC; Resolução CNJ 208/2015</td><td>CNJ / SERASA</td></tr>
+          <tr><td><strong>CENSEC</strong></td><td>Central de Escrituras — patrimônio offline</td><td>Provimento CNJ 18/2012</td><td>CNJ / Notariado</td></tr>
+          <tr><td><strong>CNIB</strong></td><td>Central Nacional de Indisponibilidade de Bens</td><td>Provimento CNJ 39/2014</td><td>CNJ / CJF</td></tr>
+          <tr><td><strong>CCS (Bacen)</strong></td><td>Cadastro de Clientes do Sistema Financeiro Nacional</td><td>Convênio judicial</td><td>Banco Central</td></tr>
+        </table>
+      </div>
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">Julgado</span><span class="julgado-tribunal">STJ · 3ª Turma</span></div>
+        <div class="julgado-ementa">A negativação do devedor junto ao SERASA, por meio do SERASAJUD (art. 782, §3º, CPC), é medida coercitiva admissível mesmo antes da penhora, como mecanismo de pressão indireta ao adimplemento, não configurando constrangimento ilegal ou violação à honra do devedor que efetivamente está inadimplente.</div>
+        <div class="julgado-ref">STJ, REsp 1.812.060/MT, Rel. Min. Nancy Andrighi, 3ª Turma, j. 17/12/2019</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art">
+    <div class="art-header" onclick="toggleArt(this)">
+      <span class="art-num">Coletiva</span>
+      <span class="art-title">Execução em Processos Coletivos</span>
+      <span class="art-toggle">▾</span>
+    </div>
+    <div class="art-body">
+      <div class="conceito">
+        <div class="conceito-titulo">📌 Execução Coletiva — Peculiaridades</div>
+        <div class="conceito-texto">A execução em processos coletivos (ação civil pública, ação popular, mandado de segurança coletivo) tem disciplina própria. Os condenados em ACP a pagar quantia em favor de um fundo (Fundo de Defesa dos Direitos Difusos — art. 13 LACP) executam-se diretamente pelo legitimado coletivo. Nas condenações em favor de vítimas individualizadas (art. 97–100 CDC), o credor pode liquidar e executar individualmente. O prazo prescricional para habilitação individual é de 5 anos (art. 97 CDC). Se as habilitações individuais forem insuficientes, os credores concorrem entre si — critério: pari passu.</div>
+      </div>
+      <div class="julgado-box">
+        <div class="julgado-header"><span class="julgado-badge">STF · Plenário</span><span class="julgado-tribunal">RE 1.101.937 — Tema 1.075</span></div>
+        <div class="julgado-ementa">O Ministério Público tem legitimidade para promover a execução de sentença coletiva em ação civil pública mesmo quando a condenação beneficia individualmente os membros do grupo, prescindindo de liquidação individual pelo credor coletivo quando o valor já está determinado na sentença.</div>
+        <div class="julgado-ref">STF, RE 1.101.937/SP, Rel. Min. Alexandre de Moraes, Plenário, j. 14/04/2022</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<div class="footer">
+  <div class="footer-text">Material de Estudos — Execução Civil · CPC/2015 · Atualizado com julgados até 2024 · Apenas para fins acadêmicos</div>
+</div>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('section-' + id);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const navMap = {index:'index',mod1:'mod1',mod2:'mod2',mod3:'mod3',mod4:'mod4',mod5:'mod5',mod6:'mod6',mod7:'mod7',mod8:'mod8',mod9:'mod9',mod10:'mod10',mod11:'mod11',mod12:'mod12',mod13:'mod13',mod14:'mod14',mod15:'mod15'};
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    const txt = b.textContent;
+    if ((id === 'index' && txt.includes('Índice')) ||
+        (id === 'mod1' && txt.includes('Liquid')) ||
+        (id === 'mod2' && txt.includes('Teoria')) ||
+        (id === 'mod3' && txt.includes('Princíp')) ||
+        (id === 'mod4' && txt.includes('Título')) ||
+        (id === 'mod5' && txt.includes('Resp')) ||
+        (id === 'mod6' && txt.includes('Fraude')) ||
+        (id === 'mod7' && txt.includes('Impenhor')) ||
+        (id === 'mod8' && txt.includes('Cumpr')) ||
+        (id === 'mod9' && txt.includes('Penhora')) ||
+        (id === 'mod10' && txt.includes('Expropr')) ||
+        (id === 'mod11' && txt.includes('Aliment')) ||
+        (id === 'mod12' && txt.includes('Fazenda')) ||
+        (id === 'mod13' && txt.includes('Obr')) ||
+        (id === 'mod14' && txt.includes('Embargos')) ||
+        (id === 'mod15' && txt.includes('Temas'))
+    ) b.classList.add('active');
+  });
+  window.scrollTo(0,0);
+}
+
+function toggleArt(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.art-toggle');
+  body.classList.toggle('open');
+  toggle.classList.toggle('open');
+}
+
+function filterCards() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.index-card').forEach(card => {
+    card.style.display = card.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+// Open all arts on load for first section
+document.addEventListener('DOMContentLoaded', function() {
+  // leave closed by default
+});
+</script>
+</body>
+</html>
