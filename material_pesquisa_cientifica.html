@@ -1,0 +1,2439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metodologia da Pesquisa Científica – Material Completo</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f2340;
+    --navy-mid: #1a3860;
+    --navy-light: #2a5298;
+    --gold: #c9922a;
+    --gold-light: #f0c76a;
+    --gold-pale: #fdf6e3;
+    --cream: #faf8f4;
+    --paper: #f5f2ec;
+    --ink: #1a1612;
+    --ink-mid: #3d3529;
+    --ink-muted: #7a6e60;
+    --ink-light: #a89e8c;
+    --border: #e0d9cc;
+    --border-strong: #c5b99a;
+    --teal: #1a7a6e;
+    --teal-light: #e6f5f3;
+    --red: #9b2020;
+    --red-light: #fdf0f0;
+    --green: #1a5c2a;
+    --green-light: #edf7f0;
+    --blue-light: #e8f0fc;
+    --blue: #1a4a8a;
+    --amber: #8a5a00;
+    --amber-light: #fef9ec;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.75;
+    font-size: 16px;
+  }
+
+  /* LAYOUT */
+  .layout { display: flex; min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--navy);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 0;
+    z-index: 100;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+  .sidebar-header {
+    padding: 2rem 1.5rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    background: var(--navy-mid);
+  }
+
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.5rem;
+  }
+
+  .sidebar-logo-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--gold);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .sidebar-title {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.3;
+  }
+
+  .sidebar-subtitle {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    margin-top: 0.5rem;
+  }
+
+  .sidebar nav { padding: 1rem 0 2rem; }
+
+  .nav-unit {
+    padding: 0.75rem 1.5rem 0.25rem;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-top: 0.5rem;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 0.45rem 1.5rem 0.45rem 1.75rem;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+
+  .nav-link:hover {
+    color: white;
+    border-left-color: var(--gold);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .nav-link.active {
+    color: white;
+    border-left-color: var(--gold);
+    background: rgba(201,146,42,0.1);
+  }
+
+  /* MAIN CONTENT */
+  .main { flex: 1; overflow: auto; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, var(--navy-light) 100%);
+    padding: 5rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201,146,42,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '"';
+    position: absolute;
+    bottom: -20px;
+    right: 3rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 300px;
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--gold-light);
+    border: 1px solid rgba(201,146,42,0.4);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: white;
+    line-height: 1.15;
+    max-width: 700px;
+    margin-bottom: 1.25rem;
+    font-weight: 700;
+  }
+
+  .hero-desc {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    max-width: 580px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat {
+    border-left: 2px solid var(--gold);
+    padding-left: 1rem;
+  }
+
+  .hero-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: white;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .hero-stat-label {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+  }
+
+  /* CONTENT CONTAINER */
+  .content-wrap { max-width: 860px; margin: 0 auto; padding: 3rem 3rem; }
+
+  /* UNIT HEADERS */
+  .unit-header {
+    margin: 3rem 0 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border);
+    position: relative;
+  }
+
+  .unit-number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .unit-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--navy);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  /* TOPIC HEADERS */
+  .topic {
+    margin: 2.5rem 0 1.5rem;
+    padding-top: 0.5rem;
+  }
+
+  .topic-number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 0.06em;
+  }
+
+  .topic h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    color: var(--navy-mid);
+    font-weight: 600;
+    margin-top: 0.25rem;
+    line-height: 1.3;
+  }
+
+  /* SUBTOPICS */
+  .subtopic h4 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink-mid);
+    margin: 1.5rem 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* TEXT */
+  p { margin-bottom: 1rem; }
+
+  strong { color: var(--ink); font-weight: 600; }
+
+  em { font-style: italic; color: var(--ink-mid); }
+
+  /* DEFINITION BOXES */
+  .definition {
+    background: var(--navy);
+    color: white;
+    padding: 1.5rem 1.75rem;
+    border-radius: 10px;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+
+  .definition::before {
+    content: 'DEFINIÇÃO';
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--gold-light);
+    margin-bottom: 0.75rem;
+  }
+
+  .definition p {
+    font-size: 15px;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.88);
+    margin: 0;
+    font-style: italic;
+  }
+
+  .definition .definition-source {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 0.75rem;
+    font-style: normal;
+  }
+
+  /* INFO BOXES */
+  .info-box {
+    border-left: 3px solid;
+    padding: 1rem 1.25rem;
+    border-radius: 0 8px 8px 0;
+    margin: 1.5rem 0;
+    font-size: 15px;
+  }
+
+  .info-box.blue {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+
+  .info-box.gold {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+  }
+
+  .info-box.green {
+    border-color: var(--teal);
+    background: var(--teal-light);
+  }
+
+  .info-box.red {
+    border-color: var(--red);
+    background: var(--red-light);
+  }
+
+  .info-box.amber {
+    border-color: var(--amber);
+    background: var(--amber-light);
+  }
+
+  .info-box-title {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-box.blue .info-box-title { color: var(--blue); }
+  .info-box.gold .info-box-title { color: var(--amber); }
+  .info-box.green .info-box-title { color: var(--teal); }
+  .info-box.red .info-box-title { color: var(--red); }
+  .info-box.amber .info-box-title { color: var(--amber); }
+
+  .info-box p { margin-bottom: 0; color: var(--ink-mid); }
+
+  /* TABLES */
+  .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+  }
+
+  thead th {
+    background: var(--navy);
+    color: white;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  thead th:first-child { border-radius: 8px 0 0 0; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+
+  tbody td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink-mid);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  tbody tr:hover td { background: var(--paper); }
+  tbody tr:last-child td { border-bottom: none; }
+
+  .tag-q1 { background: #1a5c2a; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .tag-q2 { background: #2a7a1a; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .tag-q3 { background: #8a5a00; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .tag-q4 { background: #9b3000; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+
+  /* LISTS */
+  ul, ol {
+    margin: 0.75rem 0 1rem 1.5rem;
+    color: var(--ink-mid);
+  }
+
+  li { margin-bottom: 0.4rem; line-height: 1.65; }
+
+  li::marker { color: var(--gold); }
+
+  /* CARD GRIDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover { border-color: var(--border-strong); }
+
+  .card-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .card h4 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.4rem;
+  }
+
+  .card p {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .card.highlighted {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+  }
+
+  .card.highlighted h4 { color: var(--amber); }
+
+  /* STEP LIST */
+  .step-list { margin: 1.5rem 0; }
+
+  .step {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    min-width: 32px;
+    height: 32px;
+    background: var(--navy);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-content h5 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+
+  .step-content p {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* CODE BLOCKS */
+  .code-block {
+    background: var(--ink);
+    color: #a8d8a8;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    padding: 1.25rem 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    line-height: 1.7;
+  }
+
+  .code-block .comment { color: #6a9955; }
+  .code-block .keyword { color: #569cd6; }
+  .code-block .string { color: #ce9178; }
+
+  /* COMPARISON */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .compare-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .compare-header {
+    padding: 1rem 1.25rem;
+    text-align: center;
+  }
+
+  .compare-header h4 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 0.15rem;
+  }
+
+  .compare-header p {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    margin: 0;
+  }
+
+  .compare-body { padding: 1rem 1.25rem; }
+
+  .compare-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border);
+    gap: 0.5rem;
+  }
+
+  .compare-row:last-child { border-bottom: none; }
+
+  .compare-label {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px;
+    color: var(--ink-muted);
+    flex-shrink: 0;
+  }
+
+  .compare-val {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-mid);
+    text-align: right;
+  }
+
+  .badge-free { background: #e6f5ee; color: #1a5c2a; font-size: 11px; padding: 2px 7px; border-radius: 4px; font-family: 'IBM Plex Sans'; font-weight: 600; }
+  .badge-paid { background: #fff0e6; color: #8a3d00; font-size: 11px; padding: 2px 7px; border-radius: 4px; font-family: 'IBM Plex Sans'; font-weight: 600; }
+  .badge-freemium { background: #e8f0fc; color: #1a4a8a; font-size: 11px; padding: 2px 7px; border-radius: 4px; font-family: 'IBM Plex Sans'; font-weight: 600; }
+  .check { color: #1a5c2a; font-size: 14px; }
+  .cross { color: #9b2020; font-size: 14px; }
+  .partial { color: #8a5a00; font-size: 14px; }
+
+  /* QUOTE */
+  blockquote {
+    margin: 1.5rem 0;
+    padding: 1.25rem 1.5rem;
+    border-left: 4px solid var(--gold);
+    background: var(--gold-pale);
+    font-style: italic;
+    color: var(--ink-mid);
+    font-size: 15px;
+    border-radius: 0 8px 8px 0;
+  }
+
+  blockquote cite {
+    display: block;
+    font-style: normal;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-top: 0.5rem;
+  }
+
+  /* REFERENCE LIST */
+  .references {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .references h4 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .references ol {
+    margin-left: 1.25rem;
+  }
+
+  .references li {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 0.5rem;
+    line-height: 1.55;
+  }
+
+  .references a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  .references a:hover { text-decoration: underline; }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 3rem 0;
+  }
+
+  /* HIGHLIGHT KEYWORD */
+  .kw {
+    background: var(--gold-pale);
+    border: 1px solid #e0c87a;
+    border-radius: 3px;
+    padding: 0px 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--amber);
+  }
+
+  /* SCROLL HELPER */
+  .scroll-top {
+    display: inline-block;
+    margin: 2rem 0 0;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px;
+    color: var(--ink-light);
+    text-decoration: none;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+
+  .scroll-top:hover { background: var(--navy); color: white; border-color: var(--navy); }
+
+  /* PRACTICE BOX */
+  .practice {
+    background: var(--teal-light);
+    border: 1px solid #9fd1cb;
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .practice-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+
+  .practice h5 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--teal);
+    margin-bottom: 0.5rem;
+  }
+
+  .practice p, .practice li {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    color: #1a4a44;
+  }
+
+  .practice ul { color: #1a4a44; }
+
+  /* FOOTER */
+  .footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 2rem;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px;
+    margin-top: 3rem;
+  }
+
+  /* PRINT */
+  @media print {
+    .sidebar { display: none; }
+    .main { overflow: visible; }
+    .hero { background: var(--navy); print-color-adjust: exact; }
+  }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .hero { padding: 3rem 2rem 2.5rem; }
+    .hero h1 { font-size: 2rem; }
+    .content-wrap { padding: 2rem 1.5rem; }
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">⊕</div>
+        <div>
+          <div class="sidebar-title">Guia de Estudos</div>
+        </div>
+      </div>
+      <div class="sidebar-subtitle">Pesquisa & Publicação Científica</div>
+    </div>
+    <nav>
+      <a href="#hero" class="nav-link">↑ Início</a>
+      
+      <div class="nav-unit">Unidade I — Literatura Científica</div>
+      <a href="#u1t1" class="nav-link">1.1 Bases da produção científica</a>
+      <a href="#u1t2" class="nav-link">1.2 Tipologia de fontes e bases</a>
+      <a href="#u1t3" class="nav-link">1.3 Portal Periódicos CAPES</a>
+      <a href="#u1t4" class="nav-link">1.4 Indicadores bibliométricos</a>
+
+      <div class="nav-unit">Unidade II — Pesquisa Bibliográfica</div>
+      <a href="#u2t1" class="nav-link">2.1 Planejamento e organização</a>
+      <a href="#u2t2" class="nav-link">2.2 Pesquisa avançada em bases</a>
+      <a href="#u2t3" class="nav-link">2.3 Strings de busca otimizadas</a>
+      <a href="#u2t4" class="nav-link">2.4 Lacunas de pesquisa</a>
+
+      <div class="nav-unit">Unidade III — Publicação Científica</div>
+      <a href="#u3t1" class="nav-link">3.1 Processo de publicação</a>
+      <a href="#u3t2" class="nav-link">3.2 Decisão estratégica</a>
+      <a href="#u3t3" class="nav-link">3.3 Boas práticas</a>
+      <a href="#u3t4" class="nav-link">3.4 IA generativa e ética</a>
+      <a href="#u3t5" class="nav-link">3.5 Revisão por pares</a>
+
+      <div class="nav-unit">Unidade IV — Gerenciadores</div>
+      <a href="#u4t1" class="nav-link">4.1 Gestão do conhecimento</a>
+      <a href="#u4t2" class="nav-link">4.2 Comparação de gerenciadores</a>
+      <a href="#u4t3" class="nav-link">4.3 Manutenção de bases</a>
+      <a href="#u4t4" class="nav-link">4.4 Cite-While-You-Write</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero-badge">Material de Estudo Completo</div>
+      <h1>Metodologia da Pesquisa e Publicação Científica</h1>
+      <p class="hero-desc">Guia abrangente cobrindo literatura científica, pesquisa bibliográfica, publicação acadêmica e gerenciadores de referências — com fontes primárias confiáveis e exemplos práticos.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">IV</div>
+          <div class="hero-stat-label">Unidades temáticas</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">17</div>
+          <div class="hero-stat-label">Tópicos detalhados</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">30+</div>
+          <div class="hero-stat-label">Fontes referenciadas</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="content-wrap">
+
+      <!-- ╔══════════════════════════════════════╗
+           ║      UNIDADE I — LITERATURA CIENTÍFICA
+           ╚══════════════════════════════════════╝ -->
+      
+      <div class="unit-header">
+        <span class="unit-number">Unidade I</span>
+        <h2>Literatura Científica</h2>
+      </div>
+
+      <!-- 1.1 -->
+      <div class="topic" id="u1t1">
+        <div class="topic-number">1.1</div>
+        <h3>Bases da Produção Científica: Conceitos e Relevância</h3>
+      </div>
+
+      <p>A produção científica é o conjunto de obras e trabalhos gerados pela comunidade científica com o propósito de ampliar o conhecimento sistematizado. Difere-se do conhecimento popular ou do senso comum por se basear em método, reprodutibilidade e validação pela comunidade de pares.</p>
+
+      <div class="definition">
+        <p>Ciência é um conjunto de conhecimentos sistemáticos, racionais e verificáveis, obtidos através de método rigoroso, que busca explicar os fenômenos do mundo natural, social ou formal por meio de leis, teorias e modelos passíveis de teste e refutação.</p>
+        <div class="definition-source">Adaptado de: LAKATOS, E. M.; MARCONI, M. A. Fundamentos de Metodologia Científica. 9. ed. São Paulo: Atlas, 2021.</div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Características do Conhecimento Científico</h4>
+        <div class="card-grid">
+          <div class="card">
+            <span class="card-icon">🔬</span>
+            <h4>Empírico</h4>
+            <p>Baseia-se na observação e na experimentação sistemática como ponto de partida.</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">🔄</span>
+            <h4>Reprodutível</h4>
+            <p>Os resultados devem ser replicáveis por outros pesquisadores em condições similares.</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">🗂️</span>
+            <h4>Sistematizado</h4>
+            <p>Organizadso segundo princípios lógicos e metodológicos coerentes.</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">✅</span>
+            <h4>Verificável</h4>
+            <p>Passível de confirmação, refutação ou falsificabilidade (critério de Popper).</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">📖</span>
+            <h4>Público</h4>
+            <p>Deve ser comunicado e submetido ao escrutínio da comunidade científica.</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">🌱</span>
+            <h4>Provisório</h4>
+            <p>Sempre aberto a revisão diante de novos dados e evidências.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>O Fluxo da Comunicação Científica</h4>
+        <p>A comunicação científica segue um ciclo que vai da produção do conhecimento à sua disseminação e incorporação ao corpus da ciência. Este processo inclui:</p>
+        <div class="step-list">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h5>Produção (Pesquisa)</h5>
+              <p>Realização de experimentos, coleta de dados, desenvolvimento teórico. O pesquisador produz novo conhecimento.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h5>Redação e Submissão</h5>
+              <p>O conhecimento é formalizado em manuscrito e submetido a periódico ou congresso.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h5>Avaliação por Pares (Peer Review)</h5>
+              <p>Especialistas avaliam a qualidade, originalidade e rigor metodológico do trabalho.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h5>Publicação</h5>
+              <p>O trabalho é publicado e torna-se parte do registro científico permanente.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <h5>Indexação e Descoberta</h5>
+              <p>O artigo é indexado em bases de dados, tornando-se recuperável por outros pesquisadores.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">6</div>
+            <div class="step-content">
+              <h5>Citação e Incorporação</h5>
+              <p>Outros pesquisadores citam o trabalho, integrando-o ao debate científico contínuo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box blue">
+        <div class="info-box-title">📘 Leitura Essencial</div>
+        <p>Para aprofundamento nos fundamentos epistemológicos: KUHN, T. S. <em>A Estrutura das Revoluções Científicas</em>. 13. ed. São Paulo: Perspectiva, 2020. POPPER, K. R. <em>A Lógica da Pesquisa Científica</em>. 3. ed. São Paulo: Cultrix, 2018.</p>
+      </div>
+
+      <!-- 1.2 -->
+      <div class="topic" id="u1t2">
+        <div class="topic-number">1.2</div>
+        <h3>Tipologia de Fontes e Bases de Dados para Pesquisa de Fronteira</h3>
+      </div>
+
+      <p>A seleção criteriosa de fontes é condição indispensável para a qualidade da pesquisa científica. Compreender a hierarquia das fontes de informação permite ao pesquisador construir um referencial teórico sólido e identificar o estado da arte em sua área.</p>
+
+      <div class="subtopic">
+        <h4>Hierarquia das Fontes de Informação</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tipo</th>
+                <th>Descrição</th>
+                <th>Exemplos</th>
+                <th>Valor para Pesquisa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Fontes Primárias</strong></td>
+                <td>Originais que relatam resultados de pesquisa pela primeira vez</td>
+                <td>Artigos originais, teses, dissertações, patentes, relatórios técnicos</td>
+                <td>Máximo – dado direto da fonte</td>
+              </tr>
+              <tr>
+                <td><strong>Fontes Secundárias</strong></td>
+                <td>Compilações ou análises de fontes primárias</td>
+                <td>Artigos de revisão, meta-análises, revisões sistemáticas, capítulos de livros</td>
+                <td>Alto – síntese do conhecimento existente</td>
+              </tr>
+              <tr>
+                <td><strong>Fontes Terciárias</strong></td>
+                <td>Compilações de fontes primárias e secundárias</td>
+                <td>Enciclopédias, manuais, bibliografias, bases de dados</td>
+                <td>Médio – indicação para aprofundamento</td>
+              </tr>
+              <tr>
+                <td><strong>Literatura Cinza</strong></td>
+                <td>Produção fora dos canais convencionais de publicação</td>
+                <td>Trabalhos de conclusão, relatórios institucionais, preprints</td>
+                <td>Variável – exige avaliação cuidadosa</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Principais Bases de Dados Científicas</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Base de Dados</th>
+                <th>Mantenedor</th>
+                <th>Abrangência</th>
+                <th>Acesso</th>
+                <th>Diferencial</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Web of Science (WoS)</strong></td>
+                <td>Clarivate Analytics</td>
+                <td>Multidisciplinar – 21.000+ periódicos</td>
+                <td>Pago / CAPES</td>
+                <td>Fator de Impacto (JCR), índice H, análise de citações</td>
+              </tr>
+              <tr>
+                <td><strong>Scopus</strong></td>
+                <td>Elsevier</td>
+                <td>Multidisciplinar – 25.000+ periódicos</td>
+                <td>Pago / CAPES</td>
+                <td>Maior cobertura; CiteScore; perfis de autores/instituições</td>
+              </tr>
+              <tr>
+                <td><strong>PubMed / MEDLINE</strong></td>
+                <td>NCBI / NLM (EUA)</td>
+                <td>Ciências da Saúde</td>
+                <td>Gratuito</td>
+                <td>MeSH terms; cobertura de biomedicina; free full text</td>
+              </tr>
+              <tr>
+                <td><strong>SciELO</strong></td>
+                <td>FAPESP / BIREME</td>
+                <td>América Latina, Ibérica</td>
+                <td>Gratuito</td>
+                <td>Excelente cobertura de produção brasileira e latino-americana</td>
+              </tr>
+              <tr>
+                <td><strong>BDTD</strong></td>
+                <td>IBICT</td>
+                <td>Teses e dissertações brasileiras</td>
+                <td>Gratuito</td>
+                <td>Repositório nacional de pós-graduação stricto sensu</td>
+              </tr>
+              <tr>
+                <td><strong>Google Scholar</strong></td>
+                <td>Google</td>
+                <td>Multidisciplinar, ampla</td>
+                <td>Gratuito</td>
+                <td>Literatura cinza; preprints; acesso aberto; facilidade de uso</td>
+              </tr>
+              <tr>
+                <td><strong>IEEE Xplore</strong></td>
+                <td>IEEE</td>
+                <td>Engenharia, TI, Eletrônica</td>
+                <td>Pago / CAPES</td>
+                <td>Padrão em ciências exatas e computação</td>
+              </tr>
+              <tr>
+                <td><strong>Embase</strong></td>
+                <td>Elsevier</td>
+                <td>Medicina, Farmacologia</td>
+                <td>Pago / CAPES</td>
+                <td>Superior ao Medline para ensaios clínicos e farmacologia</td>
+              </tr>
+              <tr>
+                <td><strong>ERIC</strong></td>
+                <td>Dep. Educação EUA</td>
+                <td>Educação</td>
+                <td>Gratuito</td>
+                <td>Especializado em pesquisa educacional</td>
+              </tr>
+              <tr>
+                <td><strong>arXiv / bioRxiv / medRxiv</strong></td>
+                <td>Cornell / Cold Spring Harbor</td>
+                <td>Multidisciplinar (preprints)</td>
+                <td>Gratuito</td>
+                <td>Acesso antecipado a resultados; sem revisão formal por pares</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="info-box gold">
+        <div class="info-box-title">⚠️ Atenção: Preprints</div>
+        <p>Preprints (arXiv, bioRxiv, medRxiv, SSRN) são manuscritos disponibilizados antes da revisão por pares. Ganham relevância crescente por acelerar a comunicação científica, mas devem ser usados com cautela e sempre identificados como tal nas referências. Durante a pandemia de COVID-19, sua importância ficou evidente (OMS, 2021).</p>
+      </div>
+
+      <!-- 1.3 -->
+      <div class="topic" id="u1t3">
+        <div class="topic-number">1.3</div>
+        <h3>Portal Periódicos CAPES</h3>
+      </div>
+
+      <div class="definition">
+        <p>O Portal de Periódicos da CAPES é uma biblioteca virtual que reúne e disponibiliza à comunidade acadêmica brasileira o melhor da produção científica internacional. Conta com acesso a mais de 50.000 periódicos com texto completo, 125 bases de dados, 13 bases de patentes e outros tipos de materiais, incluindo obras de referência, normas técnicas, estatísticas e conteúdo audiovisual.</p>
+        <div class="definition-source">CAPES. Portal de Periódicos: Sobre o Portal. Brasília: CAPES/MEC, 2024. Disponível em: https://www.periodicos.capes.gov.br/</div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Como Acessar</h4>
+        <div class="card-grid">
+          <div class="card highlighted">
+            <span class="card-icon">🏛️</span>
+            <h4>Acesso na Instituição</h4>
+            <p>Acesso direto em computadores com IP registrado pela instituição de ensino (universidades, institutos federais).</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">🔐</span>
+            <h4>CAFe (Acesso Remoto)</h4>
+            <p>Comunidade Acadêmica Federada: permite acesso remoto com credenciais institucionais, de qualquer lugar.</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">🎓</span>
+            <h4>Ex-alunos de Pós-Grad.</h4>
+            <p>Acesso pessoal (CPF) para egressos de pós-graduação pelo sistema de identificação CAPES.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Principais Recursos Disponíveis</h4>
+        <ul>
+          <li><strong>Bases de texto completo:</strong> ScienceDirect, Springer Nature, Wiley Online Library, American Chemical Society, entre outras</li>
+          <li><strong>Bases referenciais e de resumos:</strong> Web of Science, Scopus, JSTOR</li>
+          <li><strong>Bases especializadas:</strong> PsycINFO (Psicologia), Compendex (Engenharia), CINAHL (Enfermagem)</li>
+          <li><strong>Normas técnicas:</strong> ABNT, ISO, ASTM</li>
+          <li><strong>Patentes:</strong> INPI, Derwent Innovation</li>
+          <li><strong>Portal de Teses da CAPES:</strong> banco de teses e dissertações dos programas de pós-graduação brasileiros</li>
+        </ul>
+      </div>
+
+      <div class="practice">
+        <span class="practice-title">🛠️ Dica Prática</span>
+        <h5>Verificando o acesso na sua instituição</h5>
+        <p>Ao acessar periodicos.capes.gov.br, verifique no canto superior direito se aparece o nome da sua instituição. Se aparecer, você tem acesso completo. Caso contrário, utilize o login pela CAFe com suas credenciais institucionais (geralmente as mesmas do e-mail da universidade).</p>
+      </div>
+
+      <!-- 1.4 -->
+      <div class="topic" id="u1t4">
+        <div class="topic-number">1.4</div>
+        <h3>Indicadores Bibliométricos de Qualidade: Qualis, Fator de Impacto e Métricas Alternativas</h3>
+      </div>
+
+      <p>Indicadores bibliométricos são ferramentas quantitativas usadas para medir a produção, a difusão e o impacto da literatura científica. Devem ser usados como auxílio à avaliação, nunca como critério único, conforme o <strong>Manifesto de Leiden</strong> (Hicks et al., 2015) e a <strong>Declaração de São Francisco (DORA)</strong>.</p>
+
+      <div class="subtopic">
+        <h4>Qualis-CAPES</h4>
+        <p>Sistema de classificação de periódicos científicos criado pela CAPES para qualificar a produção dos programas de pós-graduação brasileiros. Cada periódico recebe uma nota por grande área do conhecimento.</p>
+
+        <div class="info-box blue">
+          <div class="info-box-title">📋 Novo Qualis (Quadriênio 2017–2020)</div>
+          <p>A partir do quadriênio 2017-2020, o Qualis passou a ser calculado automaticamente com base no <strong>Percentil Scopus</strong>. O percentil indica a posição relativa do periódico no ranking de seu campo no CiteScore. Um periódico no Percentil 87,5 ou acima recebe A1; entre 75 e 87,49 recebe A2; e assim por diante.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Estrato Qualis</th><th>Percentil Scopus (CiteScore)</th><th>Equivalência JCR</th><th>Peso na Avaliação CAPES</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="tag-q1">A1</span></td><td>≥ 87,5</td><td>Quartil Q1 (top 25%)</td><td>100</td></tr>
+              <tr><td><span class="tag-q2">A2</span></td><td>75 – 87,49</td><td>Q1/Q2</td><td>87</td></tr>
+              <tr><td><span class="tag-q2">A3</span></td><td>62,5 – 74,99</td><td>Q2</td><td>70</td></tr>
+              <tr><td><span class="tag-q2">A4</span></td><td>50 – 62,49</td><td>Q2/Q3</td><td>55</td></tr>
+              <tr><td><span class="tag-q3">B1</span></td><td>37,5 – 49,99</td><td>Q3</td><td>40</td></tr>
+              <tr><td><span class="tag-q3">B2</span></td><td>25 – 37,49</td><td>Q3/Q4</td><td>30</td></tr>
+              <tr><td><span class="tag-q3">B3</span></td><td>12,5 – 24,99</td><td>Q4</td><td>20</td></tr>
+              <tr><td><span class="tag-q4">B4</span></td><td>Não indexado Scopus</td><td>—</td><td>15</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:13px; color: var(--ink-muted); font-family: 'IBM Plex Sans';">Fonte: CAPES. <em>Qualis Periódicos — Classificação 2017-2020</em>. Brasília: CAPES, 2022. Disponível em: https://sucupira.capes.gov.br/</p>
+      </div>
+
+      <div class="subtopic">
+        <h4>Fator de Impacto (Journal Impact Factor – JIF)</h4>
+        <p>Criado por Eugene Garfield no <em>Journal Citation Reports</em> (JCR) da Clarivate, o JIF mede a frequência com que artigos de um periódico são citados em determinado ano.</p>
+
+        <div class="definition">
+          <p>JIF (ano corrente) = Número de citações recebidas em artigos publicados nos 2 anos anteriores ÷ Número total de artigos publicados nos 2 anos anteriores.</p>
+          <div class="definition-source">CLARIVATE. Journal Citation Reports Methodology. Philadelphia: Clarivate, 2024. Disponível em: https://jcr.clarivate.com/</div>
+        </div>
+
+        <div class="card-grid">
+          <div class="card">
+            <h4>JIF Padrão (2 anos)</h4>
+            <p>Cálculo clássico com janela de citação de 2 anos. Pode ser desfavorável para áreas com citações mais lentas.</p>
+          </div>
+          <div class="card">
+            <h4>JIF 5 Anos</h4>
+            <p>Janela de 5 anos; mais indicado para Ciências Humanas, Matemática e áreas com ciclos de citação mais longos.</p>
+          </div>
+          <div class="card">
+            <h4>JIF Sem Auto-Citações</h4>
+            <p>Exclui auto-citações do periódico para evitar manipulação artificial do índice.</p>
+          </div>
+        </div>
+
+        <div class="info-box red">
+          <div class="info-box-title">⚡ Limitações do JIF</div>
+          <p>O JIF é calculado apenas para periódicos indexados na WoS; não é adequado para comparar áreas diferentes (Física tem JIFs muito mais altos que Matemática Pura); é suscetível a manipulações; não mede o impacto de artigos individuais. A Declaração DORA (2013) recomenda explicitamente não usar o JIF para avaliar pesquisadores individuais. Disponível em: https://sfdora.org</p>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>CiteScore (Scopus/Elsevier)</h4>
+        <p>Métrica alternativa ao JIF, calculada anualmente pela Elsevier para periódicos indexados no Scopus. Utiliza uma janela de citação de <strong>4 anos</strong> e considera um espectro mais amplo de tipos de documentos.</p>
+
+        <div class="definition">
+          <p>CiteScore (ano corrente) = Total de citações recebidas nos últimos 4 anos ÷ Total de documentos publicados nos últimos 4 anos.</p>
+          <div class="definition-source">ELSEVIER. CiteScore Metrics: Frequently asked questions. Amsterdam: Elsevier, 2024. Disponível em: https://www.elsevier.com/solutions/scopus/how-scopus-works/metrics</div>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Índice H (h-index)</h4>
+        <p>Proposto por Jorge E. Hirsch (2005), o índice H é uma métrica <strong>de pesquisador</strong> (não de periódico) que busca medir ao mesmo tempo produtividade e impacto das citações.</p>
+
+        <div class="definition">
+          <p>Um pesquisador tem índice H = n se publicou pelo menos n artigos que receberam, cada um, pelo menos n citações.</p>
+          <div class="definition-source">HIRSCH, J. E. An index to quantify an individual's scientific research output. PNAS, v. 102, n. 46, p. 16569–16572, 2005. DOI: 10.1073/pnas.0507655102</div>
+        </div>
+
+        <p>Disponível no Scopus (Author Profile), Web of Science e Google Scholar. Varia conforme a fonte, pois cada base tem cobertura diferente de publicações e citações.</p>
+      </div>
+
+      <div class="subtopic">
+        <h4>Métricas Alternativas (Altmetrics)</h4>
+        <p>Com a expansão da ciência aberta e das redes sociais acadêmicas, surgiram métricas complementares que capturam formas não-tradicionais de impacto e engajamento.</p>
+        <div class="card-grid">
+          <div class="card">
+            <h4>Altmetric Score</h4>
+            <p>Mede atenção online: menções em redes sociais, blogs, notícias, políticas governamentais, Wikipedia. Plataforma: Altmetric.com (Springer Nature)</p>
+          </div>
+          <div class="card">
+            <h4>PlumX Metrics</h4>
+            <p>Categoriza impacto em 5 dimensões: Citations, Usage, Captures, Mentions, Social Media. Plataforma: Scopus/Elsevier.</p>
+          </div>
+          <div class="card">
+            <h4>Downloads e Visualizações</h4>
+            <p>Métricas de uso: acessos ao PDF, visualizações do resumo, downloads do texto completo. Indicam relevância imediata.</p>
+          </div>
+          <div class="card">
+            <h4>Dimensões</h4>
+            <p>Plataforma gratuita do Digital Science com métricas integradas: citações, menções em políticas, dados clínicos relacionados.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="references">
+        <h4>Fontes desta Unidade</h4>
+        <ol>
+          <li>HICKS, D. et al. Bibliometrics: The Leiden Manifesto for research metrics. <em>Nature</em>, v. 520, p. 429–431, 2015. DOI: 10.1038/520429a</li>
+          <li>DORA – San Francisco Declaration on Research Assessment. 2013. Disponível em: https://sfdora.org</li>
+          <li>CLARIVATE. Journal Citation Reports. Disponível em: https://jcr.clarivate.com/</li>
+          <li>ELSEVIER. Scopus: CiteScore Metrics. Disponível em: https://www.elsevier.com/solutions/scopus</li>
+          <li>CAPES. Sucupira – Qualis Periódicos. Disponível em: https://sucupira.capes.gov.br/</li>
+          <li>HIRSCH, J. E. An index to quantify an individual's scientific research output. <em>PNAS</em>, v. 102, n. 46, p. 16569–16572, 2005.</li>
+        </ol>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ╔══════════════════════════════════════╗
+           ║     UNIDADE II — PESQUISA BIBLIOGRÁFICA
+           ╚══════════════════════════════════════╝ -->
+      
+      <div class="unit-header">
+        <span class="unit-number">Unidade II</span>
+        <h2>Pesquisa Bibliográfica</h2>
+      </div>
+
+      <!-- 2.1 -->
+      <div class="topic" id="u2t1">
+        <div class="topic-number">2.1</div>
+        <h3>Planejamento e Organização da Pesquisa Bibliográfica</h3>
+      </div>
+
+      <p>Uma pesquisa bibliográfica bem-planejada segue protocolo rigoroso que garante abrangência, reprodutibilidade e transparência. O planejamento envolve definição da questão de pesquisa, escolha do método de revisão, critérios de inclusão/exclusão e estratégia de busca.</p>
+
+      <div class="subtopic">
+        <h4>Tipos de Revisão de Literatura</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Tipo</th><th>Descrição</th><th>Nível de Evidência</th><th>Quando Usar</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Revisão Narrativa</strong></td>
+                <td>Síntese qualitativa, sem protocolo explícito; maior flexibilidade interpretativa</td>
+                <td>Baixo</td>
+                <td>Introduções de artigos, capítulos teóricos</td>
+              </tr>
+              <tr>
+                <td><strong>Revisão Sistemática</strong></td>
+                <td>Busca exaustiva, protocolo pré-registrado (PROSPERO), critérios explícitos</td>
+                <td>Alto</td>
+                <td>Perguntas clínicas, sínteses de evidências</td>
+              </tr>
+              <tr>
+                <td><strong>Meta-análise</strong></td>
+                <td>Revisão sistemática com síntese estatística dos resultados dos estudos incluídos</td>
+                <td>Muito Alto</td>
+                <td>Quando há dados quantitativos comparáveis</td>
+              </tr>
+              <tr>
+                <td><strong>Scoping Review</strong></td>
+                <td>Mapeamento da extensão da literatura sobre tema; menos restritiva que a sistemática</td>
+                <td>Médio</td>
+                <td>Áreas emergentes; mapeamento de lacunas</td>
+              </tr>
+              <tr>
+                <td><strong>Revisão Integrativa</strong></td>
+                <td>Inclui estudos quantitativos e qualitativos; síntese ampla</td>
+                <td>Médio-Alto</td>
+                <td>Muito usada em Enfermagem e Saúde Pública</td>
+              </tr>
+              <tr>
+                <td><strong>Bibliometria</strong></td>
+                <td>Análise quantitativa da produção científica (autores, países, redes de citação)</td>
+                <td>Descritivo</td>
+                <td>Mapeamento de tendências de área</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Framework PICO(S) para Formulação da Questão de Pesquisa</h4>
+        <p>O PICO é a ferramenta padrão para estruturar a questão de pesquisa em revisões sistemáticas, especialmente nas ciências da saúde:</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Elemento</th><th>Significado</th><th>Exemplo</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>P</strong></td><td>Population (População/Problema)</td><td>Adultos com hipertensão arterial</td></tr>
+              <tr><td><strong>I</strong></td><td>Intervention (Intervenção)</td><td>Exercício aeróbico</td></tr>
+              <tr><td><strong>C</strong></td><td>Comparison (Comparação)</td><td>Sem exercício / tratamento convencional</td></tr>
+              <tr><td><strong>O</strong></td><td>Outcome (Desfecho)</td><td>Redução da pressão arterial sistólica</td></tr>
+              <tr><td><strong>S</strong></td><td>Study Design (Tipo de estudo) – opcional</td><td>Ensaios clínicos randomizados</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="info-box green">
+          <div class="info-box-title">💡 Dica</div>
+          <p>Para Ciências Humanas e Sociais, o framework <strong>PCC</strong> (Population, Concept, Context) ou <strong>SPIDER</strong> (Sample, Phenomenon of Interest, Design, Evaluation, Research type) pode ser mais adequado. Para tecnologia e sistemas de informação, considere o framework <strong>PICOC</strong> (Population, Intervention, Comparison, Outcome, Context).</p>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Protocolo PRISMA: Transparência nas Revisões Sistemáticas</h4>
+        <p>O PRISMA (<em>Preferred Reporting Items for Systematic Reviews and Meta-Analyses</em>) é um guia para relato transparente de revisões sistemáticas, atualizado em 2020 (PRISMA 2020). Inclui um <strong>fluxograma PRISMA</strong> que descreve o processo de triagem e seleção dos estudos.</p>
+
+        <div class="step-list">
+          <div class="step">
+            <div class="step-num">①</div>
+            <div class="step-content"><h5>Identificação</h5><p>Total de registros identificados nas bases de dados e outras fontes</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num">②</div>
+            <div class="step-content"><h5>Triagem (Screening)</h5><p>Remoção de duplicatas; triagem por título e resumo</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num">③</div>
+            <div class="step-content"><h5>Elegibilidade</h5><p>Avaliação do texto completo com base nos critérios de inclusão/exclusão</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num">④</div>
+            <div class="step-content"><h5>Inclusão</h5><p>Estudos incluídos na síntese qualitativa e/ou meta-análise</p></div>
+          </div>
+        </div>
+
+        <p style="font-size:13px; color: var(--ink-muted); font-family: 'IBM Plex Sans';">Referência: PAGE, M. J. et al. The PRISMA 2020 statement: an updated guideline for reporting systematic reviews. <em>BMJ</em>, v. 372, n. 71, 2021. DOI: 10.1136/bmj.n71</p>
+      </div>
+
+      <!-- 2.2 -->
+      <div class="topic" id="u2t2">
+        <div class="topic-number">2.2</div>
+        <h3>Pesquisa Avançada em Bases Científicas</h3>
+      </div>
+
+      <p>A pesquisa avançada nas bases de dados científicas utiliza recursos técnicos que ampliam a precisão e a sensibilidade da busca. Conhecer esses recursos é essencial para não perder trabalhos relevantes (recall) nem recuperar muitos irrelevantes (precision).</p>
+
+      <div class="subtopic">
+        <h4>Operadores Booleanos</h4>
+        <p>Os operadores booleanos controlam a relação lógica entre os termos de busca:</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Operador</th><th>Função</th><th>Efeito</th><th>Exemplo</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>AND</strong></td>
+                <td>Interseção — todos os termos devem estar presentes</td>
+                <td>Restringe/afunila a busca</td>
+                <td><code>diabetes AND exercise AND hypertension</code></td>
+              </tr>
+              <tr>
+                <td><strong>OR</strong></td>
+                <td>União — qualquer um dos termos pode estar presente</td>
+                <td>Amplia a busca; útil para sinônimos</td>
+                <td><code>hypertension OR "high blood pressure" OR "arterial hypertension"</code></td>
+              </tr>
+              <tr>
+                <td><strong>NOT</strong></td>
+                <td>Exclusão — o segundo termo não pode estar presente</td>
+                <td>Exclui resultados indesejados; use com cautela</td>
+                <td><code>depression NOT "postpartum depression"</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Truncamento e Caracteres Curinga</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Recurso</th><th>Símbolo (WoS/Scopus)</th><th>Uso</th><th>Exemplo</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Truncamento</strong></td><td><code>*</code></td><td>Substitui 0 ou mais caracteres ao final da palavra</td><td><code>nurs*</code> → nurse, nurses, nursing, nursery</td></tr>
+              <tr><td><strong>Wildcard (interno)</strong></td><td><code>?</code></td><td>Substitui exatamente 1 caractere</td><td><code>wom?n</code> → woman, women</td></tr>
+              <tr><td><strong>Frase exata</strong></td><td><code>" "</code></td><td>Busca o termo como frase, na ordem exata</td><td><code>"machine learning"</code></td></tr>
+              <tr><td><strong>Proximidade (NEAR)</strong></td><td><code>NEAR/n</code></td><td>Termos dentro de n palavras de distância</td><td><code>cancer NEAR/3 treatment</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Filtros e Limitadores</h4>
+        <ul>
+          <li><strong>Campo de busca:</strong> título <span class="kw">TI=</span>, resumo <span class="kw">AB=</span>, palavra-chave <span class="kw">KW=</span>, autor <span class="kw">AU=</span>, periódico <span class="kw">SO=</span>, DOI <span class="kw">DO=</span></li>
+          <li><strong>Período de publicação:</strong> restringe a janela temporal (ex.: 2019–2024)</li>
+          <li><strong>Tipo de documento:</strong> Article, Review, Conference Paper, Book Chapter</li>
+          <li><strong>Idioma:</strong> English, Portuguese, Spanish etc.</li>
+          <li><strong>Área temática:</strong> Subject Category (WoS) ou Subject Area (Scopus)</li>
+          <li><strong>Acesso aberto:</strong> filtro para documentos disponíveis gratuitamente</li>
+        </ul>
+      </div>
+
+      <!-- 2.3 -->
+      <div class="topic" id="u2t3">
+        <div class="topic-number">2.3</div>
+        <h3>Formulação de Strings de Busca Otimizadas e Seleção de Bases por Afinidade Temática</h3>
+      </div>
+
+      <p>A <strong>string de busca</strong> é a expressão de pesquisa construída com operadores, truncamentos e descritores para ser executada nas bases de dados. Uma string bem construída maximiza o recall (sensibilidade) sem perder precisão.</p>
+
+      <div class="subtopic">
+        <h4>Estrutura de uma String de Busca</h4>
+        <p>A lógica geral consiste em:</p>
+        <ol>
+          <li>Decompor a questão de pesquisa nos seus elementos PICO (ou similar)</li>
+          <li>Para cada elemento, listar sinônimos, variações, traduções e termos controlados</li>
+          <li>Conectar os sinônimos de cada bloco com <span class="kw">OR</span></li>
+          <li>Conectar os blocos entre si com <span class="kw">AND</span></li>
+        </ol>
+
+        <div class="code-block">
+<span class="comment">/* Exemplo: Efeito do exercício físico na hipertensão em adultos */</span>
+
+<span class="comment">/* Bloco 1 – Intervenção */</span>
+(<span class="string">"physical exercise"</span> OR <span class="string">"aerobic exercise"</span> OR <span class="string">"physical activity"</span> OR exercise*)
+
+AND
+
+<span class="comment">/* Bloco 2 – Problema/Desfecho */</span>
+(<span class="string">"arterial hypertension"</span> OR <span class="string">"high blood pressure"</span> OR hypertension* OR <span class="string">"blood pressure"</span>)
+
+AND
+
+<span class="comment">/* Bloco 3 – População */</span>
+(adult* OR <span class="string">"middle-aged"</span> OR elder* OR <span class="string">"older adults"</span>)
+
+<span class="comment">/* Filtros: Article; 2019–2024; English, Portuguese */</span>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Descritores Controlados: MeSH e DeCS</h4>
+        <div class="card-grid">
+          <div class="card highlighted">
+            <h4>MeSH (Medical Subject Headings)</h4>
+            <p>Vocabulário controlado hierárquico do PubMed/NLM. Garante consistência terminológica em buscas biomédicas. Acesso: https://meshb.nlm.nih.gov/</p>
+          </div>
+          <div class="card">
+            <h4>DeCS (Descritores em Ciências da Saúde)</h4>
+            <p>Versão trilíngue (Português/Espanhol/Inglês) do MeSH, desenvolvida pela BIREME. Essencial para buscas no BVS e SciELO. Acesso: https://decs.bvsalud.org/</p>
+          </div>
+          <div class="card">
+            <h4>IEEE Thesaurus</h4>
+            <p>Vocabulário controlado da IEEE para computação, engenharia elétrica e telecomunicações. Acesso via IEEE Xplore.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Seleção de Bases por Afinidade Temática</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Área do Conhecimento</th><th>Bases Prioritárias</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Ciências da Saúde</td><td>PubMed/MEDLINE, Embase, Cochrane Library, CINAHL, Scopus</td></tr>
+              <tr><td>Engenharia e Computação</td><td>IEEE Xplore, ACM Digital Library, Scopus, Web of Science, Compendex</td></tr>
+              <tr><td>Ciências Exatas e Naturais</td><td>Web of Science, Scopus, ACS, Nature, arXiv</td></tr>
+              <tr><td>Ciências Humanas e Sociais</td><td>Scopus, Web of Science, JSTOR, PsycINFO, Sociological Abstracts, ERIC</td></tr>
+              <tr><td>Educação</td><td>ERIC, Scopus, BDTD, SciELO, BVS Educação</td></tr>
+              <tr><td>Direito</td><td>LexisNexis, Westlaw, RVBI, Base de dados do Senado, Scopus</td></tr>
+              <tr><td>Administração e Economia</td><td>Scopus, Web of Science, SSRN, EconLit, JSTOR</td></tr>
+              <tr><td>Produção Nacional (geral)</td><td>SciELO, BDTD, Scopus, Periódicos CAPES, Portal OASISBR</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="practice">
+        <span class="practice-title">🛠️ Fluxo de Trabalho Recomendado</span>
+        <h5>Do PICO à string de busca</h5>
+        <ul>
+          <li>1. Formule a pergunta PICO em papel</li>
+          <li>2. Consulte MeSH/DeCS para encontrar termos controlados</li>
+          <li>3. Adicione sinônimos e variações ortográficas (inglês britânico/americano)</li>
+          <li>4. Monte a string com blocos AND + OR internos</li>
+          <li>5. Teste em uma base (ex.: PubMed) e ajuste se resultados forem &lt;50 ou &gt;2000</li>
+          <li>6. Adapte a sintaxe para cada base (Scopus, WoS, CINAHL)</li>
+          <li>7. Documente cada busca: base, data, string exata, número de resultados</li>
+        </ul>
+      </div>
+
+      <!-- 2.4 -->
+      <div class="topic" id="u2t4">
+        <div class="topic-number">2.4</div>
+        <h3>Identificação de Lacunas de Pesquisa e Proposição de Contribuições Originais</h3>
+      </div>
+
+      <p>Identificar lacunas na literatura é uma das habilidades mais importantes do pesquisador em formação. Uma contribuição original só tem valor científico se houver algo genuinamente novo a acrescentar ao estado do conhecimento.</p>
+
+      <div class="subtopic">
+        <h4>Tipos de Lacunas de Pesquisa</h4>
+        <div class="card-grid">
+          <div class="card">
+            <span class="card-icon">🔭</span>
+            <h4>Lacuna de Conhecimento</h4>
+            <p>Fenômeno ou relação ainda não investigado ou pouco estudado na literatura.</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">🔬</span>
+            <h4>Lacuna Metodológica</h4>
+            <p>Os estudos existentes têm limitações metodológicas que um novo estudo poderia superar.</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">📍</span>
+            <h4>Lacuna de Contexto</h4>
+            <p>Resultados de outros países/culturas não foram replicados no contexto local (ex.: Brasil, América Latina).</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">⏳</span>
+            <h4>Lacuna Temporal</h4>
+            <p>Estudos existem, mas são antigos e novas tecnologias/contextos tornaram os resultados desatualizados.</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">🧩</span>
+            <h4>Lacuna de Integração</h4>
+            <p>Resultados existem em áreas separadas mas ninguém ainda os integrou ou conectou teoricamente.</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">💡</span>
+            <h4>Lacuna Empírica</h4>
+            <p>Teoria existe mas evidências empíricas são escassas ou contraditórias.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Como Identificar Lacunas: Estratégias Práticas</h4>
+        <ol>
+          <li><strong>Leia as seções de "Limitações" e "Pesquisas Futuras"</strong> dos artigos mais citados da área — os autores frequentemente apontam o que ainda precisa ser investigado</li>
+          <li><strong>Analise artigos de revisão sistemática</strong> da área: eles sistematizam o que foi feito e explicitam o que falta</li>
+          <li><strong>Mapeie graficamente</strong> os estudos por dimensões relevantes (população, intervenção, desfecho, método) para visualizar combinações não estudadas</li>
+          <li><strong>Identifique controvérsias</strong>: resultados conflitantes entre estudos indicam oportunidade de pesquisa</li>
+          <li><strong>Acompanhe grupos de pesquisa</strong> e redes como ResearchGate para ver o que está sendo investigado atualmente</li>
+          <li><strong>Consulte chamadas de editais</strong> de fomento (CNPq, FAPESP, Capes): refletem prioridades de pesquisa identificadas pela comunidade</li>
+        </ol>
+      </div>
+
+      <div class="references">
+        <h4>Fontes desta Unidade</h4>
+        <ol>
+          <li>PAGE, M. J. et al. The PRISMA 2020 statement: an updated guideline for reporting systematic reviews. <em>BMJ</em>, v. 372, n. 71, 2021. DOI: 10.1136/bmj.n71</li>
+          <li>METHLEY, A. M. et al. PICO, PICOS and SPIDER: a comparison study of specificity and sensitivity in three search tools for qualitative systematic reviews. <em>BMC Health Services Research</em>, v. 14, n. 579, 2014.</li>
+          <li>NLM – National Library of Medicine. MeSH Browser. Disponível em: https://meshb.nlm.nih.gov/</li>
+          <li>BIREME. DeCS – Descritores em Ciências da Saúde. Disponível em: https://decs.bvsalud.org/</li>
+          <li>GRANT, M. J.; BOOTH, A. A typology of reviews: an analysis of 14 review types and associated methodologies. <em>Health Information and Libraries Journal</em>, v. 26, n. 2, p. 91–108, 2009.</li>
+        </ol>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ╔══════════════════════════════════════╗
+           ║    UNIDADE III — PUBLICAÇÃO CIENTÍFICA
+           ╚══════════════════════════════════════╝ -->
+      
+      <div class="unit-header">
+        <span class="unit-number">Unidade III</span>
+        <h2>Publicação Científica</h2>
+      </div>
+
+      <!-- 3.1 -->
+      <div class="topic" id="u3t1">
+        <div class="topic-number">3.1</div>
+        <h3>Processo de Publicação Científica</h3>
+      </div>
+
+      <p>Compreender o processo editorial é fundamental para que o pesquisador não apenas produza conhecimento de qualidade, mas consiga comunicá-lo com eficácia ao mundo científico.</p>
+
+      <div class="subtopic">
+        <h4>Estrutura do Artigo Científico: Formato IMRAD</h4>
+        <p>O formato IMRAD (<em>Introduction, Methods, Results And Discussion</em>) é o padrão internacional para artigos de pesquisa empírica, recomendado pelo <em>International Committee of Medical Journal Editors</em> (ICMJE).</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Seção</th><th>Conteúdo Essencial</th><th>Pergunta Respondida</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Título</strong></td><td>Conciso, informativo, específico; indica variáveis e população principais</td><td>—</td></tr>
+              <tr><td><strong>Resumo (Abstract)</strong></td><td>Síntese estruturada (objetivo, métodos, resultados, conclusão); 150–300 palavras</td><td>O que foi feito?</td></tr>
+              <tr><td><strong>Palavras-chave</strong></td><td>3–6 termos; preferencialmente descritores MeSH/DeCS</td><td>—</td></tr>
+              <tr><td><strong>Introdução</strong></td><td>Contextualização; lacuna identificada; justificativa; objetivo claro</td><td>Por que este estudo?</td></tr>
+              <tr><td><strong>Métodos</strong></td><td>Tipo de estudo; participantes; instrumentos; análise; aspectos éticos</td><td>Como foi feito?</td></tr>
+              <tr><td><strong>Resultados</strong></td><td>Dados objetivos; tabelas/figuras; sem interpretação</td><td>O que foi encontrado?</td></tr>
+              <tr><td><strong>Discussão</strong></td><td>Interpretação; comparação com a literatura; limitações; implicações</td><td>O que significa?</td></tr>
+              <tr><td><strong>Conclusão</strong></td><td>Resposta direta ao objetivo; contribuição principal; pesquisas futuras</td><td>Qual a contribuição?</td></tr>
+              <tr><td><strong>Referências</strong></td><td>Todas as citações do texto; formato exigido pelo periódico</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Tipos de Manuscrito</h4>
+        <div class="card-grid">
+          <div class="card">
+            <h4>Artigo Original</h4>
+            <p>Relato de pesquisa inédita com metodologia clara e resultados novos. Formato padrão da ciência.</p>
+          </div>
+          <div class="card">
+            <h4>Artigo de Revisão</h4>
+            <p>Síntese do conhecimento sobre um tema (narrativa, sistemática ou meta-análise).</p>
+          </div>
+          <div class="card">
+            <h4>Carta ao Editor</h4>
+            <p>Comentário breve sobre artigo publicado no mesmo periódico; pode apresentar dados preliminares.</p>
+          </div>
+          <div class="card">
+            <h4>Relato de Caso</h4>
+            <p>Descrição detalhada de caso clínico incomum, com análise e discussão da literatura (comum nas ciências da saúde).</p>
+          </div>
+          <div class="card">
+            <h4>Comunicação Breve</h4>
+            <p>Resultados preliminares ou de menor extensão; publicação mais rápida.</p>
+          </div>
+          <div class="card">
+            <h4>Capítulo de Livro</h4>
+            <p>Revisão aprofundada de tema específico em obra coletiva com editor responsável.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.2 -->
+      <div class="topic" id="u3t2">
+        <div class="topic-number">3.2</div>
+        <h3>Decisão Estratégica de Publicação: Anais de Congresso e Periódicos Qualificados</h3>
+      </div>
+
+      <p>A escolha do veículo de publicação é uma decisão estratégica que impacta a visibilidade do trabalho, o tempo de publicação, o impacto bibliométrico e os créditos na carreira acadêmica.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Critério</th><th>Anais de Congresso</th><th>Periódico Científico</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Tempo até publicação</td><td>Rápido (semanas/meses)</td><td>Lento (meses a anos)</td></tr>
+            <tr><td>Avaliação por pares</td><td>Geralmente simplificada</td><td>Rigorosa (double-blind)</td></tr>
+            <tr><td>Impacto bibliométrico</td><td>Menor; não conta para JIF</td><td>Alto; indexado em WoS/Scopus</td></tr>
+            <tr><td>Visibilidade</td><td>Restrita à comunidade do evento</td><td>Internacional, permanente</td></tr>
+            <tr><td>Possibilidade de reuso</td><td>Geralmente pode ser estendido para periódico</td><td>Publicação final; poucas exceções</td></tr>
+            <tr><td>Qualis CAPES</td><td>Conta com menor peso (depende da área)</td><td>Peso principal na avaliação</td></tr>
+            <tr><td>Ideal para</td><td>Resultados preliminares; networking; feedback rápido</td><td>Pesquisa concluída e consolidada</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-box gold">
+        <div class="info-box-title">💡 Estratégia Recomendada</div>
+        <p>Uma trajetória comum e eficaz: apresentar resultados preliminares em congresso nacional/internacional para obter feedback da comunidade, incorporar as sugestões, completar a pesquisa e submeter o artigo completo a um periódico qualificado (A1–A3 no Qualis). Nunca submeta o mesmo trabalho a periódico e congresso simultaneamente sem aprovação explícita dos editores — isso configura <strong>submissão dupla</strong>, prática antiética.</p>
+      </div>
+
+      <!-- 3.3 -->
+      <div class="topic" id="u3t3">
+        <div class="topic-number">3.3</div>
+        <h3>Boas Práticas na Escolha do Periódico e na Escrita Científica</h3>
+      </div>
+
+      <div class="subtopic">
+        <h4>Como Escolher o Periódico Certo</h4>
+        <div class="step-list">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h5>Afinidade temática</h5>
+              <p>O escopo do periódico deve coincidir com o conteúdo do manuscrito. Leia a seção "Aims & Scope".</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h5>Nível de qualidade almejado</h5>
+              <p>Avalie o Qualis, JIF, CiteScore e percentil Scopus. Seja realista quanto ao nível do seu trabalho.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h5>Verificação de autenticidade</h5>
+              <p>Pesquise o ISSN no Ulrichsweb, Scopus Source List, JCR ou lista CAPES. Evite periódicos predatórios.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h5>Modelo de acesso</h5>
+              <p>Considere acesso aberto (OA) vs. assinatura. Periódicos OA podem ter APC (Article Processing Charges). Verifique políticas via SHERPA/RoMEO.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <h5>Tempo médio de revisão</h5>
+              <p>Periódicos publicam métricas de tempo médio para primeira decisão e publicação.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Periódicos Predatórios: Como Identificar e Evitar</h4>
+        <p>Periódicos predatórios são publicações que simulam ser científicas legítimas, cobram taxas (APCs) sem oferecer revisão por pares real e têm como objetivo o lucro, não a qualidade científica.</p>
+
+        <div class="info-box red">
+          <div class="info-box-title">🚨 Sinais de Alerta (Critérios Beall's List)</div>
+          <p>Contato por e-mail não solicitado prometendo publicação rápida; promessa de revisão em dias; escopo temático excessivamente amplo e vago; ISSN não verificável; editor desconhecido; website com erros gramaticais; ausência de indexação em Scopus/WoS; ausência de DOI; taxas pouco transparentes. Para verificação: <strong>Think. Check. Submit.</strong> (https://thinkchecksubmit.org/) e Beall's List (https://beallslist.net/).</p>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Princípios da Escrita Científica de Qualidade</h4>
+        <ul>
+          <li><strong>Precisão:</strong> use termos técnicos corretos; evite ambiguidade</li>
+          <li><strong>Concisão:</strong> elimine palavras desnecessárias; prefira frases curtas</li>
+          <li><strong>Clareza:</strong> a ideia deve ser compreensível para um especialista da área</li>
+          <li><strong>Coerência:</strong> progressão lógica de ideias; cada parágrafo com uma ideia central</li>
+          <li><strong>Evidência:</strong> toda afirmação relevante deve ser embasada por citação ou dados próprios</li>
+          <li><strong>Ética:</strong> autoria honesta, citação correta, sem plágio ou fabricação de dados</li>
+        </ul>
+      </div>
+
+      <!-- 3.4 -->
+      <div class="topic" id="u3t4">
+        <div class="topic-number">3.4</div>
+        <h3>IA Generativa no Processo de Pesquisa e Escrita Acadêmica: Limites e Uso Ético-Metodológico</h3>
+      </div>
+
+      <p>O advento de modelos de linguagem de grande escala (LLMs) como ChatGPT, Gemini, Claude e Copilot trouxe oportunidades e desafios inéditos para a pesquisa acadêmica. A comunidade científica está construindo ativamente normas de uso ético.</p>
+
+      <div class="subtopic">
+        <h4>Usos Legítimos e Potencialmente Benéficos</h4>
+        <div class="card-grid">
+          <div class="card">
+            <span class="card-icon">✍️</span>
+            <h4>Revisão de Texto</h4>
+            <p>Correção gramatical, melhoria de fluência, adequação ao estilo científico em idioma estrangeiro.</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">🗂️</span>
+            <h4>Organização de Ideias</h4>
+            <p>Criação de esquemas, mapas conceituais, estruturação de tópicos.</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">🌐</span>
+            <h4>Tradução</h4>
+            <p>Auxílio na tradução de trechos e termos técnicos (sempre com revisão humana).</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">💻</span>
+            <h4>Análise de Dados</h4>
+            <p>Suporte à interpretação, geração de código para análise estatística (R, Python).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Limites Éticos e Restrições Fundamentais</h4>
+
+        <div class="info-box red">
+          <div class="info-box-title">🚫 Práticas Proibidas</div>
+          <p><strong>IA não pode ser listada como autora</strong> — autoria implica responsabilidade, o que modelos de IA não podem assumir. <strong>Não usar IA para fabricar dados, referências ou resultados</strong> — LLMs "alucinam" referências que não existem. <strong>Não delegar a redação substantiva do manuscrito integralmente</strong> — o pesquisador deve ser o autor intelectual. <strong>Não usar IA para criar pareceres ou revisões por pares</strong> sem divulgação.</p>
+        </div>
+
+        <div class="definition">
+          <p>A IA generativa não pode ser listada como autora de publicações científicas ou académicas. O uso de ferramentas de IA deve ser transparente e declarado na seção de Métodos ou em nota específica. A responsabilidade pela integridade do conteúdo permanece inteiramente com os autores humanos.</p>
+          <div class="definition-source">COPE – Committee on Publication Ethics. Authorship and AI tools. Poznan: COPE, 2023. Disponível em: https://publicationethics.org/cope-position-statements/ai-author</div>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Políticas das Principais Editoras</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Editora/Organização</th><th>Política sobre IA (2024)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Elsevier</strong></td><td>Uso permitido; obrigatória a declaração explícita na seção de Métodos ou Agradecimentos</td></tr>
+              <tr><td><strong>Springer Nature</strong></td><td>IA não pode ser listada como autora; uso deve ser declarado no manuscrito</td></tr>
+              <tr><td><strong>Wiley</strong></td><td>Permite uso assistivo com divulgação obrigatória; proíbe autoria de IA</td></tr>
+              <tr><td><strong>COPE</strong></td><td>IA não tem autoria; uso deve ser divulgado; verificação de conteúdo gerado por IA é responsabilidade dos autores</td></tr>
+              <tr><td><strong>IEEE</strong></td><td>Proíbe uso de IA como autor; exige divulgação do uso de LLMs na preparação do manuscrito</td></tr>
+              <tr><td><strong>CAPES / MEC</strong></td><td>Em construção; recomenda declaração de uso; alerta para risco de plágio e fabricação de dados</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="info-box green">
+        <div class="info-box-title">✅ Boas Práticas no Uso de IA</div>
+        <p>Declare o uso: "ChatGPT (OpenAI, v. GPT-4, 2024) foi utilizado para revisão de fluência textual em inglês. O conteúdo substantivo, a análise de dados e as conclusões são inteiramente dos autores." Verifique SEMPRE as referências sugeridas por LLMs em bases de dados reais — modelos de linguagem frequentemente inventam artigos plausíveis que não existem.</p>
+      </div>
+
+      <!-- 3.5 -->
+      <div class="topic" id="u3t5">
+        <div class="topic-number">3.5</div>
+        <h3>O Processo de Editoração e a Revisão por Pares: Respostas Construtivas e Negociação Científica</h3>
+      </div>
+
+      <div class="subtopic">
+        <h4>Fluxo Editorial do Artigo Científico</h4>
+        <div class="step-list">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h5>Submissão</h5>
+              <p>Envio do manuscrito pelo sistema editorial (ScholarOne, Editorial Manager, Open Journal Systems – OJS). Verificação de formatação e adequação ao escopo.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h5>Desk Review (Avaliação Editorial Inicial)</h5>
+              <p>O editor-chefe avalia se o manuscrito tem qualidade mínima para revisão externa. Uma rejeição aqui é "desk rejection" — geralmente por fora do escopo, qualidade insuficiente ou problemas metodológicos graves.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h5>Revisão por Pares (Peer Review)</h5>
+              <p>2 a 3 revisores especialistas avaliam o manuscrito. Processo dura semanas a meses. Resultado: Accept, Minor Revision, Major Revision, Reject.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h5>Decisão Editorial</h5>
+              <p>O editor integra os pareceres e comunica a decisão ao autor. Major revisions → novo ciclo de revisão.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <h5>Prova Final e Publicação</h5>
+              <p>Após aceite, a equipe editorial prepara o layout final (galley proof) para aprovação dos autores. Publicação online (ahead of print) e em fascículo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Tipos de Revisão por Pares</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Modalidade</th><th>Descrição</th><th>Vantagens</th><th>Limitações</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Single-blind</strong></td>
+                <td>Revisor conhece os autores; autores não conhecem os revisores</td>
+                <td>Comum; revisores responsáveis</td>
+                <td>Possível viés contra autores desconhecidos</td>
+              </tr>
+              <tr>
+                <td><strong>Double-blind</strong></td>
+                <td>Revisores e autores são anônimos entre si</td>
+                <td>Mais equitativo; evita viés de prestígio</td>
+                <td>Anonimato nem sempre mantido</td>
+              </tr>
+              <tr>
+                <td><strong>Open Review</strong></td>
+                <td>Identidades conhecidas; pareceres publicados</td>
+                <td>Maior responsabilidade; transparência</td>
+                <td>Revisores podem ser mais brandos</td>
+              </tr>
+              <tr>
+                <td><strong>Post-publication Review</strong></td>
+                <td>Revisão após publicação, por comunidade ampla</td>
+                <td>Dinâmico; erro rapidamente identificado</td>
+                <td>Não garante qualidade pré-publicação</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Como Responder aos Revisores: Negociação Científica</h4>
+        <p>A carta de resposta aos revisores (<em>response to reviewers</em>) é um documento científico em si mesmo. Uma resposta bem elaborada frequentemente determina o aceite final.</p>
+
+        <div class="info-box blue">
+          <div class="info-box-title">📋 Estrutura da Carta de Resposta</div>
+          <p><strong>Cabeçalho:</strong> Título do manuscrito, número de referência, data. <strong>Agradecimento:</strong> Agradeça ao editor e revisores pelo tempo e contribuição. <strong>Visão geral das mudanças:</strong> Parágrafo resumindo as principais alterações. <strong>Resposta ponto a ponto:</strong> Para cada comentário do revisor: (a) reproduza o comentário; (b) responda à questão levantada; (c) indique exatamente onde e como o manuscrito foi alterado (página, parágrafo); (d) se discordar, argumente com evidências. <strong>Texto destacado:</strong> No manuscrito revisado, use cor ou negrito para marcar as alterações.</p>
+        </div>
+
+        <blockquote>
+          O processo de revisão por pares não é um obstáculo, mas uma colaboração — os revisores querem que o trabalho seja o melhor possível. Uma resposta respeitosa, detalhada e embasada transforma críticos em aliados.
+          <cite>— Princípio do COPE Guidelines for Authors Responding to Peer Review, 2022.</cite>
+        </blockquote>
+      </div>
+
+      <div class="references">
+        <h4>Fontes desta Unidade</h4>
+        <ol>
+          <li>ICMJE. Recommendations for the Conduct, Reporting, Editing and Publication of Scholarly Work in Medical Journals. 2023. Disponível em: https://www.icmje.org/</li>
+          <li>COPE. Authorship and AI tools – Position Statement. 2023. Disponível em: https://publicationethics.org/</li>
+          <li>ELSE, H. How ChatGPT is being used in academic publishing. <em>Nature News</em>, 2023. DOI: 10.1038/d41586-023-01295-4</li>
+          <li>Think. Check. Submit. Disponível em: https://thinkchecksubmit.org/</li>
+          <li>SHERPA/RoMEO. Journal open access policies. Disponível em: https://v2.sherpa.ac.uk/romeo/</li>
+        </ol>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ╔══════════════════════════════════════╗
+           ║    UNIDADE IV — GERENCIADORES DE BIBLIOGRAFIAS
+           ╚══════════════════════════════════════╝ -->
+
+      <div class="unit-header">
+        <span class="unit-number">Unidade IV</span>
+        <h2>Gerenciador de Bibliografias</h2>
+      </div>
+
+      <!-- 4.1 -->
+      <div class="topic" id="u4t1">
+        <div class="topic-number">4.1</div>
+        <h3>Gestão do Conhecimento e o Fluxo de Trabalho Científico com Gerenciadores de Referências</h3>
+      </div>
+
+      <p>Gerenciadores de referências são softwares que permitem coletar, organizar, anotar e citar fontes bibliográficas de maneira sistemática, integrando-se diretamente aos processadores de texto. São ferramentas essenciais para qualquer pesquisador sério.</p>
+
+      <div class="subtopic">
+        <h4>Por Que Usar um Gerenciador?</h4>
+        <div class="card-grid">
+          <div class="card">
+            <h4>Organização</h4>
+            <p>Centraliza todas as referências em uma biblioteca pesquisa, com pastas, coleções e etiquetas.</p>
+          </div>
+          <div class="card">
+            <h4>Economia de Tempo</h4>
+            <p>Importação automática de metadados das bases de dados; geração automática de bibliografias.</p>
+          </div>
+          <div class="card highlighted">
+            <h4>Consistência</h4>
+            <p>Elimina erros de formatação manual; aplica estilos (ABNT, APA, Vancouver) com precisão.</p>
+          </div>
+          <div class="card">
+            <h4>Colaboração</h4>
+            <p>Compartilhamento de bibliotecas com grupos de pesquisa e co-autores.</p>
+          </div>
+          <div class="card">
+            <h4>Gestão de PDFs</h4>
+            <p>Armazena, anota e pesquisa dentro dos PDFs vinculados a cada referência.</p>
+          </div>
+          <div class="card">
+            <h4>Rastreabilidade</h4>
+            <p>Mantém histórico completo de onde e quando cada referência foi encontrada.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>O Fluxo de Trabalho Integrado</h4>
+        <div class="step-list">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h5>Busca e Coleta</h5>
+              <p>Pesquisa nas bases de dados (Scopus, PubMed, WoS). Exportação em RIS, BibTeX ou importação direta via browser connector.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h5>Organização e Anotação</h5>
+              <p>Criação de coleções/pastas por projeto ou tema. Leitura e anotação dos PDFs. Adição de tags e notas de leitura.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h5>Citação no Texto</h5>
+              <p>Usando o plugin CWYW (Cite-While-You-Write), inserção de citações durante a escrita no Word ou Google Docs.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h5>Geração da Bibliografia</h5>
+              <p>Com um clique, o gerenciador formata todas as referências no estilo selecionado (ABNT, APA, Vancouver, etc.).</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <h5>Backup e Sincronização</h5>
+              <p>Biblioteca sincronizada na nuvem; acesso em múltiplos dispositivos; colaboração com grupo de pesquisa.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.2 -->
+      <div class="topic" id="u4t2">
+        <div class="topic-number">4.2</div>
+        <h3>Critérios de Escolha e Comparação entre Gerenciadores</h3>
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <div class="compare-header" style="background: #e84d3c;">
+            <h4>Zotero</h4>
+            <p>Free & Open Source</p>
+          </div>
+          <div class="compare-body">
+            <div class="compare-row"><span class="compare-label">Custo</span><span class="badge-free">Gratuito</span></div>
+            <div class="compare-row"><span class="compare-label">Armazenamento</span><span class="compare-val">300 MB grátis</span></div>
+            <div class="compare-row"><span class="compare-label">Open Source</span><span class="check">✓</span></div>
+            <div class="compare-row"><span class="compare-label">Word Plugin</span><span class="check">✓</span></div>
+            <div class="compare-row"><span class="compare-label">Google Docs</span><span class="check">✓</span></div>
+            <div class="compare-row"><span class="compare-label">Browser Connector</span><span class="check">✓</span></div>
+            <div class="compare-row"><span class="compare-label">Colaboração</span><span class="compare-val">Grupos públicos/privados</span></div>
+            <div class="compare-row"><span class="compare-label">Estilos ABNT</span><span class="check">✓</span></div>
+            <div class="compare-row"><span class="compare-label">PDF Reader</span><span class="check">✓ Integrado</span></div>
+            <div class="compare-row"><span class="compare-label">Mobile</span><span class="partial">App ZotFile (iOS/Android)</span></div>
+          </div>
+        </div>
+        <div class="compare-card" style="border-color: #003366; border-width: 2px;">
+          <div class="compare-header" style="background: #003366;">
+            <h4>Mendeley</h4>
+            <p>Elsevier</p>
+          </div>
+          <div class="compare-body">
+            <div class="compare-row"><span class="compare-label">Custo</span><span class="badge-freemium">Freemium</span></div>
+            <div class="compare-row"><span class="compare-label">Armazenamento</span><span class="compare-val">2 GB grátis</span></div>
+            <div class="compare-row"><span class="compare-label">Open Source</span><span class="cross">✗</span></div>
+            <div class="compare-row"><span class="compare-label">Word Plugin</span><span class="check">✓</span></div>
+            <div class="compare-row"><span class="compare-label">Google Docs</span><span class="cross">✗ (2022)</span></div>
+            <div class="compare-row"><span class="compare-label">Browser Connector</span><span class="check">✓</span></div>
+            <div class="compare-row"><span class="compare-label">Colaboração</span><span class="compare-val">Grupos (limite gratuito)</span></div>
+            <div class="compare-row"><span class="compare-label">Estilos ABNT</span><span class="partial">✓ Limitado</span></div>
+            <div class="compare-row"><span class="compare-label">PDF Reader</span><span class="check">✓ Desktop</span></div>
+            <div class="compare-row"><span class="compare-label">Mobile</span><span class="check">✓ App nativo</span></div>
+          </div>
+        </div>
+        <div class="compare-card">
+          <div class="compare-header" style="background: #1a5c2a;">
+            <h4>EndNote</h4>
+            <p>Clarivate</p>
+          </div>
+          <div class="compare-body">
+            <div class="compare-row"><span class="compare-label">Custo</span><span class="badge-paid">Pago (~US$300)</span></div>
+            <div class="compare-row"><span class="compare-label">Armazenamento</span><span class="compare-val">Ilimitado local</span></div>
+            <div class="compare-row"><span class="compare-label">Open Source</span><span class="cross">✗</span></div>
+            <div class="compare-row"><span class="compare-label">Word Plugin</span><span class="check">✓ (mais robusto)</span></div>
+            <div class="compare-row"><span class="compare-label">Google Docs</span><span class="partial">✓ Web version</span></div>
+            <div class="compare-row"><span class="compare-label">Browser Connector</span><span class="check">✓</span></div>
+            <div class="compare-row"><span class="compare-label">Colaboração</span><span class="check">✓ Grupos</span></div>
+            <div class="compare-row"><span class="compare-label">Estilos ABNT</span><span class="check">✓</span></div>
+            <div class="compare-row"><span class="compare-label">PDF Reader</span><span class="check">✓</span></div>
+            <div class="compare-row"><span class="compare-label">Mobile</span><span class="check">✓ App nativo</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box green">
+        <div class="info-box-title">✅ Recomendação para Estudantes de Pós-Graduação</div>
+        <p><strong>Zotero</strong> é a escolha mais recomendada para a maioria dos pesquisadores: gratuito, open source, integração com Word e Google Docs, suporte a ABNT via CSL, sincronização em nuvem, e comunidade ativa que cria e atualiza os estilos de citação. Para quem já usa a plataforma Scopus/Elsevier intensamente, o Mendeley oferece integração direta. O EndNote é o mais robusto para equipes avançadas com recursos institucionais.</p>
+      </div>
+
+      <div class="subtopic">
+        <h4>Outros Gerenciadores Relevantes</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Software</th><th>Característica Principal</th><th>Ideal Para</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>JabRef</strong></td><td>Open source, nativo BibTeX; ideal para LaTeX</td><td>Computação, Matemática, Física</td></tr>
+              <tr><td><strong>Citavi</strong></td><td>Gestão do conhecimento integrada (anotações, planejamento)</td><td>Projetos de tese muito abrangentes</td></tr>
+              <tr><td><strong>ReadCube Papers</strong></td><td>Interface intuitiva; busca inteligente; mobile</td><td>Usuários que priorizam leitura e usabilidade</td></tr>
+              <tr><td><strong>RefWorks</strong></td><td>100% web; institucional (ProQuest)</td><td>Instituições com licença corporativa</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4.3 -->
+      <div class="topic" id="u4t3">
+        <div class="topic-number">4.3</div>
+        <h3>Manipulação e Manutenção Avançada de Bases de Dados Bibliográficas</h3>
+      </div>
+
+      <div class="subtopic">
+        <h4>Importação de Referências</h4>
+        <p>Os gerenciadores importam referências em múltiplos formatos:</p>
+        <ul>
+          <li><strong>RIS (.ris)</strong> — formato padrão universal; suportado por Scopus, WoS, PubMed, SciELO</li>
+          <li><strong>BibTeX (.bib)</strong> — padrão para LaTeX; suportado por Google Scholar, arXiv</li>
+          <li><strong>CSV/Excel</strong> — importação manual de dados estruturados</li>
+          <li><strong>DOI direto</strong> — cole o DOI e o gerenciador busca os metadados automaticamente</li>
+          <li><strong>Browser connectors</strong> — salva referências diretamente da página da base de dados</li>
+          <li><strong>Drag-and-drop de PDF</strong> — o gerenciador extrai metadados do PDF automaticamente</li>
+        </ul>
+      </div>
+
+      <div class="subtopic">
+        <h4>Organização da Biblioteca</h4>
+        <div class="card-grid">
+          <div class="card">
+            <h4>Coleções / Pastas</h4>
+            <p>Organize por projeto, disciplina ou capítulo da tese. Uma referência pode estar em múltiplas coleções.</p>
+          </div>
+          <div class="card">
+            <h4>Tags / Marcadores</h4>
+            <p>Adicione etiquetas (ex.: "lido", "a ler", "metodologia", "achados importantes") para busca rápida.</p>
+          </div>
+          <div class="card">
+            <h4>Grupos (Colaboração)</h4>
+            <p>Crie bibliotecas compartilhadas com orientador, co-autores ou grupo de pesquisa.</p>
+          </div>
+          <div class="card">
+            <h4>Notas e Anotações</h4>
+            <p>Adicione resumos pessoais, citações importantes e reflexões vinculadas a cada referência.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Detecção e Remoção de Duplicatas</h4>
+        <p>Ao fazer busca em múltiplas bases, surgem inevitavelmente duplicatas. Todos os gerenciadores oferecem funções de detecção automática:</p>
+        <ul>
+          <li><strong>Zotero:</strong> Ferramentas → Localizar itens duplicados → revisão manual antes de mesclar</li>
+          <li><strong>Mendeley:</strong> Ferramentas → Verificar Duplicatas → mesclagem com 1 clique</li>
+          <li><strong>EndNote:</strong> Referências → Localizar Duplicatas → configurável por campo</li>
+        </ul>
+
+        <div class="info-box amber">
+          <div class="info-box-title">⚠️ Atenção com Duplicatas em Revisões Sistemáticas</div>
+          <p>Em revisões sistemáticas, a remoção de duplicatas deve ser documentada no fluxograma PRISMA. Registre o número total de registros antes e depois da remoção. Ferramentas como o <strong>ASySD</strong> (Automated Systematic Search Deduplicator) podem automatizar e documentar esse processo.</p>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Manutenção da Qualidade dos Metadados</h4>
+        <ul>
+          <li>Verifique autores (nome completo vs. abreviado; separação correta em lista de autores)</li>
+          <li>Confirme título e periódico contra a publicação original</li>
+          <li>Adicione DOI sempre que disponível — essencial para links ativos na referência</li>
+          <li>Confira ano de publicação (distinção entre publicação online e fascículo impresso)</li>
+          <li>Para capítulos de livros: preencha tanto "Author" (capítulo) quanto "Editor" (livro)</li>
+          <li>Padronize nomes de autores para evitar duplicatas bibliométricas</li>
+        </ul>
+      </div>
+
+      <!-- 4.4 -->
+      <div class="topic" id="u4t4">
+        <div class="topic-number">4.4</div>
+        <h3>Integração e Automação de Referências e Citações no Editor de Texto (Cite-While-You-Write)</h3>
+      </div>
+
+      <p>A função CWYW (<em>Cite-While-You-Write</em>) é o diferencial central dos gerenciadores de referências modernos. Permite inserir citações durante a escrita sem sair do editor de texto, e gera automaticamente a lista de referências formatada ao final.</p>
+
+      <div class="subtopic">
+        <h4>Como Funciona o CWYW</h4>
+        <div class="step-list">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h5>Instalação do Plugin</h5>
+              <p>O gerenciador instala um plugin no Microsoft Word (ou LibreOffice). No Zotero, o plugin aparece como uma barra "Zotero" no Word.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h5>Inserção de Citação</h5>
+              <p>Posicione o cursor após a passagem que precisa de citação. Clique em "Add Citation" (Zotero/Word). Pesquise a referência na caixa de diálogo. Confirme.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h5>Campo Inteligente</h5>
+              <p>A citação é inserida como campo dinâmico (não texto estático). Se o estilo mudar de ABNT para APA, todas as citações se atualizam automaticamente.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h5>Geração da Bibliografia</h5>
+              <p>"Insert Bibliography" gera a lista de referências ao final do documento, em ordem alfabética ou de aparecimento, conforme o estilo selecionado.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <h5>Atualização Automática</h5>
+              <p>Ao inserir, remover ou editar uma citação, execute "Refresh" — a numeração e a lista de referências se recalculam automaticamente.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>Estilos de Citação Principais</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Estilo</th><th>Formato de Citação</th><th>Usado em</th><th>Formato de Referência</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>ABNT NBR 6023:2018</strong></td>
+                <td>Autor-data: (SOBRENOME, ano) ou SOBRENOME (ano)</td>
+                <td>Brasil (maioria das áreas)</td>
+                <td>SOBRENOME, Nome. Título. Local: Editora, Ano.</td>
+              </tr>
+              <tr>
+                <td><strong>APA 7ª ed.</strong></td>
+                <td>(Sobrenome, ano) ou Sobrenome (ano)</td>
+                <td>Psicologia, Educação, Ciências Sociais</td>
+                <td>Sobrenome, N. (ano). Título. Editora. DOI</td>
+              </tr>
+              <tr>
+                <td><strong>Vancouver</strong></td>
+                <td>Número [1], [2,3] ou sobrescrito¹</td>
+                <td>Ciências da Saúde, Medicina</td>
+                <td>Lista numerada por ordem de citação</td>
+              </tr>
+              <tr>
+                <td><strong>Chicago</strong></td>
+                <td>Notas de rodapé ou autor-data</td>
+                <td>História, Artes, Humanidades</td>
+                <td>Bibliográfico detalhado</td>
+              </tr>
+              <tr>
+                <td><strong>IEEE</strong></td>
+                <td>Número [1], [2-4]</td>
+                <td>Engenharia, Computação, Telecomunicações</td>
+                <td>Lista numerada por ordem de aparecimento</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subtopic">
+        <h4>CWYW no Google Docs</h4>
+        <p>O <strong>Zotero</strong> oferece integração nativa com o Google Docs via plugin/extensão de navegador. O <strong>Mendeley</strong> retirou o suporte ao Google Docs em 2022. Para quem usa Google Docs:</p>
+        <ul>
+          <li>Instale o Zotero no computador e o plugin do navegador Chrome/Firefox</li>
+          <li>Abra o Google Docs → aparecerá o menu "Zotero"</li>
+          <li>Funciona com todos os estilos CSL, incluindo ABNT</li>
+          <li>Para colaboração em Google Docs com coautores: todos precisam ter o Zotero instalado e a biblioteca compartilhada ativa</li>
+        </ul>
+      </div>
+
+      <div class="practice">
+        <span class="practice-title">🛠️ Configuração ABNT no Zotero (Passo a Passo)</span>
+        <h5>Instalando o estilo ABNT no Zotero</h5>
+        <ul>
+          <li>1. Abra o Zotero → Editar → Preferências → Citar → Estilos</li>
+          <li>2. Clique em "Obter estilos adicionais"</li>
+          <li>3. Pesquise "ABNT" e instale o estilo desejado</li>
+          <li>4. Recomendados: "Associação Brasileira de Normas Técnicas (ABNT)" (author-date) ou ABNT-NBR-6023</li>
+          <li>5. No Word: abra o Zotero → Document Preferences → selecione o estilo ABNT instalado</li>
+          <li>6. Pronto! Todas as citações e a bibliografia serão formatadas automaticamente em ABNT</li>
+        </ul>
+      </div>
+
+      <div class="subtopic">
+        <h4>Sincronização e Backup</h4>
+        <ul>
+          <li><strong>Zotero:</strong> Sincronização automática com conta Zotero.org (300 MB grátis para anexos; metadados ilimitados). Backup adicional pelo WebDAV ou armazenamento local.</li>
+          <li><strong>Mendeley:</strong> Sincronização com nuvem Elsevier (2 GB grátis).</li>
+          <li><strong>EndNote:</strong> Sincronização com EndNote Online.</li>
+          <li><strong>Boas práticas:</strong> Faça backup regular da biblioteca local (arquivo .zotero ou .enl) + sincronização em nuvem. Nunca armazene a biblioteca Zotero em pastas sincronizadas por Dropbox/Google Drive (corrupção do banco de dados SQLite).</li>
+        </ul>
+      </div>
+
+      <div class="references">
+        <h4>Fontes desta Unidade</h4>
+        <ol>
+          <li>ZOTERO. Documentation. Disponível em: https://www.zotero.org/support/</li>
+          <li>MENDELEY. Reference Manager Guide. Amsterdam: Elsevier, 2024. Disponível em: https://www.mendeley.com/guides/mendeley-reference-manager</li>
+          <li>CLARIVATE. EndNote User Guide. Philadelphia: Clarivate, 2024. Disponível em: https://clarivate.com/products/scientific-and-academic-research/research-discovery-and-workflow-solutions/endnote/</li>
+          <li>ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. NBR 6023: Informação e documentação — Referências — Elaboração. Rio de Janeiro: ABNT, 2018.</li>
+          <li>CSL – Citation Style Language. Disponível em: https://citationstyles.org/</li>
+          <li>MACIEJEWSKI, G. Reference management software: a bibliographic overview. <em>Qualitative & Quantitative Methods in Libraries</em>, v. 12, p. 165–180, 2023.</li>
+        </ol>
+      </div>
+
+      <hr class="divider">
+
+      <!-- RESUMO FINAL -->
+      <div class="unit-header" style="margin-top: 2rem;">
+        <span class="unit-number">Resumo Rápido</span>
+        <h2>Principais Conceitos por Unidade</h2>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Unidade</th><th>Conceito-Chave</th><th>Ferramenta/Recurso Principal</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>I – Literatura Científica</td>
+              <td>Hierarquia de fontes; indicadores bibliométricos (Qualis, JIF, CiteScore, h-index); métricas alternativas</td>
+              <td>Portal Periódicos CAPES; JCR (Clarivate); Sucupira (CAPES)</td>
+            </tr>
+            <tr>
+              <td>II – Pesquisa Bibliográfica</td>
+              <td>Framework PICO; operadores booleanos; strings de busca; lacunas de pesquisa; PRISMA</td>
+              <td>PubMed, Scopus, WoS; MeSH/DeCS; Rayyan (triagem)</td>
+            </tr>
+            <tr>
+              <td>III – Publicação Científica</td>
+              <td>Formato IMRAD; revisão por pares; periódicos predatórios; ética no uso de IA; resposta a revisores</td>
+              <td>COPE; ICMJE; Think. Check. Submit.; SHERPA/RoMEO</td>
+            </tr>
+            <tr>
+              <td>IV – Gerenciadores</td>
+              <td>CWYW; estilos CSL; deduplicação; ABNT; sincronização e colaboração</td>
+              <td>Zotero (recomendado); Mendeley; EndNote; JabRef (LaTeX)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-box blue">
+        <div class="info-box-title">📚 Leituras Fundamentais Complementares</div>
+        <p>
+          <strong>Metodologia:</strong> GIL, A. C. Métodos e Técnicas de Pesquisa Social. 7. ed. São Paulo: Atlas, 2019.<br>
+          <strong>Redação Científica:</strong> VOLPATO, G. Método Lógico para Redação Científica. 2. ed. Botucatu: Best Writing, 2016.<br>
+          <strong>Bibliometria:</strong> BUFREM, L.; PRATES, Y. O saber científico registrado e as práticas de mensuração da informação. <em>Ciência da Informação</em>, v. 34, n. 2, p. 9–25, 2005.<br>
+          <strong>Ética em Pesquisa:</strong> Resolução CNS nº 510/2016 (pesquisa em ciências humanas e sociais). Disponível em: http://conselho.saude.gov.br/<br>
+          <strong>Ciência Aberta:</strong> UNESCO. Recommendation on Open Science. Paris: UNESCO, 2021. Disponível em: https://en.unesco.org/science-sustainable-future/open-science
+        </p>
+      </div>
+
+      <a href="#hero" class="scroll-top">↑ Voltar ao início</a>
+    </div>
+
+    <footer class="footer">
+      Material elaborado com base em fontes científicas primárias e documentação oficial atualizada (2024–2025).<br>
+      Referências verificadas em: Portal Periódicos CAPES · Clarivate · Elsevier · COPE · ICMJE · ABNT · NLM/NIH · UNESCO.
+    </footer>
+  </main>
+</div>
+
+<script>
+  const links = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const id = entry.target.id;
+        const active = document.querySelector(`.nav-link[href="#${id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-100px 0px -60% 0px' });
+
+  document.querySelectorAll('[id]').forEach(el => {
+    if (el.id !== 'hero') observer.observe(el);
+  });
+</script>
+</body>
+</html>
