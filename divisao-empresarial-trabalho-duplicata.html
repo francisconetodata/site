@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Torneio da Liga UFLA - Tema: Duplicata</title>
-    <!-- Importando fontes do Google -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -97,7 +96,7 @@
             background: #ffe;
             width: 280px;
             border-radius: 15px;
-            border: 10px solid #FFE600; /* Borda amarela clássica */
+            border: 10px solid #FFE600;
             padding: 15px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.4);
             position: relative;
@@ -130,7 +129,7 @@
             opacity: 1;
         }
 
-        /* Topo da Carta (Nome e HP) */
+        /* Topo da Carta */
         .card-top {
             display: flex;
             justify-content: space-between;
@@ -152,17 +151,18 @@
             font-size: 0.6em;
         }
 
-        /* Imagem/Arte (Banner com Tipo) */
+        /* Imagem/Arte */
         .card-art {
-            height: 120px;
+            height: 160px;
             border-radius: 5px;
             margin-bottom: 10px;
             border: 4px solid #b2bec3;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
+            position: relative;
             display: flex;
-            align-items: flex-end;
-            justify-content: flex-end;
-            padding: 10px;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
         .card.bulbasaur .card-art { background: var(--grass-bg); }
@@ -170,13 +170,25 @@
         .card.charmander .card-art { background: var(--fire-bg); }
         .card.pikachu .card-art { background: var(--electric-bg); }
 
+        .pokemon-img {
+            max-height: 130%;
+            max-width: 130%;
+            object-fit: contain;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5));
+            z-index: 1;
+        }
+
         .dex-number {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
             font-family: 'Press Start 2P', cursive;
             font-size: 0.6em;
-            color: rgba(255,255,255,0.8);
-            background: rgba(0,0,0,0.4);
+            color: rgba(255,255,255,0.9);
+            background: rgba(0,0,0,0.6);
             padding: 4px 8px;
             border-radius: 4px;
+            z-index: 2;
         }
 
         /* Info do Treinador */
@@ -249,12 +261,10 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             color: #2c3e50;
         }
-
     </style>
 </head>
 <body>
 
-    <!-- Cabeçalho estilo Pokédex -->
     <div class="pokedex-header">
         <h1>🎓 LIGA UFLA</h1>
         <p>Tema: Direito Comercial - A Lenda da Duplicata</p>
@@ -262,16 +272,15 @@
         <div class="date">DATA: 08/06/2026</div>
     </div>
 
-    <!-- Área das Cartas TCG -->
     <div class="tcg-container">
 
-        <!-- CARTA 1: BULBASAUR -->
         <div class="card bulbasaur">
             <div class="card-top">
                 <span class="card-name">🌱 Bulbasaur</span>
                 <span class="hp">HP 120</span>
             </div>
             <div class="card-art">
+                <img src="001Bulbasaur.webp" alt="Bulbasaur" class="pokemon-img">
                 <span class="dex-number">#001</span>
             </div>
             <div class="trainer-info">
@@ -289,13 +298,13 @@
             </div>
         </div>
 
-        <!-- CARTA 2: SQUIRTLE -->
         <div class="card squirtle">
             <div class="card-top">
                 <span class="card-name">💧 Squirtle</span>
                 <span class="hp">HP 90</span>
             </div>
             <div class="card-art">
+                <img src="007Squirtle.webp" alt="Squirtle" class="pokemon-img">
                 <span class="dex-number">#007</span>
             </div>
             <div class="trainer-info">
@@ -317,13 +326,13 @@
             </div>
         </div>
 
-        <!-- CARTA 3: CHARMANDER -->
         <div class="card charmander">
             <div class="card-top">
                 <span class="card-name">🔥 Charmander</span>
                 <span class="hp">HP 100</span>
             </div>
             <div class="card-art">
+                <img src="004CharmanderFRLG.webp" alt="Charmander" class="pokemon-img">
                 <span class="dex-number">#004</span>
             </div>
             <div class="trainer-info">
@@ -345,13 +354,13 @@
             </div>
         </div>
 
-        <!-- CARTA 4: PIKACHU -->
         <div class="card pikachu">
             <div class="card-top">
                 <span class="card-name">⚡ Pikachu</span>
                 <span class="hp">HP 110</span>
             </div>
             <div class="card-art">
+                <img src="025Pikachu.webp" alt="Pikachu" class="pokemon-img">
                 <span class="dex-number">#025</span>
             </div>
             <div class="trainer-info">
@@ -371,7 +380,6 @@
 
     </div>
 
-    <!-- Mensagem Final -->
     <div class="oak-warning">
         🎮 <strong>Lembrete:</strong> a Duplicata é causal por natureza — ao contrário de vocês, que escolheram o Direito por vontade própria. Vai estudar, treinador! ⚖️
     </div>
