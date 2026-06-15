@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneio da Liga UFLA - Tema: Duplicata</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-container {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            max-width: 800px;
+            width: 100%;
+            border-bottom: 4px solid #34495e;
+        }
+
+        .header-container h1 {
+            color: #2c3e50;
+            margin: 0 0 5px 0;
+            font-size: 1.8em;
+        }
+
+        .header-container h2 {
+            color: #7f8c8d;
+            margin: 0 0 15px 0;
+            font-size: 1.2em;
+        }
+
+        .header-container p {
+            margin: 5px 0;
+            color: #555;
+            font-size: 1.1em;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .card {
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.08);
+            color: #333;
+        }
+
+        .card ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .card li {
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .card li strong {
+            display: block;
+            color: #222;
+            margin-bottom: 4px;
+        }
+
+        .footer-info {
+            font-size: 0.85em;
+            color: #555;
+            margin-top: 15px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .footer-note {
+            margin-top: 40px;
+            text-align: center;
+            color: #444;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            max-width: 800px;
+            width: 100%;
+            font-size: 1.1em;
+            border-left: 5px solid #95a5a6;
+        }
+
+        /* Temas dos Pokémon */
+        .bulbasaur { background-color: #e8f5e9; border-top: 6px solid #4caf50; }
+        .squirtle { background-color: #e3f2fd; border-top: 6px solid #2196f3; }
+        .charmander { background-color: #fff3e0; border-top: 6px solid #ff9800; }
+        .pikachu { background-color: #fffde7; border-top: 6px solid #ffeb3b; }
+
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <h1>🎓 Torneio da Liga UFLA</h1>
+        <h2>Tema: Duplicata</h2>
+        <p><strong>Prof. Oak enviou os desafios. Escolham bem seus Pokémon, treinadores!</strong></p>
+        <p>Data: 08/06/2026 ⚖️</p>
+    </div>
+
+    <div class="grid-container">
+
+        <div class="card bulbasaur">
+            <div class="card-header">
+                <h3>🌱 Bulbasaur</h3>
+                <span class="badge">#001</span>
+            </div>
+            <p><strong>Treinador:</strong> Pessoa 1 <br> <span style="color: #d32f2f; font-weight: bold;">Nível: Elite 4 😰</span></p>
+            <ul>
+                <li>
+                    <strong>a) Título naturalmente causal</strong>
+                    Causalidade, abstração, autonomia e classificações — o chefe final da matéria 🏆
+                </li>
+            </ul>
+            <div class="footer-info">1 questão · parece pouca coisa... mas não é. Bulbasaur sabe bem disso. 🌿</div>
+        </div>
+
+        <div class="card squirtle">
+            <div class="card-header">
+                <h3>💧 Squirtle</h3>
+                <span class="badge">#007</span>
+            </div>
+            <p><strong>Treinador:</strong> Pessoa 2 <br> <span style="color: #f57c00; font-weight: bold;">Nível: Líder de Ginásio 😤</span></p>
+            <ul>
+                <li>
+                    <strong>b) Declarações cambiárias</strong>
+                    Aceite, endosso e aval — treina bem o aceite presumido, é cilada! 👀
+                </li>
+                <li>
+                    <strong>e) O que é Triplicata?</strong>
+                    Uma Pokébola de presente — a questão mais tranquila do pacote 🎁
+                </li>
+            </ul>
+            <div class="footer-info">2 questões · o (e) é o Magikarp do grupo — inofensivo, mas resolve 🐟</div>
+        </div>
+
+        <div class="card charmander">
+            <div class="card-header">
+                <h3>🔥 Charmander</h3>
+                <span class="badge">#004</span>
+            </div>
+            <p><strong>Treinador:</strong> Pessoa 3 <br> <span style="color: #388e3c; font-weight: bold;">Nível: Ginásio Intermediário 😐</span></p>
+            <ul>
+                <li>
+                    <strong>c) Virtual × Escritural</strong>
+                    Diferença entre as duas — parece óbvio até a hora da prova 😶
+                </li>
+                <li>
+                    <strong>f) Duplicata de serviços</strong>
+                    Como emitir — a Lei 5.474/68 é sua Pokédex aqui 📖
+                </li>
+            </ul>
+            <div class="footer-info">2 questões · Charmander nunca entra em pânico. Só estuda direito. 🔥</div>
+        </div>
+
+        <div class="card pikachu">
+            <div class="card-header">
+                <h3>⚡ Pikachu</h3>
+                <span class="badge">#025</span>
+            </div>
+            <p><strong>Treinador:</strong> Pessoa 4 <br> <span style="color: #f57c00; font-weight: bold;">Nível: Líder de Ginásio 😤</span></p>
+            <ul>
+                <li>
+                    <strong>d) Protesto e Ação Cambial</strong>
+                    Protesto por indicação + ação cambial — dois chefes pelo preço de um 💀
+                </li>
+            </ul>
+            <div class="footer-info">1 questão · mas duplo conteúdo. O Choque do Trovão vai precisar de muito PP aqui ⚡</div>
+        </div>
+
+    </div>
+
+    <div class="footer-note">
+        🎮 <strong>Lembrete:</strong> a Duplicata é causal por natureza — ao contrário de vocês, que escolheram o Direito por vontade própria. Vai estudar, treinador! ⚖️
+    </div>
+
+</body>
+</html>
