@@ -460,5 +460,15 @@
         🎮 <strong>Lembrete:</strong> a Duplicata é causal por natureza — ao contrário de vocês, que escolheram o Direito por vontade própria. Vai estudar, treinador! ⚖️
     </div>
 
+    <!-- SCRIPT PARA BLOQUEAR A ROLAGEM COM AS SETAS E BARRA DE ESPAÇO -->
+    <script>
+        window.addEventListener("keydown", function(e) {
+            // Códigos das teclas: Barra de espaço (Space), Setas (ArrowUp, ArrowDown, ArrowLeft, ArrowRight)
+            if(["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
+                e.preventDefault(); // Impede o comportamento padrão de rolar a página
+            }
+        }, false);
+    </script>
+
 </body>
 </html>
