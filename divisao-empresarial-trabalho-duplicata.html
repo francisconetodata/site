@@ -153,6 +153,36 @@
             overflow: hidden;
         }
 
+        /* Efeito de Carregamento Pulse para Cartas */
+        .card-art.loading {
+            background: linear-gradient(135deg, #eee 25%, #f4f4f4 50%, #eee 75%) !important;
+            background-size: 200% 100% !important;
+            animation: pulse 1.5s linear infinite !important;
+        }
+
+        @keyframes pulse {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Estilo para erro no carregamento da carta */
+        .card-art .error-text {
+            color: #fff;
+            background: rgba(0,0,0,0.8);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8em;
+            padding: 10px;
+            border-radius: 4px;
+            display: none; /* Escondido por padrão */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 80%;
+            z-index: 2;
+        }
+
         .card.bulbasaur .card-art { background: var(--grass-bg); }
         .card.squirtle .card-art { background: var(--water-bg); }
         .card.charmander .card-art { background: var(--fire-bg); }
@@ -164,6 +194,7 @@
             object-fit: contain;
             filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5));
             z-index: 1;
+            display: none; /* Escondido até carregar */
         }
 
         .dex-number {
@@ -333,22 +364,43 @@
             justify-content: center;
         }
 
+        /* Spinner de Carregamento para o Radar */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #eee;
+            border-top: 4px solid #DC0A2D; /* Cor vermelha Pokebola */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none; /* Escondido por padrão */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .gb-screen img {
             max-width: 150px;
             height: auto;
             image-rendering: pixelated;
             filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.3));
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             display: none; /* Escondido até carregar */
         }
 
         .gb-text {
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.8em;
+            font-size: 0.7em; /* Fonte levemente menor para caber mais dados */
             color: #0f380f;
             text-align: center;
-            line-height: 1.5;
+            line-height: 1.8;
             text-transform: uppercase;
+        }
+
+        .gb-text span {
+            display: block;
+            margin-top: 5px;
         }
 
         .action-btn {
@@ -404,6 +456,7 @@
             <div class="card-art">
                 <img id="img-bulbasaur" src="" alt="Bulbasaur" class="pokemon-img">
                 <span class="dex-number">#001</span>
+                <div class="error-text">❌ ERRO AO CARREGAR POKÉMON</div>
             </div>
             <div class="trainer-info">
                 <strong>Treinador:</strong> Pessoa 1 <br>
@@ -428,6 +481,7 @@
             <div class="card-art">
                 <img id="img-squirtle" src="" alt="Squirtle" class="pokemon-img">
                 <span class="dex-number">#007</span>
+                <div class="error-text">❌ ERRO AO CARREGAR POKÉMON</div>
             </div>
             <div class="trainer-info">
                 <strong>Treinador:</strong> Pessoa 2 <br>
@@ -456,6 +510,7 @@
             <div class="card-art">
                 <img id="img-charmander" src="" alt="Charmander" class="pokemon-img">
                 <span class="dex-number">#004</span>
+                <div class="error-text">❌ ERRO AO CARREGAR POKÉMON</div>
             </div>
             <div class="trainer-info">
                 <strong>Treinador:</strong> Pessoa 3 <br>
@@ -484,6 +539,7 @@
             <div class="card-art">
                 <img id="img-pikachu" src="" alt="Pikachu" class="pokemon-img">
                 <span class="dex-number">#025</span>
+                <div class="error-text">❌ ERRO AO CARREGAR POKÉMON</div>
             </div>
             <div class="trainer-info">
                 <strong>Treinador:</strong> Pessoa 4 <br>
@@ -528,7 +584,7 @@
             RADAR POKÉDEX
         </div>
         <div class="gb-screen">
-            <img id="poke-img" src="" alt="Pokemon Aleatório">
+            <div class="spinner" id="poke-spinner"></div> <img id="poke-img" src="" alt="Pokemon Aleatório">
             <div id="poke-text" class="gb-text">INICIANDO BUSCA...</div>
         </div>
         <button id="search-btn" class="action-btn">ENCONTRAR POKÉMON</button>
@@ -542,19 +598,37 @@
         const pokeImg = document.getElementById('poke-img');
         const pokeText = document.getElementById('poke-text');
         const searchBtn = document.getElementById('search-btn');
+        const pokeSpinner = document.getElementById('poke-spinner'); // Spinner do Radar
 
-        // Função para buscar a arte oficial dos Pokémon das Cartas
+        // Função para buscar a arte oficial dos Pokémon das Cartas com feedback de carregamento
         async function fetchStarterImage(id, elementId) {
+            const imgElement = document.getElementById(elementId);
+            const cardArtContainer = imgElement.closest('.card-art');
+            const errorTextElement = cardArtContainer.querySelector('.error-text');
+
+            // Adiciona classe de loading para efeito pulse e garante que erro e imagem estejam escondidos
+            cardArtContainer.classList.add('loading');
+            errorTextElement.style.display = 'none';
+            imgElement.style.display = 'none';
+
             try {
                 const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
                 if (!response.ok) throw new Error(`Falha na conexão para o ID ${id}`);
                 
                 const data = await response.json();
+                // Prefere a arte oficial, se não tiver usa o sprite padrão
                 const imageUrl = data.sprites.other['official-artwork'].front_default || data.sprites.front_default;
                 
-                document.getElementById(elementId).src = imageUrl;
+                imgElement.src = imageUrl;
+                imgElement.style.display = 'block'; // Mostra a imagem quando carregada
+
             } catch (error) {
                 console.error(`Erro ao carregar o Pokémon das cartas: ${error.message}`);
+                errorTextElement.style.display = 'block'; // Mostra texto de erro
+                imgElement.style.display = 'none'; // Esconde imagem (caso esteja quebrada)
+            } finally {
+                // Remove classe de loading independente de sucesso ou erro
+                cardArtContainer.classList.remove('loading');
             }
         }
 
@@ -566,11 +640,14 @@
             fetchStarterImage(25, 'img-pikachu');
         }
 
-        // Função original para o Radar Pokédex
+        // Função original para o Radar Pokédex com spinner e dados extras
         async function fetchRandomPokemon() {
+            // Mostra status de carregamento no Radar
             pokeImg.style.display = 'none';
+            pokeSpinner.style.display = 'block'; // Mostra spinner
             pokeText.innerText = 'PROCURANDO NO MATINHO...';
             
+            // Sorteia um número de 1 a 1025 (limite atual aproximado da National Dex)
             const randomId = Math.floor(Math.random() * 1025) + 1;
 
             try {
@@ -579,14 +656,33 @@
                 
                 const data = await response.json();
                 
+                // Prefere a arte oficial, se não tiver usa o sprite padrão
                 const imageUrl = data.sprites.other['official-artwork'].front_default || data.sprites.front_default;
+                
+                // Mapeia os tipos e junta com '/' caso tenha mais de um
+                const types = data.types.map(t => t.type.name).join(' / ');
+                
+                // A altura vem em decímetros e o peso em hectogramas, então dividimos por 10
+                const heightMeters = (data.height / 10).toFixed(1);
+                const weightKg = (data.weight / 10).toFixed(1);
                 
                 pokeImg.src = imageUrl;
                 pokeImg.style.display = 'block';
-                pokeText.innerText = `Nº ${data.id}\n${data.name}`;
+                
+                // Atualiza o texto na tela do Gameboy com formatação HTML
+                pokeText.innerHTML = `
+                    <strong>Nº ${data.id} - ${data.name}</strong>
+                    <span>TIPO: ${types}</span>
+                    <span>ALT: ${heightMeters}m | PESO: ${weightKg}kg</span>
+                `;
 
             } catch (error) {
-                pokeText.innerText = 'ERRO! O POKÉMON FUGIU!';
+                console.error(`Erro ao carregar o Pokémon aleatório: ${error.message}`);
+                pokeText.innerText = '❌ ERRO AO CARREGAR O POKÉMON!';
+                pokeImg.style.display = 'none';
+            } finally {
+                // Esconde o spinner após o carregamento (sucesso ou erro)
+                pokeSpinner.style.display = 'none';
             }
         }
 
