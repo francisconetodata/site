@@ -402,7 +402,7 @@
                 <span class="hp">HP 120</span>
             </div>
             <div class="card-art">
-                <img src="001Bulbasaur.webp" alt="Bulbasaur" class="pokemon-img">
+                <img id="img-bulbasaur" src="" alt="Bulbasaur" class="pokemon-img">
                 <span class="dex-number">#001</span>
             </div>
             <div class="trainer-info">
@@ -426,7 +426,7 @@
                 <span class="hp">HP 90</span>
             </div>
             <div class="card-art">
-                <img src="007Squirtle.webp" alt="Squirtle" class="pokemon-img">
+                <img id="img-squirtle" src="" alt="Squirtle" class="pokemon-img">
                 <span class="dex-number">#007</span>
             </div>
             <div class="trainer-info">
@@ -454,7 +454,7 @@
                 <span class="hp">HP 100</span>
             </div>
             <div class="card-art">
-                <img src="004CharmanderFRLG.webp" alt="Charmander" class="pokemon-img">
+                <img id="img-charmander" src="" alt="Charmander" class="pokemon-img">
                 <span class="dex-number">#004</span>
             </div>
             <div class="trainer-info">
@@ -482,7 +482,7 @@
                 <span class="hp">HP 110</span>
             </div>
             <div class="card-art">
-                <img src="025Pikachu.webp" alt="Pikachu" class="pokemon-img">
+                <img id="img-pikachu" src="" alt="Pikachu" class="pokemon-img">
                 <span class="dex-number">#025</span>
             </div>
             <div class="trainer-info">
@@ -543,12 +543,34 @@
         const pokeText = document.getElementById('poke-text');
         const searchBtn = document.getElementById('search-btn');
 
+        // Função para buscar a arte oficial dos Pokémon das Cartas
+        async function fetchStarterImage(id, elementId) {
+            try {
+                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+                if (!response.ok) throw new Error(`Falha na conexão para o ID ${id}`);
+                
+                const data = await response.json();
+                const imageUrl = data.sprites.other['official-artwork'].front_default || data.sprites.front_default;
+                
+                document.getElementById(elementId).src = imageUrl;
+            } catch (error) {
+                console.error(`Erro ao carregar o Pokémon das cartas: ${error.message}`);
+            }
+        }
+
+        // Função que inicializa todos os 4 iniciais da tela
+        function loadAllStarters() {
+            fetchStarterImage(1, 'img-bulbasaur');
+            fetchStarterImage(7, 'img-squirtle');
+            fetchStarterImage(4, 'img-charmander');
+            fetchStarterImage(25, 'img-pikachu');
+        }
+
+        // Função original para o Radar Pokédex
         async function fetchRandomPokemon() {
-            // Mostra status de carregamento
             pokeImg.style.display = 'none';
             pokeText.innerText = 'PROCURANDO NO MATINHO...';
             
-            // Sorteia um número de 1 a 1025 (limite atual aproximado da National Dex)
             const randomId = Math.floor(Math.random() * 1025) + 1;
 
             try {
@@ -557,7 +579,6 @@
                 
                 const data = await response.json();
                 
-                // Prefere a arte oficial, se não tiver usa o sprite padrão
                 const imageUrl = data.sprites.other['official-artwork'].front_default || data.sprites.front_default;
                 
                 pokeImg.src = imageUrl;
@@ -569,11 +590,14 @@
             }
         }
 
-        // Evento de clique no botão
+        // Evento de clique no botão do Radar
         searchBtn.addEventListener('click', fetchRandomPokemon);
 
-        // Busca o primeiro Pokémon assim que a página abre
-        window.onload = fetchRandomPokemon;
+        // Busca o primeiro Pokémon aleatório e preenche os iniciais assim que a página abre
+        window.onload = () => {
+            fetchRandomPokemon();
+            loadAllStarters();
+        };
     </script>
 
 </body>
